@@ -9,6 +9,7 @@ extern Kenshin::Application* Kenshin::createApplication(int argc, char** argv);
 int main(int argc, char** argv)
 {
 	Kenshin::Log::init();
+	KS_CORE_INFO("KenshinEngine!");
 	Kenshin::Application* app = Kenshin::createApplication(argc, argv);
 	app->Run();
 	delete app;
