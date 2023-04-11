@@ -19,6 +19,12 @@
     <ClInclude Include="src\Kenshin\Log.h">
       <Filter>Kenshin</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Events\Event.h" />
+    <ClInclude Include="src\Kenshin\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Kenshin\Events\KeyEvent.h" />
+    <ClInclude Include="src\Kenshin\KeyCodes.h" />
+    <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
+    <ClInclude Include="src\Kenshin\MouseCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">

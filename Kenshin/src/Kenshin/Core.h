@@ -8,3 +8,5 @@
 	#endif // DEBUG
 
 #endif // PLATFORM_WINDW
+
+#define BIT(x) (1 << x)
