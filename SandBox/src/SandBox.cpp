@@ -1,5 +1,13 @@
-#include "SandBox.h"
-int main()
+#include <Kenshin.h>
+
+class SandBox :public Kenshin::Application
 {
-	print();
+public:
+	SandBox() {}
+	~SandBox() {};
+};
+
+Kenshin::Application* Kenshin::createApplication(int argc, char** argv)
+{
+	return new SandBox();
 }
