@@ -1,5 +1,6 @@
 #pragma once
 #include "Application.h"
+#include "Log.h"
 #include<stdio.h>
 
 extern Kenshin::Application* Kenshin::createApplication(int argc, char** argv);
@@ -7,7 +8,7 @@ extern Kenshin::Application* Kenshin::createApplication(int argc, char** argv);
 #ifdef KS_PLATFORM_WINDOWS
 int main(int argc, char** argv)
 {
-	printf("Kenshin Engine");
+	Kenshin::Log::init();
 	Kenshin::Application* app = Kenshin::createApplication(argc, argv);
 	app->Run();
 	delete app;

@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Kenshin\Log.h" />
     <ClInclude Include="src\Kenshin.h" />
     <ClInclude Include="src\Kenshin\Application.h" />
     <ClInclude Include="src\Kenshin\Core.h" />
     <ClInclude Include="src\Kenshin\EntityPoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Application.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -82,18 +84,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)bin\$(platform)\$(Configuration)\$(projectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(platform)\$(Configuration)\$(projectName)\</IntDir>
+    <IncludePath>$(solutionDir)\Kenshin\vendor\spdlog\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)bin\$(platform)\$(Configuration)\$(projectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(platform)\$(Configuration)\$(projectName)\</IntDir>
+    <IncludePath>$(solutionDir)\Kenshin\vendor\spdlog\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(platform)\$(Configuration)\$(projectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(platform)\$(Configuration)\$(projectName)\</IntDir>
+    <IncludePath>$(solutionDir)\Kenshin\vendor\spdlog\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(platform)\$(Configuration)\$(projectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(platform)\$(Configuration)\$(projectName)\</IntDir>
+    <IncludePath>$(solutionDir)\Kenshin\vendor\spdlog\include;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
