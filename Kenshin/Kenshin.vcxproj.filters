@@ -25,6 +25,7 @@
     <ClInclude Include="src\Kenshin\KeyCodes.h" />
     <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\MouseCodes.h" />
+    <ClInclude Include="src\kspch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -33,5 +34,6 @@
     <ClCompile Include="src\Kenshin\Log.cpp">
       <Filter>Kenshin</Filter>
     </ClCompile>
+    <ClCompile Include="src\kspch.cpp" />
   </ItemGroup>
 </Project>
