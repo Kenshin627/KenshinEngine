@@ -9,8 +9,4 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
-
-
-#ifdef KS_PLATFORM_WINDOWS
-#include <window.h>
-#endif // KS_PLATFORM_WINDOWS
+#include <cstdint>

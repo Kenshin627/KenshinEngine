@@ -1,3 +1,4 @@
+#include "kspch.h"
 #include "Log.h"
 
 std::shared_ptr<spdlog::logger> Kenshin::Log::s_CoreLogger;

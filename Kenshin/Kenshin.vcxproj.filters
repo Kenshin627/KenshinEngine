@@ -4,6 +4,9 @@
     <Filter Include="Kenshin">
       <UniqueIdentifier>{D5D0AF84-41B0-2E20-4AC8-B9F6B6269581}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Kenshin\Events">
+      <UniqueIdentifier>{199B0165-0569-F56A-EEFC-6591DA69D1CF}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Kenshin.h" />
@@ -16,15 +19,27 @@
     <ClInclude Include="src\Kenshin\EntityPoint.h">
       <Filter>Kenshin</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Events\ApplicationEvent.h">
+      <Filter>Kenshin\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Events\Event.h">
+      <Filter>Kenshin\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Events\KeyEvent.h">
+      <Filter>Kenshin\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Events\MouseEvent.h">
+      <Filter>Kenshin\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\KeyCodes.h">
+      <Filter>Kenshin</Filter>
+    </ClInclude>
     <ClInclude Include="src\Kenshin\Log.h">
       <Filter>Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Events\Event.h" />
-    <ClInclude Include="src\Kenshin\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\Kenshin\Events\KeyEvent.h" />
-    <ClInclude Include="src\Kenshin\KeyCodes.h" />
-    <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
-    <ClInclude Include="src\Kenshin\MouseCodes.h" />
+    <ClInclude Include="src\Kenshin\MouseCodes.h">
+      <Filter>Kenshin</Filter>
+    </ClInclude>
     <ClInclude Include="src\kspch.h" />
   </ItemGroup>
   <ItemGroup>
