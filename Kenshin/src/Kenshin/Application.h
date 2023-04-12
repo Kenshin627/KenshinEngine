@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "Window.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Kenshin
 {
@@ -10,7 +11,9 @@ namespace Kenshin
 		Application();
 		virtual ~Application();
 		void Run();
-		void OnEvent(const Event& e);
+		void OnEvent(Event& e);
+	private:
+		bool OnWindowCloseEvent(const WindowCloseEvent& e);
 	private:
 		Scope<Window> m_Window;
 		bool m_IsRunning;

@@ -7,6 +7,10 @@
 namespace Kenshin
 {
 	static bool s_GLFWInitialized = false;
+	static void errorCallback(int error_code, const char* description)
+	{
+		KS_CORE_ERROR("GLFW error ({0}):{1}", error_code, description);
+	}
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
 		Init(props);
@@ -21,6 +25,7 @@ namespace Kenshin
 		KS_CORE_INFO("creating window {0}, {1}, {2}", props.title, props.width, props.height);
 		if (!s_GLFWInitialized)
 		{
+			glfwSetErrorCallback(errorCallback);
 			int success = glfwInit();
 			KS_CORE_ASSERT(success, "Counld not inialize GLFW!");
 			s_GLFWInitialized = true;
@@ -40,6 +45,9 @@ namespace Kenshin
 
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.Width = width;
+			data.Height = height;
+
 			WindowResizeEvent e(width, height);
 			data.EventCallback(e);
 		});
