@@ -15,7 +15,7 @@ namespace Kenshin {
 		uint32_t height;
 	};
 
-	KENSHIN_API class Window
+	class KENSHIN_API Window
 	{
 	public:
 		using EventCallback = std::function<void(Event&)>;

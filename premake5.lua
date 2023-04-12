@@ -5,6 +5,11 @@ workspace "KenshinEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Kenshin/vendor/GLFW/include"
+
+include "Kenshin/vendor/GLFW"
+
 project "SandBox"
 	location "SandBox"
 	kind "consoleApp"
@@ -64,22 +69,17 @@ project "Kenshin"
 	includedirs
 	{ 
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/vendor/GLFW/include",
-		"%{prj.name}/src"
+		"%{prj.name}/src",
+		"%{IncludeDir.GLFW}"
 	}
 	postbuildcommands
 	{
 		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/SandBox"
 	}
 
-	libdirs
-	{
-		"%{prj.name}/vendor/GLFW/lib-vc2022"
-	}
-
 	links
 	{
-		"glfw3.lib",
+		"GLFW",
 		"opengl32.lib"
 	}
 
