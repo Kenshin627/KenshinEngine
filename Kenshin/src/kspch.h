@@ -10,3 +10,5 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <cstdint>
+#include "Kenshin/Log.h"
+#include "Kenshin/Core.h"

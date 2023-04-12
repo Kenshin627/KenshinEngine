@@ -7,6 +7,12 @@
     <Filter Include="Kenshin\Events">
       <UniqueIdentifier>{199B0165-0569-F56A-EEFC-6591DA69D1CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Kenshin.h" />
@@ -40,6 +46,12 @@
     <ClInclude Include="src\Kenshin\MouseCodes.h">
       <Filter>Kenshin</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Window.h">
+      <Filter>Kenshin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\kspch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +60,12 @@
     </ClCompile>
     <ClCompile Include="src\Kenshin\Log.cpp">
       <Filter>Kenshin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Window.cpp">
+      <Filter>Kenshin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\kspch.cpp" />
   </ItemGroup>

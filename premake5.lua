@@ -64,11 +64,22 @@ project "Kenshin"
 	includedirs
 	{ 
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/src;"
+		"%{prj.name}/vendor/GLFW/include",
+		"%{prj.name}/src"
 	}
 	postbuildcommands
 	{
 		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/SandBox"
+	}
+
+	libdirs
+	{
+		"%{prj.name}/vendor/GLFW/lib-vc2022/"
+	}
+
+	links
+	{
+		"glfw3.lib"
 	}
 
 	filter "system:windows"
@@ -85,7 +96,11 @@ project "Kenshin"
 		
 
 	filter "configurations:Debug"
-		defines "KS_DEBUG"
+		defines 
+		{ 
+			"KS_DEBUG",
+			"KS_ENABLE_ASSERTS"
+		}
 		symbols "On"
 
 	filter "configurations:Release"

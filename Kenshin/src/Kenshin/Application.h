@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "Window.h"
 
 namespace Kenshin
 {
@@ -9,7 +10,10 @@ namespace Kenshin
 		Application();
 		virtual ~Application();
 		void Run();
+	private:
+		Scope<Window> m_Window;
+		bool m_IsRunning;
 	};
 
-	__declspec(dllexport) Application* createApplication(int argc, char** argv);
+	Application* createApplication(int argc, char** argv);
 }

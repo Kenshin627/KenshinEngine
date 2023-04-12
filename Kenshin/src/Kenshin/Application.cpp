@@ -5,15 +5,16 @@
 
 namespace Kenshin
 {
-	Application::Application() {}
+	Application::Application():m_IsRunning(true)
+	{
+		m_Window = Window::Create();
+	}
 	Application::~Application() {}
 	void Application::Run() 
-	{
-		auto e = WindowResizeEvent(1920, 1080);
-		KS_CORE_TRACE(e);
-		while (true)
+	{	
+		while (m_IsRunning)
 		{
-
+			m_Window->OnUpdate();
 		}
 	}
 }
