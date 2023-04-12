@@ -7,8 +7,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Kenshin/vendor/GLFW/include"
+IncludeDir["Glad"] = "Kenshin/vendor/Glad/include"
 
 include "Kenshin/vendor/GLFW"
+include "Kenshin/vendor/Glad"
 
 project "SandBox"
 	location "SandBox"
@@ -70,7 +72,8 @@ project "Kenshin"
 	{ 
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 	postbuildcommands
 	{
@@ -80,6 +83,7 @@ project "Kenshin"
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -91,7 +95,8 @@ project "Kenshin"
 		defines
 		{
 			"KS_PLATFORM_WINDOWS",
-			"KS_BUILD_DLL"
+			"KS_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		
@@ -102,14 +107,17 @@ project "Kenshin"
 			"KS_DEBUG",
 			"KS_ENABLE_ASSERTS"
 		}
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "KS_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "KS_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "files: vendor/**.cpp"
