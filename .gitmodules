@@ -4,3 +4,7 @@
 [submodule "Kenshin/vendor/GLFW"]
 	path = Kenshin/vendor/GLFW
 	url = git@github.com:TheCherno/glfw.git
+[submodule "Kenshin/vendor/imgui"]
+	path = Kenshin/vendor/imgui
+	url = git@github.com:ocornut/imgui.git
+	branch = docking

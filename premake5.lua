@@ -8,9 +8,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Kenshin/vendor/GLFW/include"
 IncludeDir["Glad"] = "Kenshin/vendor/Glad/include"
+IncludeDir["imgui"] = "Kenshin/vendor/imgui"
 
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
+include "Kenshin/vendor/imgui"
 
 project "SandBox"
 	location "SandBox"
@@ -73,7 +75,9 @@ project "Kenshin"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.imgui}",
+		"%{prj.name}/vendor/imgui/backends"
 	}
 	postbuildcommands
 	{
@@ -84,7 +88,8 @@ project "Kenshin"
 	{
 		"GLFW",
 		"Glad",
-		"opengl32.lib"
+		"opengl32.lib",
+		"imgui"
 	}
 
 	filter "system:windows"

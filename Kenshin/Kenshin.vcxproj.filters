@@ -7,8 +7,14 @@
     <Filter Include="Kenshin\Events">
       <UniqueIdentifier>{199B0165-0569-F56A-EEFC-6591DA69D1CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Kenshin\ImGuiLayer">
+      <UniqueIdentifier>{5C48D33A-482C-9490-B18C-8EE39D8F7E12}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -37,6 +43,9 @@
     <ClInclude Include="src\Kenshin\Events\MouseEvent.h">
       <Filter>Kenshin\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\ImGuiLayer\ImGuiLayer.h">
+      <Filter>Kenshin\ImGuiLayer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Kenshin\KeyCodes.h">
       <Filter>Kenshin</Filter>
     </ClInclude>
@@ -55,6 +64,9 @@
     <ClInclude Include="src\Kenshin\Window.h">
       <Filter>Kenshin</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -63,6 +75,9 @@
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
       <Filter>Kenshin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\ImGuiLayer\ImGuiLayer.cpp">
+      <Filter>Kenshin\ImGuiLayer</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Layer.cpp">
       <Filter>Kenshin</Filter>
@@ -75,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="src\Kenshin\Window.cpp">
       <Filter>Kenshin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
