@@ -74,12 +74,13 @@ project "Kenshin"
 
 	libdirs
 	{
-		"%{prj.name}/vendor/GLFW/lib-vc2022/"
+		"%{prj.name}/vendor/GLFW/lib-vc2022"
 	}
 
 	links
 	{
-		"glfw3.lib"
+		"glfw3.lib",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
