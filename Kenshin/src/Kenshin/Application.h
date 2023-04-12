@@ -10,6 +10,7 @@ namespace Kenshin
 		Application();
 		virtual ~Application();
 		void Run();
+		void OnEvent(const Event& e);
 	private:
 		Scope<Window> m_Window;
 		bool m_IsRunning;

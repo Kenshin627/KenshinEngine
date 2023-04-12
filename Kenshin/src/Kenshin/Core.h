@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <functional>
 
 #ifdef KS_PLATFORM_WINDOWS
 	#ifdef KS_BUILD_DLL
@@ -19,6 +20,8 @@
 	#define KS_ASSERT(x, ...)
 	#define KS_CORE_ASSERT(x, ...)
 #endif
+
+#define BIND_EVENT_FN(x) std::bind(&x, this. std::placeholders::_1)
 
 
 namespace Kenshin
