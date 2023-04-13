@@ -12,3 +12,6 @@
 	path = Kenshin/vendor/ImGui
 	url = git@github.com:ocornut/imgui.git
 	branch = docking
+[submodule "Kenshin/vendor/glm"]
+	path = Kenshin/vendor/glm
+	url = git@github.com:g-truc/glm.git

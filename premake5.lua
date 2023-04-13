@@ -9,6 +9,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Kenshin/vendor/GLFW/include"
 IncludeDir["Glad"] = "Kenshin/vendor/Glad/include"
 IncludeDir["ImGui"] = "Kenshin/vendor/ImGui"
+IncludeDir["glm"] = "Kenshin/vendor/glm/glm"
 
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
@@ -28,7 +29,8 @@ project "SandBox"
 	{ 
 		"Kenshin/vendor/spdlog/include;",
 		"Kenshin/src;",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -68,7 +70,12 @@ project "Kenshin"
 	pchheader "kspch.h"
 	pchsource ("%{prj.name}/src/kspch.cpp")
 
-	files{ "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
+	files
+	{ 
+		"%{prj.name}/src/**.h", 
+		"%{prj.name}/src/**.cpp" ,
+		"%{prj.name}/vendor/glm/glm/**.hpp"
+	}
 	
 
 	includedirs
@@ -78,7 +85,8 @@ project "Kenshin"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{prj.name}/vendor/ImGui/backends"
+		"%{IncludeDir.ImGui}/backends",
+		"%{IncludeDir.glm}"
 	}
 	postbuildcommands
 	{
