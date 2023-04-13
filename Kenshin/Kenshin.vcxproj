@@ -164,6 +164,7 @@
     <ClInclude Include="src\Kenshin\Events\KeyEvent.h" />
     <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\ImGuiLayer\ImGuiLayer.h" />
+    <ClInclude Include="src\Kenshin\Input.h" />
     <ClInclude Include="src\Kenshin\KeyCodes.h" />
     <ClInclude Include="src\Kenshin\Layer.h" />
     <ClInclude Include="src\Kenshin\LayerStack.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\kspch.h" />
   </ItemGroup>
@@ -188,6 +190,7 @@
     <ClCompile Include="src\Platform\OpenGL\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\kspch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

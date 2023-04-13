@@ -3,12 +3,14 @@
 #include "Kenshin/Events/ApplicationEvent.h"
 #include "Kenshin/Events/KeyEvent.h"
 #include "Kenshin/Events/MouseEvent.h"
+#include"WindowsInput.h"
 #include "glad/gl.h"
 
 namespace Kenshin
 {
 	static bool s_GLFWInitialized = false;
-	static void errorCallback(int error_code, const char* description)
+	Input* Input::s_Instance = new WindowsInput();
+	static void errorCallback(int error_code, const char* description)	
 	{
 		KS_CORE_ERROR("GLFW error ({0}):{1}", error_code, description);
 	}

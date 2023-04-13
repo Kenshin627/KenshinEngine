@@ -1,6 +1,7 @@
 #include "kspch.h"
 #include "Application.h"
 #include "Log.h"
+#include "Input.h"
 #include <glad/gl.h>
 
 namespace Kenshin
@@ -10,13 +11,13 @@ namespace Kenshin
 	{
 		s_Instance = this;
 		m_Window = Window::Create();
-		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent, std::placeholders::_1));
 	}
 	Application::~Application() {}
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowCloseEvent));
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowCloseEvent, std::placeholders::_1));
 		KS_CORE_INFO(e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
@@ -38,6 +39,8 @@ namespace Kenshin
 			{
 				layer->OnUpdate();
 			}
+			auto [x, y] = Input::GetMousePos();
+			//KS_TRACE("Mouse Position {0}, {1}", x, y);
 			m_Window->OnUpdate();
 		}
 	}

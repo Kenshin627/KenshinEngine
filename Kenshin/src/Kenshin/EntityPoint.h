@@ -13,4 +13,4 @@ int main(int argc, char** argv)
 	app->Run();
 	delete app;
 }
-#endif // KS_PLATFORM_WINDOWS
+#endif
