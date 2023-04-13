@@ -4,12 +4,8 @@
 
 namespace Kenshin
 {
-	class ImGuiLayer:public Layer
+	class KENSHIN_API ImGuiLayer:public Layer
 	{
-		/*void Layer::OnAttach() {}
-		void Layer::OnDetach() {}
-		void Layer::OnUpdate() {}
-		void Layer::OnEvent(Event& e) {}*/
 		public: 
 			ImGuiLayer();
 			~ImGuiLayer();
@@ -17,5 +13,6 @@ namespace Kenshin
 			void OnDetach() override;
 			void OnUpdate() override;
 			void OnEvent(Event& e) override;
+			void SetDarkThemecolors();
 	};
 }

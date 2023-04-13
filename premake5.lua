@@ -125,6 +125,10 @@ project "Kenshin"
 		buildoptions "/MD"
 		optimize "On"
 
-	filter "files: vendor/**.cpp"
+	filter "files:vendor/**.cpp"
+	flags { "NoPCH" }
+
+
+	filter "files:src/Platform/OpenGL/**.cpp"
 	flags { "NoPCH" }
 

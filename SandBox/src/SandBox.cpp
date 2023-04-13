@@ -1,9 +1,14 @@
 #include <Kenshin.h>
+#include <Kenshin/ImGuiLayer/ImGuiLayer.h>
 
 class SandBox :public Kenshin::Application
 {
 public:
-	SandBox() {}
+	SandBox() 
+	{
+		Kenshin::ImGuiLayer* layer = new Kenshin::ImGuiLayer();
+		PushOverLay(layer);
+	}
 	~SandBox() {};
 };
 

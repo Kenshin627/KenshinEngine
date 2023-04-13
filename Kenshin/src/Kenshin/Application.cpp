@@ -5,8 +5,10 @@
 
 namespace Kenshin
 {
+	Application* Application::s_Instance;
 	Application::Application():m_IsRunning(true)
 	{
+		s_Instance = this;
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 	}
@@ -49,10 +51,12 @@ namespace Kenshin
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverLay(Layer* overlay)
 	{
 		m_LayerStack.PushOverLay(overlay);
+		overlay->OnAttach();
 	}
 }
