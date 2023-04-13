@@ -3,8 +3,12 @@
 	url = https://github.com/gabime/spdlog.git
 [submodule "Kenshin/vendor/GLFW"]
 	path = Kenshin/vendor/GLFW
-	url = git@github.com:TheCherno/glfw.git
+	url = git@github.com:glfw/glfw.git
 [submodule "Kenshin/vendor/imgui"]
 	path = Kenshin/vendor/imgui
+	url = git@github.com:ocornut/imgui.git
+	branch = docking
+[submodule "Kenshin/vendor/ImGui"]
+	path = Kenshin/vendor/ImGui
 	url = git@github.com:ocornut/imgui.git
 	branch = docking

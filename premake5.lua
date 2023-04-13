@@ -8,11 +8,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Kenshin/vendor/GLFW/include"
 IncludeDir["Glad"] = "Kenshin/vendor/Glad/include"
-IncludeDir["imgui"] = "Kenshin/vendor/imgui"
+IncludeDir["ImGui"] = "Kenshin/vendor/ImGui"
 
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
-include "Kenshin/vendor/imgui"
+include "Kenshin/vendor/ImGui"
 
 project "SandBox"
 	location "SandBox"
@@ -76,8 +76,8 @@ project "Kenshin"
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.imgui}",
-		"%{prj.name}/vendor/imgui/backends"
+		"%{IncludeDir.ImGui}",
+		"%{prj.name}/vendor/ImGui/backends"
 	}
 	postbuildcommands
 	{
