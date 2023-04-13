@@ -9,10 +9,15 @@ namespace Kenshin
 		public: 
 			ImGuiLayer();
 			~ImGuiLayer();
-			void OnAttach() override;
-			void OnDetach() override;
-			void OnUpdate() override;
-			void OnEvent(Event& e) override;
+			virtual void OnAttach() override;
+			virtual void OnDetach() override;
+			virtual void OnEvent(Event& e) override;
 			void SetDarkThemecolors();
+			void Begin();
+			void End();
+			void BlockEvents(bool block) { m_BlockEvents = block; };
+			uint32_t GetActiveWidgetID() const;
+	private:
+		bool m_BlockEvents = true;
 	};
 }

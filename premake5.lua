@@ -27,7 +27,8 @@ project "SandBox"
 	includedirs
 	{ 
 		"Kenshin/vendor/spdlog/include;",
-		"Kenshin/src;"
+		"Kenshin/src;",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links

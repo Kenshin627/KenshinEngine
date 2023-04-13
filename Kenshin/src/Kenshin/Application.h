@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Events/ApplicationEvent.h"
 #include "LayerStack.h"
+#include "Kenshin/ImGuiLayer/ImGuiLayer.h"
 
 namespace Kenshin
 {
@@ -21,6 +22,7 @@ namespace Kenshin
 		bool OnWindowCloseEvent(const WindowCloseEvent& e);
 	private:
 		Scope<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning;
 		LayerStack m_LayerStack;
 		static Application* s_Instance;

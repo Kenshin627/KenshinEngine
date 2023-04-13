@@ -17,14 +17,12 @@ namespace Kenshin
 	void ImGuiLayer::OnAttach() 
 	{
 		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		
+		ImGui::CreateContext();		
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-
 		float fontSize = 18.0f;// *2.0f;
 		//io.Fonts->AddFontFromFileTTF("./resource/fonts/JetBrainsMono-Medium.ttf", fontSize);
 		//io.FontDefault = io.Fonts->AddFontFromFileTTF("./resource/fonts/JetBrainsMono-Medium.ttf", fontSize);
@@ -44,7 +42,6 @@ namespace Kenshin
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 460");
-
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -54,23 +51,20 @@ namespace Kenshin
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate()
+	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+	}
 
-		bool show = true;
-		ImGui::ShowDemoWindow(&show);
-
+	void ImGuiLayer::End()
+	{
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
-
-		// Rendering
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();
@@ -82,7 +76,12 @@ namespace Kenshin
 
 	void ImGuiLayer::OnEvent(Event& e)
 	{
-		
+		if (m_BlockEvents)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+			e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+		}
 	}
 
 	void ImGuiLayer::SetDarkThemecolors()
@@ -116,5 +115,10 @@ namespace Kenshin
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+	}
+
+	uint32_t ImGuiLayer::GetActiveWidgetID() const
+	{
+		return GImGui->ActiveId;
 	}
 }

@@ -1,4 +1,5 @@
 #include <Kenshin.h>
+#include "imgui.h"
 
 class ExampleLayer :public Kenshin::Layer
 {
@@ -6,11 +7,17 @@ public:
 	ExampleLayer() :Layer("Example") {}
 	void  OnUpdate() override
 	{
-		//KS_INFO("ExampleLayer::Update");
 		if (Kenshin::Input::IsKeyPressed(Kenshin::Key::Tab))
 		{
 			KS_INFO("TAB is pressed!");
 		}
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("TEST");
+		ImGui::Text("test");
+		ImGui::End();
 	}
 };
 
@@ -19,8 +26,6 @@ class SandBox :public Kenshin::Application
 public:
 	SandBox() 
 	{
-		Kenshin::ImGuiLayer* layer = new Kenshin::ImGuiLayer();
-		PushOverLay(layer);
 		PushOverLay(new ExampleLayer());
 	}
 	~SandBox() {};

@@ -12,6 +12,8 @@ namespace Kenshin
 		s_Instance = this;
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent, std::placeholders::_1));
+		ImGuiLayer* m_ImGuiLayer = new ImGuiLayer();
+		PushOverLay(m_ImGuiLayer);
 	}
 	Application::~Application() {}
 	void Application::OnEvent(Event& e)
@@ -39,8 +41,14 @@ namespace Kenshin
 			{
 				layer->OnUpdate();
 			}
-			auto [x, y] = Input::GetMousePos();
-			//KS_TRACE("Mouse Position {0}, {1}", x, y);
+			
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+			{
+				layer->OnImGuiRender();
+			}
+			m_ImGuiLayer->End();
+
 			m_Window->OnUpdate();
 		}
 	}
