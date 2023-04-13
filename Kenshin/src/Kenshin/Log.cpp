@@ -1,8 +1,8 @@
 #include "kspch.h"
 #include "Log.h"
 
-std::shared_ptr<spdlog::logger> Kenshin::Log::s_CoreLogger;
-std::shared_ptr<spdlog::logger> Kenshin::Log::s_ClientLogger;
+Kenshin::Ref<spdlog::logger> Kenshin::Log::s_CoreLogger;
+Kenshin::Ref<spdlog::logger> Kenshin::Log::s_ClientLogger;
 
 void Kenshin::Log::init()
 {

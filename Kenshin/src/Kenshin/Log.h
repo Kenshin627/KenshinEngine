@@ -10,11 +10,11 @@ namespace Kenshin
 	{
 	public:
 		static void init();
-		inline static std::shared_ptr<spdlog::logger> getCoreLogger() { return s_CoreLogger; };
-		inline static std::shared_ptr<spdlog::logger> getClientLogger() { return s_ClientLogger; };
+		inline static Ref<spdlog::logger>& getCoreLogger() { return s_CoreLogger; };
+		inline static Ref<spdlog::logger>& getClientLogger() { return s_ClientLogger; };
 	private:
-		static std::shared_ptr<spdlog::logger> s_CoreLogger;
-		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+		static Ref<spdlog::logger> s_CoreLogger;
+		static Ref<spdlog::logger> s_ClientLogger;
 	};
 }
 
