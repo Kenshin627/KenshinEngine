@@ -12,6 +12,7 @@ namespace Kenshin
 			virtual void OnAttach() override;
 			virtual void OnDetach() override;
 			virtual void OnEvent(Event& e) override;
+			virtual void OnImGuiRender() override;
 			void SetDarkThemecolors();
 			void Begin();
 			void End();
@@ -19,5 +20,6 @@ namespace Kenshin
 			uint32_t GetActiveWidgetID() const;
 	private:
 		bool m_BlockEvents = true;
+		bool m_ShowDemoWindow = true;
 	};
 }
