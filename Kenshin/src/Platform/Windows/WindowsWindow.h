@@ -1,5 +1,6 @@
 #pragma once
 #include "Kenshin/Window.h"
+#include "Kenshin/Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 
 namespace Kenshin
@@ -31,5 +32,6 @@ namespace Kenshin
 		};
 		GLFWwindow* m_Window;
 		WindowData m_Data;
+		GraphicsContext* m_Context;
 	};
 }

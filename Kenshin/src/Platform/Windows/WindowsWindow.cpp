@@ -5,6 +5,7 @@
 #include "Kenshin/Events/MouseEvent.h"
 #include"WindowsInput.h"
 #include "glad/gl.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Kenshin
 {
@@ -35,11 +36,10 @@ namespace Kenshin
 		}
 
 		m_Window = glfwCreateWindow(props.width, props.height, props.title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGL((GLADloadfunc)glfwGetProcAddress);
-		KS_CORE_ASSERT(status, "Failed to initailize Glad!");
-		glfwSetWindowUserPointer(m_Window, &m_Data);
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 		SetVSync(true);
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 
 		//callbacks
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
@@ -144,7 +144,7 @@ namespace Kenshin
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void* WindowsWindow::GetNativeWindow() const
