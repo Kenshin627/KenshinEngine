@@ -171,6 +171,7 @@
     <ClInclude Include="src\Kenshin\Log.h" />
     <ClInclude Include="src\Kenshin\MouseCodes.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
     <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\imgui_impl_glfw.h" />
@@ -462,6 +463,7 @@
     <ClCompile Include="src\Kenshin\Layer.cpp" />
     <ClCompile Include="src\Kenshin\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Log.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
     <ClCompile Include="src\Kenshin\Window.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\imgui_impl_glfw.cpp">
