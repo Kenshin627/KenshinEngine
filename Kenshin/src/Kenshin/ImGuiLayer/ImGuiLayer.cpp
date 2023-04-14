@@ -24,8 +24,7 @@ namespace Kenshin
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 		float fontSize = 18.0f;// *2.0f;
-		//io.Fonts->AddFontFromFileTTF("./resource/fonts/JetBrainsMono-Medium.ttf", fontSize);
-		//io.FontDefault = io.Fonts->AddFontFromFileTTF("./resource/fonts/JetBrainsMono-Medium.ttf", fontSize);
+
 		io.Fonts->AddFontFromFileTTF("../Kenshin/resource/fonts/JetBrainsMono-Medium.ttf", fontSize, NULL, io.Fonts->GetGlyphRangesChineseFull());
 		io.FontDefault = io.Fonts->AddFontFromFileTTF("../Kenshin/resource/fonts/JetBrainsMono-Medium.ttf", fontSize, NULL, io.Fonts->GetGlyphRangesChineseFull());
 

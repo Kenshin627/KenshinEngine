@@ -101,6 +101,7 @@ project "Kenshin"
 		"imgui"
 	}
 
+
 	filter "system:windows"
 		cppdialect "c++17"
 		staticruntime "On"

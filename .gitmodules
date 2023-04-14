@@ -14,4 +14,4 @@
 	branch = docking
 [submodule "Kenshin/vendor/glm"]
 	path = Kenshin/vendor/glm
-	url = git@github.com:g-truc/glm.git
+	url = https://github.com/g-truc/glm.git
