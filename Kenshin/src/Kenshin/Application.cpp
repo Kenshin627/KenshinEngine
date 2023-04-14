@@ -14,6 +14,19 @@ namespace Kenshin
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent, std::placeholders::_1));
 		ImGuiLayer* m_ImGuiLayer = new ImGuiLayer();
 		PushOverLay(m_ImGuiLayer);
+
+		//temp
+		float vertices[9] = { -0.5, -0.5, 0.0, -0.5, 0.5, 0.0, 0.0, 0.5, 0.0 };
+		unsigned indices[3] = { 0, 1, 2 };
+		m_VBO.reset(VertexBuffer::CreateBuffer(vertices, sizeof(vertices)));
+		m_VBO->Bind();
+		glVertexAttribPointer(0, 3, GL_FLOAT, FALSE, 3 * sizeof(float), (const void*)0);
+		glEnableVertexAttribArray(0);
+		m_EBO.reset(IndexBuffer::CreateBuffer(indices, 3));
+		m_EBO->Bind();
+		m_Shader = CreateScope<Shader>("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", "");
+		m_Shader->Bind();
+		
 	}
 	Application::~Application() {}
 	void Application::OnEvent(Event& e)
@@ -37,6 +50,9 @@ namespace Kenshin
 		{
 			glClearColor(0.2, 0.2, 0.2, 0.2);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			//temp
+			
 			for (Layer* layer: m_LayerStack)
 			{
 				layer->OnUpdate();
@@ -48,7 +64,7 @@ namespace Kenshin
 				layer->OnImGuiRender();
 			}
 			m_ImGuiLayer->End();
-
+			glDrawElements(GL_TRIANGLES, m_EBO->GetCount(), GL_UNSIGNED_INT, (const void*)0);
 			m_Window->OnUpdate();
 		}
 	}
