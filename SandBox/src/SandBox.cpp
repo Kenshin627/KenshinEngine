@@ -1,7 +1,6 @@
 #include <Kenshin.h>
 #include "imgui.h"
 #include <glm.hpp>
-#include "Kenshin/Renderer/Renderer.h"
 
 class ExampleLayer :public Kenshin::Layer
 {
@@ -26,13 +25,15 @@ public:
 		m_EBO.reset(Kenshin::IndexBuffer::CreateBuffer(indices, 3));
 		m_VAO->SetIndexBuffer(m_EBO);
 		m_Shader = Kenshin::CreateScope<Kenshin::Shader>("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", "");
-		m_Shader->Bind();
+
+		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -2.0f, 2.0f);
+		m_Camera->SetRotation(45.0f);
+		m_Camera->SetPosition({ 1.0f, 1.0f, 0.0f });
 	}
 	void  OnUpdate() override
 	{
-		Kenshin::Renderer::BeginScene();
-		m_Shader->Bind();
-		Kenshin::Renderer::Submit(m_VAO);
+		Kenshin::Renderer::BeginScene(m_Camera);
+		Kenshin::Renderer::Submit(m_VAO, m_Shader);
 		Kenshin::Renderer::EndScene();
 	}
 
@@ -45,6 +46,7 @@ private:
 	Kenshin::Ref<Kenshin::IndexBuffer> m_EBO;
 	Kenshin::Ref<Kenshin::VertexArray> m_VAO;
 	Kenshin::Ref<Kenshin::Shader> m_Shader;
+	Kenshin::Ref<Kenshin::OrthographicCamera> m_Camera;
 };
 
 class SandBox :public Kenshin::Application

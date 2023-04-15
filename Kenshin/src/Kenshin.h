@@ -9,4 +9,11 @@
 
 #include "Kenshin/ImGuiLayer/ImGuiLayer.h"
 
+//Renderer
+#include "Kenshin/Renderer/Renderer.h"
+#include "Kenshin/Renderer/RendererCommand.h"
+#include "Kenshin/Renderer/Shader.h"
+#include "Kenshin/Renderer/VertexArray.h"
+#include "Kenshin/Renderer/OrthographicCamera.h"
+
 #include "Kenshin/EntityPoint.h"

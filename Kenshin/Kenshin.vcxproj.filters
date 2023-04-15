@@ -950,6 +950,7 @@
     <ClInclude Include="src\Kenshin\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Kenshin\Renderer\RendererCommand.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="src\Kenshin\Renderer\OrthographicCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -995,6 +996,7 @@
     <ClCompile Include="src\Kenshin\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\RendererCommand.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\OrthographicCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shaders\vertex.glsl" />
