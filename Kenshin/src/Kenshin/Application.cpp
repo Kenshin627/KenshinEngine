@@ -40,9 +40,6 @@ namespace Kenshin
 			float time = (float)glfwGetTime();
 			TimeStamp ts{ time - m_LastFrameTime };
 			m_LastFrameTime = time;
-
-			RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
-			RendererCommand::Clear();
 		
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
@@ -54,8 +51,7 @@ namespace Kenshin
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate(ts);
-			}
-						
+			}						
 			m_Window->OnUpdate();
 		}
 	}

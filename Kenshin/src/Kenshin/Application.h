@@ -30,11 +30,6 @@ namespace Kenshin
 		LayerStack m_LayerStack;
 		static Application* s_Instance;
 		float m_LastFrameTime;
-		//temp
-		Ref<VertexBuffer> m_VBO;
-		Ref<IndexBuffer> m_EBO;
-		Ref<VertexArray> m_VAO;
-		Ref<Shader> m_Shader;
 	};
 
 	Application* createApplication(int argc, char** argv);

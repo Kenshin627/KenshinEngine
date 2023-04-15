@@ -1,40 +1,78 @@
 #include <Kenshin.h>
 #include "imgui.h"
 #include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
 
 class ExampleLayer :public Kenshin::Layer
 {
 public:
 	ExampleLayer() :Layer("Example") 
 	{
-		m_VAO.reset(Kenshin::VertexArray::CreateVertexArray());
+		#pragma region TRIANGLE
+		m_TRIANGLEVAO.reset(Kenshin::VertexArray::CreateVertexArray());
 		float vertices[3 * 7] = {
 			-0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
 			 0.5, -0.5, 0.0, 0.0, 1.0, 0.0, 1.0,
 			 0.0,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0
 		};
 		unsigned indices[3] = { 0, 1, 2 };
-		m_VBO.reset(Kenshin::VertexBuffer::CreateBuffer(vertices, sizeof(vertices)));
-		Kenshin::VertexBufferLayout layout = 
+		Kenshin::Ref<Kenshin::VertexBuffer> triangleVBO = Kenshin::Ref<Kenshin::VertexBuffer>(Kenshin::VertexBuffer::CreateBuffer(vertices, sizeof(vertices)));
+		Kenshin::VertexBufferLayout layout =
 		{
 			{ "aPosition", Kenshin::ShaderDataType::Float3 },
 			{ "aColor",    Kenshin::ShaderDataType::Float4 }
 		};
-		m_VBO->SetLayout(layout);
-		m_VAO->AddVertexBuffer(m_VBO);
-		m_EBO.reset(Kenshin::IndexBuffer::CreateBuffer(indices, 3));
-		m_VAO->SetIndexBuffer(m_EBO);
+		triangleVBO->SetLayout(layout);
+		m_TRIANGLEVAO->AddVertexBuffer(triangleVBO);
+		Kenshin::Ref<Kenshin::IndexBuffer> triangleEBO = Kenshin::Ref<Kenshin::IndexBuffer>(Kenshin::IndexBuffer::CreateBuffer(indices, 3));
+		m_TRIANGLEVAO->SetIndexBuffer(triangleEBO);
+		#pragma endregion
+
+		#pragma region QUAD
+		m_QUADVAO.reset(Kenshin::VertexArray::CreateVertexArray());
+		float quadVertices[4 * 7] = {
+			-0.5,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0,
+			 0.5,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0,
+			-0.5, -0.5, 0.0, 0.0, 0.0, 1.0, 1.0,
+			 0.5, -0.5, 0.0, 0.0, 0.0, 1.0, 1.0
+		};
+
+		unsigned quadIndices[6] = { 0, 1, 2, 1, 2, 3 };
+		Kenshin::Ref<Kenshin::VertexBuffer> quadVBO = Kenshin::Ref<Kenshin::VertexBuffer>(Kenshin::VertexBuffer::CreateBuffer(quadVertices, sizeof(quadVertices)));
+		Kenshin::VertexBufferLayout quadLayout =
+		{
+			{ "aPosition", Kenshin::ShaderDataType::Float3 },
+			{ "aColor",    Kenshin::ShaderDataType::Float4 }
+		};
+		quadVBO->SetLayout(quadLayout);
+		m_QUADVAO->AddVertexBuffer(quadVBO);
+		Kenshin::Ref<Kenshin::IndexBuffer> quadEBO = Kenshin::Ref<Kenshin::IndexBuffer>(Kenshin::IndexBuffer::CreateBuffer(quadIndices, 6));
+		m_QUADVAO->SetIndexBuffer(quadEBO);
+		#pragma endregion
+
 		m_Shader = Kenshin::CreateScope<Kenshin::Shader>("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", "");
 
-		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -2.0f, 2.0f, 0.05f);
-		m_Camera->SetRotation(45.0f);
-		m_Camera->SetPosition({ 1.0f, 1.0f, 0.0f });
+		//temp: 16/9
+		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-1.0f, 1.0f, -9.0f / 16.0f, 9.0f / 16.0f, 0.05f);	
 	}
 	void  OnUpdate(Kenshin::TimeStamp ts) override
 	{
+		Kenshin::RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
+		Kenshin::RendererCommand::Clear();
 		UpdateCamera(ts);
 		Kenshin::Renderer::BeginScene(m_Camera);
-		Kenshin::Renderer::Submit(m_VAO, m_Shader);
+		Kenshin::Renderer::Submit(m_TRIANGLEVAO, m_Shader, glm::mat4(1.0));
+
+		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(0.05));
+		for (unsigned x = 0; x < 20; x++)
+		{
+			for (unsigned y = 0; y < 20; y++) 
+			{
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0), pos) * scaleMatrix;
+				Kenshin::Renderer::Submit(m_QUADVAO, m_Shader, transform);
+			}
+		}
 		Kenshin::Renderer::EndScene();
 	}
 
@@ -78,9 +116,9 @@ public:
 		}
 	}
 private:
-	Kenshin::Ref<Kenshin::VertexBuffer> m_VBO;
-	Kenshin::Ref<Kenshin::IndexBuffer> m_EBO;
-	Kenshin::Ref<Kenshin::VertexArray> m_VAO;
+	Kenshin::Ref<Kenshin::VertexArray> m_TRIANGLEVAO;
+	Kenshin::Ref<Kenshin::VertexArray> m_QUADVAO;
+	glm::mat4 m_QUADTransform;
 	Kenshin::Ref<Kenshin::Shader> m_Shader;
 	Kenshin::Ref<Kenshin::OrthographicCamera> m_Camera;
 };

@@ -5,7 +5,7 @@
 #include "glm.hpp"
 namespace Kenshin
 {
-	class RendererCommand
+	class KENSHIN_API RendererCommand
 	{
 	public:
 		void static Clear()
