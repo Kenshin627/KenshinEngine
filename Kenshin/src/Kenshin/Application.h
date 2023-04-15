@@ -6,6 +6,7 @@
 #include "Kenshin/ImGuiLayer/ImGuiLayer.h"
 #include "Kenshin/Renderer/Buffer.h"
 #include "Kenshin/Renderer/Shader.h"
+#include "Renderer/VertexArray.h"
 
 namespace Kenshin
 {
@@ -30,9 +31,10 @@ namespace Kenshin
 		static Application* s_Instance;
 
 		//temp
-		Scope<VertexBuffer> m_VBO;
-		Scope<IndexBuffer> m_EBO;
-		Scope<Shader> m_Shader;
+		Ref<VertexBuffer> m_VBO;
+		Ref<IndexBuffer> m_EBO;
+		Ref<VertexArray> m_VAO;
+		Ref<Shader> m_Shader;
 	};
 
 	Application* createApplication(int argc, char** argv);
