@@ -15,7 +15,6 @@ namespace Kenshin
 		unsigned Size;
 		unsigned Offset;
 		bool normalized;
-		BufferElement() {}
 		BufferElement(const std::string& name, ShaderDataType type, bool normalized = false) :Name(name), Type(type), Size(GetShaderDataTypeSize(type)), Offset(0), normalized(normalized)
 		{
 		}
@@ -70,7 +69,7 @@ namespace Kenshin
 	{
 	public:
 		VertexBufferLayout():m_Stride(0) {};
-		VertexBufferLayout(std::initializer_list<BufferElement> elements) :m_Elements(elements)
+		VertexBufferLayout(std::initializer_list<BufferElement> elements):m_Stride(0), m_Elements(elements)
 		{
 			CalculateOffsetAndStride();
 		}
@@ -98,7 +97,6 @@ namespace Kenshin
 		{
 			unsigned index = 0;
 			unsigned offset = 0;
-			m_Stride = 0;
 			for (auto& element : m_Elements)
 			{
 				element.Offset = offset;
