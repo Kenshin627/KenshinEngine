@@ -1,16 +1,16 @@
 #include "kspch.h"
 #include "Buffer.h"
-#include "Kenshin/Renderer/Renderer.h"
+#include "RendererAPI.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Kenshin
 {
 	VertexBuffer* VertexBuffer::CreateBuffer(const float* vertices, unsigned size)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
-			case RenderAPI::None: KS_CORE_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
-			case RenderAPI::OpenGL: return  new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL: return  new OpenGLVertexBuffer(vertices, size);
 		}
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;
@@ -18,10 +18,10 @@ namespace Kenshin
 
 	IndexBuffer* IndexBuffer::CreateBuffer(const unsigned* indices, unsigned count)
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::GetAPI())
 		{
-		case RenderAPI::None: KS_CORE_ASSERT(false, "RendererAPI::None not suppoted!"); return nullptr;
-		case RenderAPI::OpenGL: return new OpenGLIndexBuffer(indices, count);
+		case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not suppoted!"); return nullptr;
+		case RendererAPI::API::OpenGL: return new OpenGLIndexBuffer(indices, count);
 		}
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;

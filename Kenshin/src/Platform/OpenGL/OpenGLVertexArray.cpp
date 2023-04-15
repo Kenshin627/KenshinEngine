@@ -63,4 +63,13 @@ namespace Kenshin
 		indexBuffer->Bind();
 		m_IndexBuffer = indexBuffer;
 	}
+
+	const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffer() const
+	{
+		return m_VertexBuffers;
+	}
+	const Ref<IndexBuffer> OpenGLVertexArray::GetIndexBuffer() const
+	{
+		return m_IndexBuffer;
+	};
 }

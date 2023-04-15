@@ -172,7 +172,9 @@
     <ClInclude Include="src\Kenshin\MouseCodes.h" />
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Kenshin\Renderer\RendererCommand.h" />
     <ClInclude Include="src\Kenshin\Renderer\Renderer.h" />
+    <ClInclude Include="src\Kenshin\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h" />
     <ClInclude Include="src\Kenshin\Window.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="src\Platform\OpenGL\imgui_impl_glfw.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -470,6 +473,8 @@
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\RendererCommand.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Window.cpp" />
@@ -479,6 +484,7 @@
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

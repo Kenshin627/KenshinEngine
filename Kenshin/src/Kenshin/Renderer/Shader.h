@@ -4,7 +4,7 @@
 
 namespace Kenshin
 {
-	class Shader
+	class KENSHIN_API Shader
 	{
 	public:
 		Shader(const std::string& vertex, const std::string& fragment, const std::string& geometry = nullptr);

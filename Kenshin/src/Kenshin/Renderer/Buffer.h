@@ -3,7 +3,7 @@
 
 namespace Kenshin
 {
-	enum class ShaderDataType
+	enum class KENSHIN_API ShaderDataType
 	{
 		None = 0, Float, Float2, Float3, Float4, Int, Int2, Int3, Int4, Mat2, Mat3, Mat4, Bool
 	};
@@ -65,7 +65,7 @@ namespace Kenshin
 		}
 	};
 
-	class VertexBufferLayout
+	class KENSHIN_API VertexBufferLayout
 	{
 	public:
 		VertexBufferLayout():m_Stride(0) {};
@@ -109,7 +109,7 @@ namespace Kenshin
 		unsigned m_Stride;
 	};
 
-	class VertexBuffer
+	class KENSHIN_API VertexBuffer
 	{
 	public:
 		virtual ~VertexBuffer() {}
@@ -120,7 +120,7 @@ namespace Kenshin
 		static VertexBuffer* CreateBuffer(const float* vertices, unsigned size);
 	};
 
-	class IndexBuffer
+	class KENSHIN_API IndexBuffer
 	{
 	public:
 		virtual ~IndexBuffer() {}

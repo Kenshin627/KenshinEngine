@@ -1,18 +1,14 @@
 #pragma once
+#include "VertexArray.h"
+#include "RendererCommand.h"
 
 namespace Kenshin
 {
-	enum RenderAPI
-	{
-		None, OpenGL
-	};
-
-	class Renderer
+	class KENSHIN_API Renderer
 	{
 	public:
-		virtual ~Renderer() {}
-		inline static RenderAPI GetAPI() { return s_RenderAPI; };
-	private:
-		static RenderAPI s_RenderAPI;
+		static void BeginScene();
+		static void EndScene();
+		static void Submit(const Ref<VertexArray>& vertexArray);
 	};
 }

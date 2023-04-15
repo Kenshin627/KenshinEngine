@@ -12,6 +12,8 @@ namespace Kenshin
 		virtual void unBind() const override;
 		virtual void AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) override;
 		virtual void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
+		virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffer() const override;
+		virtual const Ref<IndexBuffer> GetIndexBuffer() const override;
 	private:
 		unsigned m_RendererID;
 		std::vector<Ref<VertexBuffer>> m_VertexBuffers;

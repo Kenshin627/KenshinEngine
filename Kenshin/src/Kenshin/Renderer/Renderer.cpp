@@ -3,5 +3,18 @@
 
 namespace Kenshin
 {
-	RenderAPI Renderer::s_RenderAPI = RenderAPI::OpenGL;
+	void Renderer::BeginScene()
+	{
+	}
+
+	void Renderer::EndScene()
+	{
+	
+	}
+
+	void Renderer::Submit(const Ref<VertexArray>& vertexArray)
+	{
+		vertexArray->Bind();
+		RendererCommand::DrawIndexed(vertexArray);
+	}
 }
