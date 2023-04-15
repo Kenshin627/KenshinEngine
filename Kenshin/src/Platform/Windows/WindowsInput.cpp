@@ -5,17 +5,16 @@
 
 namespace Kenshin
 {
-
 	WindowsInput::WindowsInput() {}
 	WindowsInput::~WindowsInput() {}
 
-	bool WindowsInput::IsKeyPressedImpl(int keyCode)
+	bool WindowsInput::IsKeyPressedImpl(KeyCode key)
 	{
-		int state = glfwGetKey(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), keyCode);
+		int state = glfwGetKey(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), key);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMousePressedImpl(int button)
+	bool WindowsInput::IsMousePressedImpl(MouseCode button)
 	{
 		int state = glfwGetMouseButton(static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow()), button);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;

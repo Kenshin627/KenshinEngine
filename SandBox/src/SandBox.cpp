@@ -26,12 +26,13 @@ public:
 		m_VAO->SetIndexBuffer(m_EBO);
 		m_Shader = Kenshin::CreateScope<Kenshin::Shader>("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", "");
 
-		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -2.0f, 2.0f);
+		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -2.0f, 2.0f, 0.05f);
 		m_Camera->SetRotation(45.0f);
 		m_Camera->SetPosition({ 1.0f, 1.0f, 0.0f });
 	}
 	void  OnUpdate() override
 	{
+		UpdateCamera();
 		Kenshin::Renderer::BeginScene(m_Camera);
 		Kenshin::Renderer::Submit(m_VAO, m_Shader);
 		Kenshin::Renderer::EndScene();
@@ -40,6 +41,39 @@ public:
 	void OnImGuiRender() override
 	{
 		
+	}
+
+	void UpdateCamera()
+	{
+		if (Kenshin::Input::IsKeyPressed(Kenshin::Key::W))
+		{
+			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed());
+		}
+
+		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::S))
+		{
+			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed());
+		}
+
+		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::A))
+		{
+			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed());
+		}
+
+		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::D))
+		{
+			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed());
+		}
+
+		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::Q))
+		{
+			m_Camera->SetRotation(m_Camera->GetRotation() + 1.0f);
+		}
+
+		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::E))
+		{
+			m_Camera->SetRotation(m_Camera->GetRotation() - 1.0f);
+		}
 	}
 private:
 	Kenshin::Ref<Kenshin::VertexBuffer> m_VBO;
