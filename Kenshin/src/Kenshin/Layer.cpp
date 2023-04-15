@@ -10,7 +10,7 @@ namespace Kenshin
 
 	void Layer::OnAttach() {}
 	void Layer::OnDetach() {}
-	void Layer::OnUpdate() {}
+	void Layer::OnUpdate(TimeStamp ts) {}
 	void Layer::OnEvent(Event& e) {}
 	void Layer::OnImGuiRender() {}
 }

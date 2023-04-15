@@ -30,9 +30,9 @@ public:
 		m_Camera->SetRotation(45.0f);
 		m_Camera->SetPosition({ 1.0f, 1.0f, 0.0f });
 	}
-	void  OnUpdate() override
+	void  OnUpdate(Kenshin::TimeStamp ts) override
 	{
-		UpdateCamera();
+		UpdateCamera(ts);
 		Kenshin::Renderer::BeginScene(m_Camera);
 		Kenshin::Renderer::Submit(m_VAO, m_Shader);
 		Kenshin::Renderer::EndScene();
@@ -43,36 +43,38 @@ public:
 		
 	}
 
-	void UpdateCamera()
+	void UpdateCamera(Kenshin::TimeStamp ts)
 	{
+		KS_INFO("seconds:{0}s ({1}ms)", ts.GetSeconds(), ts.GetmileSeconds());
+		float deltaTime = ts;
 		if (Kenshin::Input::IsKeyPressed(Kenshin::Key::W))
 		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed());
+			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
 		}
 
 		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::S))
 		{
-			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed());
+			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
 		}
 
 		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::A))
 		{
-			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed());
+			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
 		}
 
 		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::D))
 		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed());
+			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
 		}
 
 		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::Q))
 		{
-			m_Camera->SetRotation(m_Camera->GetRotation() + 1.0f);
+			m_Camera->SetRotation(m_Camera->GetRotation() + 1.0f * deltaTime);
 		}
 
 		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::E))
 		{
-			m_Camera->SetRotation(m_Camera->GetRotation() - 1.0f);
+			m_Camera->SetRotation(m_Camera->GetRotation() - 1.0f * deltaTime);
 		}
 	}
 private:

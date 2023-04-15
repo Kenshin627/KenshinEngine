@@ -951,6 +951,7 @@
     <ClInclude Include="src\Kenshin\Renderer\RendererCommand.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Kenshin\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Kenshin\Core\TimeStamp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">

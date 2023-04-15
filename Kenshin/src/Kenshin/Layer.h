@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "Events/Event.h"
+#include "Core/TimeStamp.h"
 
 namespace Kenshin
 {
@@ -11,7 +12,7 @@ namespace Kenshin
 		virtual~Layer();
 		virtual void OnAttach();
 		virtual void OnDetach();
-		virtual void OnUpdate();
+		virtual void OnUpdate(TimeStamp ts);
 		virtual void OnImGuiRender();
 		virtual void OnEvent(Event& e);
 		std::string GetName() const { return m_DebugName; };

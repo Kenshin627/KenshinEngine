@@ -29,7 +29,7 @@ namespace Kenshin
 		bool m_IsRunning;
 		LayerStack m_LayerStack;
 		static Application* s_Instance;
-
+		float m_LastFrameTime;
 		//temp
 		Ref<VertexBuffer> m_VBO;
 		Ref<IndexBuffer> m_EBO;

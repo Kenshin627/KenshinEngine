@@ -3,11 +3,13 @@
 #include "Log.h"
 #include "Input.h"
 #include "Renderer/Renderer.h"
+#include <GLFW/glfw3.h>
+#include "Core/TimeStamp.h"
 
 namespace Kenshin
 {
 	Application* Application::s_Instance;
-	Application::Application():m_IsRunning(true)
+	Application::Application():m_IsRunning(true), m_LastFrameTime(0.0f)
 	{
 		s_Instance = this;
 		m_Window = Window::Create();
@@ -35,6 +37,10 @@ namespace Kenshin
 	{	
 		while (m_IsRunning)
 		{
+			float time = (float)glfwGetTime();
+			TimeStamp ts{ time - m_LastFrameTime };
+			m_LastFrameTime = time;
+
 			RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 			RendererCommand::Clear();
 		
@@ -47,7 +53,7 @@ namespace Kenshin
 
 			for (Layer* layer : m_LayerStack)
 			{
-				layer->OnUpdate();
+				layer->OnUpdate(ts);
 			}
 						
 			m_Window->OnUpdate();

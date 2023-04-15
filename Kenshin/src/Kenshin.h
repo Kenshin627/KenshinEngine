@@ -14,5 +14,6 @@
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/VertexArray.h"
 #include "Kenshin/Renderer/OrthographicCamera.h"
+#include "Kenshin/Core/TimeStamp.h"
 
 #include "Kenshin/EntityPoint.h"
