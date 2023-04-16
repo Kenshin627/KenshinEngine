@@ -4,6 +4,10 @@
 namespace Kenshin
 {
 	glm::mat4 Renderer::m_ViewProjectionMatrix = glm::mat4(1.0);
+	void Renderer::Init()
+	{
+		RendererCommand::Init();
+	}
 	void Renderer::BeginScene(const Ref<OrthographicCamera>& camera)
 	{
 		m_ViewProjectionMatrix = camera->GetViewProjectionMatrix();

@@ -1,6 +1,7 @@
-#include <Kenshin.h>
+#include "Kenshin.h"
 #include "imgui.h"
 #include <glm.hpp>
+#include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
 
 class ExampleLayer :public Kenshin::Layer
@@ -30,11 +31,11 @@ public:
 
 		#pragma region QUAD
 		m_QUADVAO.reset(Kenshin::VertexArray::CreateVertexArray());
-		float quadVertices[4 * 7] = {
-			-0.5,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0,
-			 0.5,  0.5, 0.0, 0.0, 0.0, 1.0, 1.0,
-			-0.5, -0.5, 0.0, 0.0, 0.0, 1.0, 1.0,
-			 0.5, -0.5, 0.0, 0.0, 0.0, 1.0, 1.0
+		float quadVertices[4 * 5] = {
+			-0.5,  0.5, 0.0, 0.0, 1.0,
+			 0.5,  0.5, 0.0, 1.0, 1.0,
+			-0.5, -0.5, 0.0, 0.0, 0.0,
+			 0.5, -0.5, 0.0, 1.0, 0.0
 		};
 
 		unsigned quadIndices[6] = { 0, 1, 2, 1, 2, 3 };
@@ -42,7 +43,7 @@ public:
 		Kenshin::VertexBufferLayout quadLayout =
 		{
 			{ "aPosition", Kenshin::ShaderDataType::Float3 },
-			{ "aColor",    Kenshin::ShaderDataType::Float4 }
+			{ "aTexCoord", Kenshin::ShaderDataType::Float2 }
 		};
 		quadVBO->SetLayout(quadLayout);
 		m_QUADVAO->AddVertexBuffer(quadVBO);
@@ -50,10 +51,15 @@ public:
 		m_QUADVAO->SetIndexBuffer(quadEBO);
 		#pragma endregion
 
-		m_Shader = Kenshin::CreateScope<Kenshin::Shader>("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", "");
-
+		m_Shader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", ""));
+		m_TextureShader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/texture/vertex.glsl", "../Kenshin/resource/shaders/texture/fragment.glsl", ""));
+		m_Texture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/Checkerboard.png"));
+		m_LogTexture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/ChernoLogo.png"));
+		
+		m_TextureShader->Bind();
+		m_TextureShader->SetInt("sampler", 0);
 		//temp: 16/9
-		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-1.0f, 1.0f, -9.0f / 16.0f, 9.0f / 16.0f, 0.05f);	
+		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -9.0f / 8.0f, 9.0f / 8.0f, 2.0f);
 	}
 	void  OnUpdate(Kenshin::TimeStamp ts) override
 	{
@@ -61,9 +67,9 @@ public:
 		Kenshin::RendererCommand::Clear();
 		UpdateCamera(ts);
 		Kenshin::Renderer::BeginScene(m_Camera);
-		Kenshin::Renderer::Submit(m_TRIANGLEVAO, m_Shader, glm::mat4(1.0));
-
-		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(0.05));
+		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(0.1f));
+		m_Shader->Bind();
+		m_Shader->SetVec3("u_Color", m_SquareColor);
 		for (unsigned x = 0; x < 20; x++)
 		{
 			for (unsigned y = 0; y < 20; y++) 
@@ -73,12 +79,19 @@ public:
 				Kenshin::Renderer::Submit(m_QUADVAO, m_Shader, transform);
 			}
 		}
+		
+		m_Texture->Bind();
+		Kenshin::Renderer::Submit(m_QUADVAO, m_TextureShader, glm::mat4(1.0));
+		m_LogTexture->Bind();
+		Kenshin::Renderer::Submit(m_QUADVAO, m_TextureShader, glm::mat4(1.0));
 		Kenshin::Renderer::EndScene();
 	}
 
-	void OnImGuiRender() override
+	virtual void OnImGuiRender() override
 	{
-		
+		ImGui::Begin("squareColor");
+		ImGui::ColorEdit3("square", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
 	void UpdateCamera(Kenshin::TimeStamp ts)
@@ -120,7 +133,11 @@ private:
 	Kenshin::Ref<Kenshin::VertexArray> m_QUADVAO;
 	glm::mat4 m_QUADTransform;
 	Kenshin::Ref<Kenshin::Shader> m_Shader;
+	Kenshin::Ref<Kenshin::Shader> m_TextureShader;
 	Kenshin::Ref<Kenshin::OrthographicCamera> m_Camera;
+	glm::vec3 m_SquareColor{ 0.2, 0.3, 0.8 };
+	Kenshin::Ref<Kenshin::Texture2D> m_Texture;
+	Kenshin::Ref<Kenshin::Texture2D> m_LogTexture;
 };
 
 class SandBox :public Kenshin::Application

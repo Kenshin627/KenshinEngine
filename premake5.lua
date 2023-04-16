@@ -10,6 +10,7 @@ IncludeDir["GLFW"] = "Kenshin/vendor/GLFW/include"
 IncludeDir["Glad"] = "Kenshin/vendor/Glad/include"
 IncludeDir["ImGui"] = "Kenshin/vendor/ImGui"
 IncludeDir["glm"] = "Kenshin/vendor/glm/glm"
+IncludeDir["stb_image"] = "Kenshin/vendor/stb_image"
 
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
@@ -74,7 +75,9 @@ project "Kenshin"
 	{ 
 		"%{prj.name}/src/**.h", 
 		"%{prj.name}/src/**.cpp" ,
-		"%{prj.name}/vendor/glm/glm/**.hpp"
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 	}
 	
 
@@ -86,7 +89,8 @@ project "Kenshin"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGui}/backends",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 	postbuildcommands
 	{

@@ -14,6 +14,9 @@ namespace Kenshin
 		s_Instance = this;
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent, std::placeholders::_1));
+
+		Renderer::Init();
+
 		ImGuiLayer* m_ImGuiLayer = new ImGuiLayer();
 		PushOverLay(m_ImGuiLayer);		
 	}

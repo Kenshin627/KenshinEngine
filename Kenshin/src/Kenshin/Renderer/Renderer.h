@@ -9,6 +9,7 @@ namespace Kenshin
 	class KENSHIN_API Renderer
 	{
 	public:
+		static void Init();
 		static void BeginScene(const Ref<OrthographicCamera>& camera);
 		static void EndScene();
 		static void Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform);

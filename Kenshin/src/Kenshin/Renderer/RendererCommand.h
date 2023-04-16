@@ -8,6 +8,10 @@ namespace Kenshin
 	class KENSHIN_API RendererCommand
 	{
 	public:
+		void static Init()
+		{
+			s_RendererAPI->Init();
+		}
 		void static Clear()
 		{
 			s_RendererAPI->Clear();
