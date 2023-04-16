@@ -4,43 +4,22 @@
 
 namespace Kenshin
 {
-	OpenGLShader::OpenGLShader(const std::string& vertex, const std::string& fragment, const std::string& geometry) :m_RendererID(0)
+	OpenGLShader::OpenGLShader(const std::string& path) :m_RendererID(0), m_Path(path)
 	{
-		int success;
-		std::array<char, 512> msg;
-		m_RendererID = glCreateProgram();
-		unsigned vertexID = CompileShader(vertex, GL_VERTEX_SHADER);
-		unsigned fragmentID = CompileShader(fragment, GL_FRAGMENT_SHADER);
-		unsigned geometryID = 0;
-		if (!geometry.empty())
-		{
-			unsigned geometryID = CompileShader(geometry, GL_GEOMETRY_SHADER);
-			glAttachShader(m_RendererID, geometryID);
-		}
-
-		glAttachShader(m_RendererID, vertexID);
-		glAttachShader(m_RendererID, fragmentID);
-		glLinkProgram(m_RendererID);
-		glGetProgramiv(m_RendererID, GL_LINK_STATUS, &success);
-		if (!success)
-		{
-			glGetProgramInfoLog(m_RendererID, 512, nullptr, msg.data());
-			KS_CORE_ERROR("program link failed: {0}", msg.data());
-		}
-		glDeleteShader(vertexID);
-		glDeleteShader(fragmentID);
-		if (geometryID != 0)
-		{
-			glDeleteShader(geometryID);
-		}
+		std::string source = ReadShader(path);
+		std::unordered_map<GLenum, std::string> shaderSources = PreProcess(source);
+		CompileShader(shaderSources);
 	}
 
-	OpenGLShader::~OpenGLShader()
+	GLenum OpenGLShader::ShaderTypeFromString(const std::string& type)
 	{
-		glDeleteProgram(m_RendererID);
+		if (type == "vertex") return GL_VERTEX_SHADER;
+		if (type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
+		if (type == "geometry") return GL_GEOMETRY_SHADER;
+		KS_CORE_ASSERT(false, "shader type not supported!");
 	}
 
-	unsigned OpenGLShader::CompileShader(const std::string& path, unsigned shaderType)
+	std::string OpenGLShader::ReadShader(const std::string& path)
 	{
 		std::string shaderCode;
 		std::ifstream shaderFile;
@@ -52,8 +31,45 @@ namespace Kenshin
 			shaderStream << shaderFile.rdbuf();
 			shaderFile.close();
 			shaderCode = shaderStream.str();
-			const char* vShaderCode = shaderCode.c_str();
-			unsigned shaderID = glCreateShader(shaderType);
+			return shaderCode;
+		}
+		catch (const std::exception& e)
+		{
+			KS_CORE_ERROR("ShaderFile not read successfully, {0}", e.what());
+			return nullptr;
+		}
+	}
+
+	std::unordered_map<unsigned, std::string> OpenGLShader::PreProcess(const std::string& source)
+	{
+		std::unordered_map<unsigned, std::string> shaderSources;
+
+		const char* typeToken = "#type";
+		size_t typeTokenLength = strlen(typeToken);
+		size_t pos = source.find(typeToken, 0);
+
+		while (pos != std::string::npos)
+		{
+			size_t eol = source.find_first_of("\r\n", pos);
+			KS_CORE_ASSERT(eol != std::string::npos, "Syntax error");
+			size_t begin = pos + typeTokenLength + 1;
+			std::string type = source.substr(begin, eol - begin);
+			KS_CORE_ASSERT(type == "vertex" || type == "fragment" || type == "pixel" || type == "geometry", "Invalid shader type specified");
+
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos);
+			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+		}
+		return shaderSources;
+	}
+
+	void OpenGLShader::CompileShader(const std::unordered_map<unsigned, std::string>& shaderSources)
+	{
+		m_RendererID = glCreateProgram();
+		for (auto& [type, source] : shaderSources)
+		{
+			const char* vShaderCode = source.c_str();
+			unsigned shaderID = glCreateShader(type);
 			glShaderSource(shaderID, 1, &vShaderCode, nullptr);
 			glCompileShader(shaderID);
 			int success;
@@ -62,15 +78,23 @@ namespace Kenshin
 			if (!success)
 			{
 				glGetShaderInfoLog(shaderID, 512, nullptr, msg.data());
-				KS_CORE_ERROR("{0} shader compile failed: {1}", (shaderType == GL_VERTEX_SHADER ? "VERTEX" : shaderType == GL_FRAGMENT_SHADER ? "FRAGMENT" : "GEOMETRY"), msg.data());
+				KS_CORE_ERROR("{0} shader compile failed: {1}", (type == GL_VERTEX_SHADER ? "VERTEX" : type == GL_FRAGMENT_SHADER ? "FRAGMENT" : "GEOMETRY"), msg.data());
 			}
-			return shaderID;
+			glAttachShader(m_RendererID, shaderID);
+			glLinkProgram(m_RendererID);
+			glGetProgramiv(m_RendererID, GL_LINK_STATUS, &success);
+			if (!success)
+			{
+				glGetProgramInfoLog(m_RendererID, 512, nullptr, msg.data());
+				KS_CORE_ERROR("program link failed: {0}", msg.data());
+			}
+			glDeleteShader(shaderID);
 		}
-		catch (const std::exception& e)
-		{
-			KS_CORE_ERROR("ShaderFile not read successfully, {0}", e.what());
-			return -1;
-		}
+	}
+
+	OpenGLShader::~OpenGLShader()
+	{
+		glDeleteProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Bind()

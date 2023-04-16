@@ -19,6 +19,6 @@ namespace Kenshin
 		virtual void SetMat3(const std::string& key, const glm::mat3& m3) const = 0;
 		virtual void SetMat4(const std::string& key, const glm::mat4& m4) const = 0;
 		
-		static Shader* Create(const std::string& vertex, const std::string& fragment, const std::string& geometry = nullptr);
+		static Shader* Create(const std::string& path);
 	};
 }

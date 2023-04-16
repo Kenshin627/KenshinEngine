@@ -8,7 +8,7 @@ namespace Kenshin
 	class  OpenGLShader : public Shader
 	{
 	public:
-		OpenGLShader(const std::string& vertex, const std::string& fragment, const std::string& geometry = nullptr);
+		OpenGLShader(const std::string& path);
 		virtual ~OpenGLShader();
 		virtual void Bind() override;
 		virtual void unBind() override;
@@ -21,10 +21,14 @@ namespace Kenshin
 		virtual void SetMat3(const std::string& key, const glm::mat3& m3) const override;
 		virtual void SetMat4(const std::string& key, const glm::mat4& m4) const override;
 	private:
-		unsigned CompileShader(const std::string& path, unsigned shaderType);
+		static unsigned ShaderTypeFromString(const std::string& type);
+		std::string ReadShader(const std::string& path);
+		std::unordered_map<unsigned, std::string> PreProcess(const std::string& source);
+		void CompileShader(const std::unordered_map<unsigned, std::string>& sources);
 		int GetUniformLocation(const std::string& key) const;
 	private:
 		unsigned m_RendererID;
 		std::unordered_map<std::string, int> uniformLocationCaches;
+		std::string m_Path;
 	};
 }

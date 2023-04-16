@@ -51,8 +51,8 @@ public:
 		m_QUADVAO->SetIndexBuffer(quadEBO);
 		#pragma endregion
 
-		m_Shader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/vertex.glsl", "../Kenshin/resource/shaders/fragment.glsl", ""));
-		m_TextureShader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/texture/vertex.glsl", "../Kenshin/resource/shaders/texture/fragment.glsl", ""));
+		m_Shader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/flatColor.glsl"));
+		m_TextureShader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/texture.glsl"));
 		m_Texture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/Checkerboard.png"));
 		m_LogTexture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/ChernoLogo.png"));
 		
