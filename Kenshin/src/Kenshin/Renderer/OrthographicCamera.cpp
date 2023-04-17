@@ -3,8 +3,16 @@
 
 namespace Kenshin
 {
-	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float speed) :m_ViewMatrix(glm::mat4(1.0)), m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewProjectionMatrix(m_ProjectionMatrix* m_ViewMatrix), m_Position(glm::vec3(0.0)), m_Rotation(0.0f), m_Speed(speed)
-	{ }
+	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float translateSpeed, float rotationSpeed) :m_ViewMatrix(glm::mat4(1.0)), m_ProjectionMatrix(glm::mat4(1.0)), m_ViewProjectionMatrix(m_ProjectionMatrix* m_ViewMatrix), m_Position(glm::vec3(0.0)), m_Rotation(0.0f), m_TranslateSpeed(translateSpeed), m_RotationSpeed(rotationSpeed)
+	{
+		SetProjection(left, right, bottom, top);
+	}
+
+	void OrthographicCamera::SetProjection(float left, float right, float bottom, float top)
+	{
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+	}
 
 	void OrthographicCamera::SetPosition(const glm::vec3& position)
 	{

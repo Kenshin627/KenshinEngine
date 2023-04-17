@@ -26,4 +26,9 @@ namespace Kenshin
 	{
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, (const void*)nullptr);
 	}
+
+	void OpenGLRendererAPI::ResizeViewport(size_t x, size_t y, size_t width, size_t height)
+	{
+		glViewport(x, y, width, height);
+	}
 }

@@ -8,9 +8,9 @@ namespace Kenshin
 	{
 		RendererCommand::Init();
 	}
-	void Renderer::BeginScene(const Ref<OrthographicCamera>& camera)
+	void Renderer::BeginScene(const OrthographicCamera& camera)
 	{
-		m_ViewProjectionMatrix = camera->GetViewProjectionMatrix();
+		m_ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
 
 	void Renderer::EndScene()
@@ -25,5 +25,10 @@ namespace Kenshin
 		shader->SetMat4("u_ModelMatrix", transform);
 		vertexArray->Bind();
 		RendererCommand::DrawIndexed(vertexArray);
+	}
+
+	void Renderer::OnWindowResize(size_t width, size_t height)
+	{
+		RendererCommand::ResizeViewport(0, 0, width, height);
 	}
 }

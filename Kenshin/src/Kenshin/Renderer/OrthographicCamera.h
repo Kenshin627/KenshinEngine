@@ -6,7 +6,9 @@ namespace Kenshin
 	class KENSHIN_API OrthographicCamera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top, float speed = 0.01f);
+		OrthographicCamera(float left, float right, float bottom, float top, float translateSpeed = 5.0f, float rotationSpeed = 180.0f);
+
+		void SetProjection(float left, float right, float bottom, float top);
 
 		void SetPosition(const glm::vec3& position);
 
@@ -14,12 +16,17 @@ namespace Kenshin
 		
 		void SetRotation(float rotation);
 
-		float GetRotation() const { return m_Rotation; };
+		float GetRotation() const { return m_Rotation; }
 
-		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; };
+		const glm::mat4 GetViewMatrix() const { return m_ViewMatrix; }
 
-		float GetSpeed() const { return m_Speed; };
-	
+		const glm::mat4 GetProjectionMatrix() const { return m_ProjectionMatrix; }
+
+		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+
+		float GetTranslateSpeed() const { return m_TranslateSpeed; }
+		float GetRotationSpeed() const { return m_RotationSpeed; }
+
 	private:
 		void calcutelaViewProjectionMatrix();
 	private:
@@ -28,6 +35,7 @@ namespace Kenshin
 		glm::mat4 m_ViewProjectionMatrix;
 		glm::vec3 m_Position;
 		float m_Rotation;
-		float m_Speed;
+		float m_TranslateSpeed;
+		float m_RotationSpeed;
 	};
 }

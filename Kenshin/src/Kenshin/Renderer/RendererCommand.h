@@ -24,6 +24,11 @@ namespace Kenshin
 		{
 			s_RendererAPI->DrawIndexed(vertexArray);
 		};
+
+		void static ResizeViewport(size_t x, size_t y, size_t width, size_t height)
+		{
+			s_RendererAPI->ResizeViewport(x, y, width, height);
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

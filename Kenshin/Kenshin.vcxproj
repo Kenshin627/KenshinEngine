@@ -174,6 +174,7 @@
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Kenshin\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Kenshin\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Kenshin\Renderer\Renderer.h" />
     <ClInclude Include="src\Kenshin\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Kenshin\Renderer\RendererCommand.h" />
@@ -479,6 +480,7 @@
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\RendererCommand.cpp" />

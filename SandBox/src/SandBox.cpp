@@ -7,7 +7,7 @@
 class ExampleLayer :public Kenshin::Layer
 {
 public:
-	ExampleLayer() :Layer("Example") 
+	ExampleLayer() : m_CameraController(1280.0f / 720.0f, true),Layer("Example")
 	{
 		#pragma region TRIANGLE
 		m_TRIANGLEVAO.reset(Kenshin::VertexArray::CreateVertexArray());
@@ -59,15 +59,13 @@ public:
 		
 		textureShader->Bind();
 		textureShader->SetInt("sampler", 0);
-		//temp: 16/9
-		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -9.0f / 8.0f, 9.0f / 8.0f, 2.0f);
 	}
 	void  OnUpdate(Kenshin::TimeStamp ts) override
 	{
+		m_CameraController.OnUpdate(ts);
 		Kenshin::RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		Kenshin::RendererCommand::Clear();
-		UpdateCamera(ts);
-		Kenshin::Renderer::BeginScene(m_Camera);
+		Kenshin::Renderer::BeginScene(m_CameraController.GetCamera());
 		auto flatColorShader = m_ShaderLib.Get("flatColor");
 		auto textureShader = m_ShaderLib.Get("texture");
 		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(0.1f));
@@ -90,54 +88,22 @@ public:
 		Kenshin::Renderer::EndScene();
 	}
 
+	void OnEvent(Kenshin::Event& e)
+	{
+		m_CameraController.OnEvent(e);
+	}
+
 	virtual void OnImGuiRender() override
 	{
 		ImGui::Begin("squareColor");
 		ImGui::ColorEdit3("square", glm::value_ptr(m_SquareColor));
 		ImGui::End();
 	}
-
-	void UpdateCamera(Kenshin::TimeStamp ts)
-	{
-		KS_INFO("seconds:{0}s ({1}ms)", ts.GetSeconds(), ts.GetmileSeconds());
-		float deltaTime = ts;
-		if (Kenshin::Input::IsKeyPressed(Kenshin::Key::W))
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
-		}
-
-		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::S))
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(0.0f, 1.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
-		}
-
-		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::A))
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
-		}
-
-		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::D))
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(1.0f, 0.0f, 0.0f) * m_Camera->GetSpeed() * deltaTime);
-		}
-
-		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::Q))
-		{
-			m_Camera->SetRotation(m_Camera->GetRotation() + 1.0f * deltaTime);
-		}
-
-		else if (Kenshin::Input::IsKeyPressed(Kenshin::Key::E))
-		{
-			m_Camera->SetRotation(m_Camera->GetRotation() - 1.0f * deltaTime);
-		}
-	}
 private:
 	Kenshin::Ref<Kenshin::VertexArray> m_TRIANGLEVAO;
 	Kenshin::Ref<Kenshin::VertexArray> m_QUADVAO;
 	glm::mat4 m_QUADTransform;
-	//Kenshin::Ref<Kenshin::Shader> m_Shader;
-	//Kenshin::Ref<Kenshin::Shader> m_TextureShader;
-	Kenshin::Ref<Kenshin::OrthographicCamera> m_Camera;
+	Kenshin::OrthoGraphicCameraController m_CameraController;
 	glm::vec3 m_SquareColor{ 0.2, 0.3, 0.8 };
 	Kenshin::Ref<Kenshin::Texture2D> m_Texture;
 	Kenshin::Ref<Kenshin::Texture2D> m_LogTexture;

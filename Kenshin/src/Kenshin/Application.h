@@ -23,6 +23,7 @@ namespace Kenshin
 		Window& GetWindow() const { return *m_Window; };
 	private:
 		bool OnWindowCloseEvent(const WindowCloseEvent& e);
+		bool OnWindowResize(const WindowResizeEvent& e);
 	private:
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
