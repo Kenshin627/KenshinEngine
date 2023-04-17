@@ -1,6 +1,6 @@
 #include "kspch.h"
 #include "Renderer2D.h"
-#include "Renderer.h"
+#include "RendererCommand.h"
 
 namespace Kenshin
 {
@@ -58,6 +58,10 @@ namespace Kenshin
 		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 0.0f));
 		auto translate = glm::translate(glm::mat4(1.0), glm::vec3(position.x, position.y, 0.0f));
 		s_Data->Shader->SetVec3("u_Color", color);
-		Renderer::Submit(s_Data->QuadVA, s_Data->Shader, translate * scale);
+		
+		s_Data->Shader->Bind();
+		s_Data->Shader->SetMat4("u_ModelMatrix", translate * scale);
+		s_Data->QuadVA->Bind();
+		RendererCommand::DrawIndexed(s_Data->QuadVA);
 	}
 }
