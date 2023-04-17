@@ -51,13 +51,14 @@ public:
 		m_QUADVAO->SetIndexBuffer(quadEBO);
 		#pragma endregion
 
-		m_Shader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/flatColor.glsl"));
-		m_TextureShader = Kenshin::Scope<Kenshin::Shader>(Kenshin::Shader::Create("../Kenshin/resource/shaders/texture.glsl"));
+		auto flatColorShader = m_ShaderLib.Load("../Kenshin/resource/shaders/flatColor.glsl");
+		auto textureShader = m_ShaderLib.Load("../Kenshin/resource/shaders/texture.glsl");
+
 		m_Texture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/Checkerboard.png"));
 		m_LogTexture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/ChernoLogo.png"));
 		
-		m_TextureShader->Bind();
-		m_TextureShader->SetInt("sampler", 0);
+		textureShader->Bind();
+		textureShader->SetInt("sampler", 0);
 		//temp: 16/9
 		m_Camera = Kenshin::CreateRef<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -9.0f / 8.0f, 9.0f / 8.0f, 2.0f);
 	}
@@ -67,23 +68,25 @@ public:
 		Kenshin::RendererCommand::Clear();
 		UpdateCamera(ts);
 		Kenshin::Renderer::BeginScene(m_Camera);
+		auto flatColorShader = m_ShaderLib.Get("flatColor");
+		auto textureShader = m_ShaderLib.Get("texture");
 		glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(0.1f));
-		m_Shader->Bind();
-		m_Shader->SetVec3("u_Color", m_SquareColor);
+		flatColorShader->Bind();
+		flatColorShader->SetVec3("u_Color", m_SquareColor);
 		for (unsigned x = 0; x < 20; x++)
 		{
 			for (unsigned y = 0; y < 20; y++) 
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0), pos) * scaleMatrix;
-				Kenshin::Renderer::Submit(m_QUADVAO, m_Shader, transform);
+				Kenshin::Renderer::Submit(m_QUADVAO, flatColorShader, transform);
 			}
 		}
 		
 		m_Texture->Bind();
-		Kenshin::Renderer::Submit(m_QUADVAO, m_TextureShader, glm::mat4(1.0));
+		Kenshin::Renderer::Submit(m_QUADVAO, textureShader, glm::mat4(1.0));
 		m_LogTexture->Bind();
-		Kenshin::Renderer::Submit(m_QUADVAO, m_TextureShader, glm::mat4(1.0));
+		Kenshin::Renderer::Submit(m_QUADVAO, textureShader, glm::mat4(1.0));
 		Kenshin::Renderer::EndScene();
 	}
 
@@ -132,12 +135,13 @@ private:
 	Kenshin::Ref<Kenshin::VertexArray> m_TRIANGLEVAO;
 	Kenshin::Ref<Kenshin::VertexArray> m_QUADVAO;
 	glm::mat4 m_QUADTransform;
-	Kenshin::Ref<Kenshin::Shader> m_Shader;
-	Kenshin::Ref<Kenshin::Shader> m_TextureShader;
+	//Kenshin::Ref<Kenshin::Shader> m_Shader;
+	//Kenshin::Ref<Kenshin::Shader> m_TextureShader;
 	Kenshin::Ref<Kenshin::OrthographicCamera> m_Camera;
 	glm::vec3 m_SquareColor{ 0.2, 0.3, 0.8 };
 	Kenshin::Ref<Kenshin::Texture2D> m_Texture;
 	Kenshin::Ref<Kenshin::Texture2D> m_LogTexture;
+	Kenshin::ShaderLibrary m_ShaderLib;
 };
 
 class SandBox :public Kenshin::Application

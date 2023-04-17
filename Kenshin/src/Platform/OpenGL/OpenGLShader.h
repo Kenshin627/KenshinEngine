@@ -20,6 +20,7 @@ namespace Kenshin
 		virtual void SetMat2(const std::string& key, const glm::mat2& m2) const override;
 		virtual void SetMat3(const std::string& key, const glm::mat3& m3) const override;
 		virtual void SetMat4(const std::string& key, const glm::mat4& m4) const override;
+		virtual std::string GetName() const override;
 	private:
 		static unsigned ShaderTypeFromString(const std::string& type);
 		std::string ReadShader(const std::string& path);

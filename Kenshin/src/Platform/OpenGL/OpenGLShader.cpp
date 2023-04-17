@@ -158,4 +158,14 @@ namespace Kenshin
 		KS_CORE_ASSERT(location != -1, "uniform {0} not found", key);
 		return location;
 	}
+
+	std::string OpenGLShader::GetName() const
+	{
+		size_t lastSlash = m_Path.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		size_t lastDot = m_Path.rfind(".");
+		size_t count = lastDot == std::string::npos ? m_Path.size() - lastSlash : lastDot - lastSlash;
+		
+		return m_Path.substr(lastSlash , count);
+	}
 }

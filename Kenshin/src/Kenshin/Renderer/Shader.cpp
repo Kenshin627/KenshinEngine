@@ -15,4 +15,42 @@ namespace Kenshin
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;
 	}
+
+	void ShaderLibrary::Add(const Ref<Shader>& shader)
+	{
+		std::string name = shader->GetName();
+		KS_CORE_ASSERT(!Exists(name), "shader with name{0} has Already exists!", name);
+		m_Shaders.insert({ name, shader });
+	}
+
+	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
+	{
+		KS_CORE_ASSERT(!Exists(name), "shader with name{0} has Already exists!", name);
+		m_Shaders.insert({ name, shader });
+	}
+
+	Ref<Shader> ShaderLibrary::Load(const std::string& path)
+	{
+		auto shader = Ref<Shader>(Shader::Create(path));
+		Add(shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& path)
+	{
+		auto shader = Ref<Shader>(Shader::Create(path));
+		Add(name, shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::Get(const std::string& name)
+	{
+		KS_CORE_ASSERT(Exists(name), "shader with name{0} not exists!", name);
+		return m_Shaders[name];		
+	}
+
+	bool ShaderLibrary::Exists(const std::string& name) const
+	{
+		return m_Shaders.find(name) != m_Shaders.cend();
+	}
 }
