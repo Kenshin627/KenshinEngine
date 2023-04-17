@@ -4,15 +4,8 @@
 
 SandBox2D::SandBox2D() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D"), m_SquareColor({ 0.2, 0.3, 0.8 }) {}
 
-void SandBox2D::OnAttach() 
-{
-	Kenshin::Renderer2D::Init();
-}
-
-void SandBox2D::OnDetach() 
-{
-	Kenshin::Renderer2D::ShutDown();
-}
+void SandBox2D::OnAttach() { }
+void SandBox2D::OnDetach() { }
 
 void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 {

@@ -55,10 +55,15 @@ namespace Kenshin
 	}
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec3 color)
 	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, color);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec3 color)
+	{
 		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 0.0f));
-		auto translate = glm::translate(glm::mat4(1.0), glm::vec3(position.x, position.y, 0.0f));
+		auto translate = glm::translate(glm::mat4(1.0), position);
 		s_Data->Shader->SetVec3("u_Color", color);
-		
+
 		s_Data->Shader->Bind();
 		s_Data->Shader->SetMat4("u_ModelMatrix", translate * scale);
 		s_Data->QuadVA->Bind();

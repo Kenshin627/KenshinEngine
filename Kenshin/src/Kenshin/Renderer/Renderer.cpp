@@ -1,5 +1,6 @@
 #include "kspch.h"
 #include "Renderer.h"
+#include "Renderer2D.h"
 
 namespace Kenshin
 {
@@ -7,6 +8,7 @@ namespace Kenshin
 	void Renderer::Init()
 	{
 		RendererCommand::Init();
+		Renderer2D::Init();
 	}
 	void Renderer::BeginScene(const OrthographicCamera& camera)
 	{
