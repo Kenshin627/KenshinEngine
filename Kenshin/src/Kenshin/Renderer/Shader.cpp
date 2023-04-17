@@ -5,12 +5,12 @@
 
 namespace Kenshin
 {
-	Shader* Shader::Create(const std::string& path)
+	Ref<Shader >Shader::Create(const std::string& path)
 	{
 		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not suppoted!"); return nullptr;
-		case RendererAPI::API::OpenGL: return new OpenGLShader(path);
+		case RendererAPI::API::OpenGL: return CreateRef<OpenGLShader>(path);
 		}
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;

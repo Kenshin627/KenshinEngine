@@ -8,6 +8,7 @@
 #include "Kenshin/Renderer/OrthographicCameraController.h"
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/Renderer.h"
+#include "Kenshin/Renderer/Renderer2D.h"
 
 class SandBox2D : public Kenshin::Layer
 {
@@ -19,9 +20,6 @@ public:
 	virtual void OnImGuiRender() override;
 	virtual void OnEvent(Kenshin::Event& e) override;
 private:
-	Kenshin::Ref<Kenshin::VertexArray> m_QUADVAO;
-	glm::mat4 m_QUADTransform;
 	Kenshin::OrthoGraphicCameraController m_CameraController;
 	glm::vec3 m_SquareColor{ 0.2, 0.3, 0.8 };
-	Kenshin::ShaderLibrary m_ShaderLib;
 };
