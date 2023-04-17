@@ -7,7 +7,7 @@
 class ExampleLayer :public Kenshin::Layer
 {
 public:
-	ExampleLayer() : m_CameraController(1280.0f / 720.0f, true),Layer("Example")
+	ExampleLayer() : m_CameraController(1280.0f / 720.0f),Layer("Example")
 	{
 		#pragma region TRIANGLE
 		m_TRIANGLEVAO.reset(Kenshin::VertexArray::CreateVertexArray());
@@ -51,14 +51,16 @@ public:
 		m_QUADVAO->SetIndexBuffer(quadEBO);
 		#pragma endregion
 
+		#pragma region SHADER
 		auto flatColorShader = m_ShaderLib.Load("../Kenshin/resource/shaders/flatColor.glsl");
 		auto textureShader = m_ShaderLib.Load("../Kenshin/resource/shaders/texture.glsl");
 
 		m_Texture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/Checkerboard.png"));
 		m_LogTexture = Kenshin::Ref<Kenshin::Texture2D>(Kenshin::Texture2D::Create("resurce/textures/ChernoLogo.png"));
-		
+
 		textureShader->Bind();
 		textureShader->SetInt("sampler", 0);
+		#pragma endregion
 	}
 	void  OnUpdate(Kenshin::TimeStamp ts) override
 	{

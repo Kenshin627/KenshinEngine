@@ -1,5 +1,5 @@
 #pragma once
-#include "Kenshin/Core.h"
+#include "Kenshin/Core/Core.h"
 
 namespace Kenshin
 {

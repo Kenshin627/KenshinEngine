@@ -1,12 +1,12 @@
 #pragma once
-#include "Kenshin/Application.h"
-#include "Kenshin/Layer.h"
-#include "Kenshin/Log.h"
+#include "Kenshin/Core/Application.h"
+#include "Kenshin/Core/Layer.h"
+#include "Kenshin/Core/Log.h"
 
 //Events
-#include "Kenshin/Input.h"
-#include "Kenshin/KeyCodes.h"
-#include "Kenshin/MouseCodes.h"
+#include "Kenshin/Core/Input.h"
+#include "Kenshin/Core/KeyCodes.h"
+#include "Kenshin/Core/MouseCodes.h"
 
 //Renderer
 #include "Kenshin/Renderer/Renderer.h"
@@ -14,8 +14,7 @@
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/Texture.h"
 #include "Kenshin/Renderer/VertexArray.h"
-//#include "Kenshin/Renderer/OrthographicCamera.h"
 #include "Kenshin/Renderer/OrthographicCameraController.h"
 #include "Kenshin/Core/TimeStamp.h"
 
-#include "Kenshin/EntityPoint.h"
+#include "Kenshin/Core/EntityPoint.h"

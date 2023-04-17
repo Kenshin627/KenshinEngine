@@ -10,8 +10,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <cstdint>
-#include "Kenshin/Log.h"
-#include "Kenshin/Core.h"
+#include "Kenshin/Core/Log.h"
+#include "Kenshin/Core/Core.h"
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>

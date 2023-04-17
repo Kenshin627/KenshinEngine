@@ -1,6 +1,6 @@
 #pragma once
 #include "Buffer.h"
-#include "Kenshin/Core.h"
+#include "Kenshin/Core/Core.h"
 
 namespace Kenshin
 {

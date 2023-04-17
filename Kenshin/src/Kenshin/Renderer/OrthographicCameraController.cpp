@@ -1,6 +1,6 @@
 #include "kspch.h"
 #include "OrthographicCameraController.h"
-#include "Kenshin/Input.h"
+#include "Kenshin/Core/Input.h"
 
 namespace Kenshin
 {
@@ -67,7 +67,7 @@ namespace Kenshin
 
 	bool OrthoGraphicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
-		m_ZoomLevel += e.GetYOffset() * 0.25;
+		m_ZoomLevel -= e.GetYOffset() * 0.25;
 		KS_CORE_INFO("zoomLevel:{0}", m_ZoomLevel);
 		m_ZoomLevel = glm::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);

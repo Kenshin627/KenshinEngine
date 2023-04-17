@@ -4,7 +4,7 @@
 #include "imgui_internal.h"
 #include "Platform/OpenGL/imgui_impl_glfw.h"
 #include "Platform/OpenGL/ImGuiOpenglRenderer.h"
-#include "Kenshin/Application.h"
+#include "Kenshin/Core/Application.h"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 

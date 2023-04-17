@@ -1,5 +1,5 @@
 #pragma once
-#include "Kenshin/Input.h"
+#include "Kenshin/Core/Input.h"
 
 namespace Kenshin
 {

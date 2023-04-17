@@ -1,6 +1,6 @@
 #pragma once
 #include <glm.hpp>
-#include "Kenshin/Core.h"
+#include "Kenshin/Core/Core.h"
 #include "VertexArray.h"
 
 namespace Kenshin

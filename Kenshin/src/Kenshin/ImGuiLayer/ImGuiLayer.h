@@ -1,6 +1,6 @@
 #pragma once
-#include "Kenshin/Core.h"
-#include "Kenshin/Layer.h"
+#include "Kenshin/Core/Core.h"
+#include "Kenshin/Core/Layer.h"
 
 namespace Kenshin
 {

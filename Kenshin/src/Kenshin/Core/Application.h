@@ -1,12 +1,12 @@
 #pragma once
 #include "Core.h"
 #include "Window.h"
-#include "Events/ApplicationEvent.h"
+#include "../Events/ApplicationEvent.h"
 #include "LayerStack.h"
 #include "Kenshin/ImGuiLayer/ImGuiLayer.h"
 #include "Kenshin/Renderer/Buffer.h"
 #include "Kenshin/Renderer/Shader.h"
-#include "Renderer/VertexArray.h"
+#include "../Renderer/VertexArray.h"
 
 namespace Kenshin
 {

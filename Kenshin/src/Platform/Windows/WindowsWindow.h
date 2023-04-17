@@ -1,5 +1,5 @@
 #pragma once
-#include "Kenshin/Window.h"
+#include "Kenshin/Core/Window.h"
 #include "Kenshin/Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 

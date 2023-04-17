@@ -57,16 +57,16 @@
     <ClInclude Include="src\Kenshin.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Application.h">
+    <ClInclude Include="src\Kenshin\Core\Application.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Core.h">
+    <ClInclude Include="src\Kenshin\Core\Core.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Core\TimeStamp.h">
       <Filter>src\Kenshin\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\EntityPoint.h">
+    <ClInclude Include="src\Kenshin\Core\EntityPoint.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Events\ApplicationEvent.h">
@@ -84,22 +84,22 @@
     <ClInclude Include="src\Kenshin\ImGuiLayer\ImGuiLayer.h">
       <Filter>src\Kenshin\ImGuiLayer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Input.h">
+    <ClInclude Include="src\Kenshin\Core\Input.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\KeyCodes.h">
+    <ClInclude Include="src\Kenshin\Core\KeyCodes.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Layer.h">
+    <ClInclude Include="src\Kenshin\Core\Layer.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\LayerStack.h">
+    <ClInclude Include="src\Kenshin\Core\LayerStack.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Log.h">
+    <ClInclude Include="src\Kenshin\Core\Log.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\MouseCodes.h">
+    <ClInclude Include="src\Kenshin\Core\MouseCodes.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h">
@@ -129,7 +129,7 @@
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Window.h">
+    <ClInclude Include="src\Kenshin\Core\Window.h">
       <Filter>src\Kenshin</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h">
@@ -1002,19 +1002,19 @@
     <ClInclude Include="src\Kenshin\Renderer\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Kenshin\Application.cpp">
+    <ClCompile Include="src\Kenshin\Core\Application.cpp">
       <Filter>src\Kenshin</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\ImGuiLayer\ImGuiLayer.cpp">
       <Filter>src\Kenshin\ImGuiLayer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\Layer.cpp">
+    <ClCompile Include="src\Kenshin\Core\Layer.cpp">
       <Filter>src\Kenshin</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\LayerStack.cpp">
+    <ClCompile Include="src\Kenshin\Core\LayerStack.cpp">
       <Filter>src\Kenshin</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\Log.cpp">
+    <ClCompile Include="src\Kenshin\Core\Log.cpp">
       <Filter>src\Kenshin</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp">
@@ -1041,7 +1041,7 @@
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\Window.cpp">
+    <ClCompile Include="src\Kenshin\Core\Window.cpp">
       <Filter>src\Kenshin</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp">

@@ -1,6 +1,6 @@
 #include "kspch.h"
 #include "WindowsInput.h"
-#include "Kenshin/Application.h"
+#include "Kenshin/Core/Application.h"
 #include "GLFW/glfw3.h"
 
 namespace Kenshin

@@ -156,21 +156,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Kenshin.h" />
-    <ClInclude Include="src\Kenshin\Application.h" />
-    <ClInclude Include="src\Kenshin\Core.h" />
+    <ClInclude Include="src\Kenshin\Core\Application.h" />
+    <ClInclude Include="src\Kenshin\Core\Core.h" />
     <ClInclude Include="src\Kenshin\Core\TimeStamp.h" />
-    <ClInclude Include="src\Kenshin\EntityPoint.h" />
+    <ClInclude Include="src\Kenshin\Core\EntityPoint.h" />
     <ClInclude Include="src\Kenshin\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Kenshin\Events\Event.h" />
     <ClInclude Include="src\Kenshin\Events\KeyEvent.h" />
     <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\ImGuiLayer\ImGuiLayer.h" />
-    <ClInclude Include="src\Kenshin\Input.h" />
-    <ClInclude Include="src\Kenshin\KeyCodes.h" />
-    <ClInclude Include="src\Kenshin\Layer.h" />
-    <ClInclude Include="src\Kenshin\LayerStack.h" />
-    <ClInclude Include="src\Kenshin\Log.h" />
-    <ClInclude Include="src\Kenshin\MouseCodes.h" />
+    <ClInclude Include="src\Kenshin\Core\Input.h" />
+    <ClInclude Include="src\Kenshin\Core\KeyCodes.h" />
+    <ClInclude Include="src\Kenshin\Core\Layer.h" />
+    <ClInclude Include="src\Kenshin\Core\LayerStack.h" />
+    <ClInclude Include="src\Kenshin\Core\Log.h" />
+    <ClInclude Include="src\Kenshin\Core\MouseCodes.h" />
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Kenshin\Renderer\OrthographicCamera.h" />
@@ -181,7 +181,7 @@
     <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
     <ClInclude Include="src\Kenshin\Renderer\Texture.h" />
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Kenshin\Window.h" />
+    <ClInclude Include="src\Kenshin\Core\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -473,11 +473,11 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Kenshin\Application.cpp" />
+    <ClCompile Include="src\Kenshin\Core\Application.cpp" />
     <ClCompile Include="src\Kenshin\ImGuiLayer\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Kenshin\Layer.cpp" />
-    <ClCompile Include="src\Kenshin\LayerStack.cpp" />
-    <ClCompile Include="src\Kenshin\Log.cpp" />
+    <ClCompile Include="src\Kenshin\Core\Layer.cpp" />
+    <ClCompile Include="src\Kenshin\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Kenshin\Core\Log.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCameraController.cpp" />
@@ -487,7 +487,7 @@
     <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Texture.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Kenshin\Window.cpp" />
+    <ClCompile Include="src\Kenshin\Core\Window.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
