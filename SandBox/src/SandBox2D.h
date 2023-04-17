@@ -21,5 +21,6 @@ public:
 	virtual void OnEvent(Kenshin::Event& e) override;
 private:
 	Kenshin::OrthoGraphicCameraController m_CameraController;
-	glm::vec3 m_SquareColor;
+	glm::vec4 m_SquareColor;
+	Kenshin::Ref<Kenshin::Texture2D> m_checkboardTexture;
 };

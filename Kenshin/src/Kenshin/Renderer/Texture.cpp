@@ -15,4 +15,15 @@ namespace Kenshin
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;
 	}
+
+	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+	{
+		switch (RendererAPI::GetAPI())
+		{
+			case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not suppoted!"); return nullptr;
+			case RendererAPI::API::OpenGL: return CreateRef<OpenGLTexture>(width, height);
+		}
+		KS_CORE_ASSERT(false, "unknown RenderAPI!");
+		return nullptr;
+	}
 }

@@ -2,9 +2,12 @@
 #include "SandBox2D.h"
 #include <imgui.h>
 
-SandBox2D::SandBox2D() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D"), m_SquareColor({ 0.2, 0.3, 0.8 }) {}
+SandBox2D::SandBox2D() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D"), m_SquareColor({ 0.2, 0.3, 0.8, 1.0f }) {}
 
-void SandBox2D::OnAttach() { }
+void SandBox2D::OnAttach() 
+{
+	m_checkboardTexture = Kenshin::Texture2D::Create("resource/textures/Checkerboard.png");
+}
 void SandBox2D::OnDetach() { }
 
 void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
@@ -23,6 +26,7 @@ void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 			Kenshin::Renderer2D::DrawQuad(pos, { 0.1, 0.1 }, m_SquareColor);
 		}
 	}
+	Kenshin::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_checkboardTexture);
 	Kenshin::Renderer2D::EndScene();
 }
 
@@ -34,6 +38,6 @@ void SandBox2D::OnEvent(Kenshin::Event& e)
 void SandBox2D::OnImGuiRender()
 {
 	ImGui::Begin("QuadColor");
-	ImGui::ColorEdit3("QuadColor", glm::value_ptr(m_SquareColor));
+	ImGui::ColorEdit4("QuadColor", glm::value_ptr(m_SquareColor));
 	ImGui::End();
 }
