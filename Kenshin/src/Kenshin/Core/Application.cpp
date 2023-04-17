@@ -26,7 +26,6 @@ namespace Kenshin
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowCloseEvent, std::placeholders::_1));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize, std::placeholders::_1));
-		KS_CORE_INFO(e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{

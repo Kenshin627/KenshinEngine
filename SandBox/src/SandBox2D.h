@@ -21,5 +21,5 @@ public:
 	virtual void OnEvent(Kenshin::Event& e) override;
 private:
 	Kenshin::OrthoGraphicCameraController m_CameraController;
-	glm::vec3 m_SquareColor{ 0.2, 0.3, 0.8 };
+	glm::vec3 m_SquareColor;
 };
