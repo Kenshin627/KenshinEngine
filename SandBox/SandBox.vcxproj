@@ -135,11 +135,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\SandBox.cpp" />
+    <ClCompile Include="src\SandBox2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kenshin\Kenshin.vcxproj">
       <Project>{D5D0AF84-41B0-2E20-4AC8-B9F6B6269581}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\SandBox2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\shaders\flatColor.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

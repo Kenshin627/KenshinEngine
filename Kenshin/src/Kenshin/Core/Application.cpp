@@ -43,7 +43,7 @@ namespace Kenshin
 		{
 			float time = (float)glfwGetTime();
 			TimeStamp ts{ time - m_LastFrameTime };
-			m_LastFrameTime = time;
+			m_LastFrameTime = time;			
 		
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
@@ -55,7 +55,8 @@ namespace Kenshin
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate(ts);
-			}						
+			}
+									
 			m_Window->OnUpdate();
 		}
 	}
