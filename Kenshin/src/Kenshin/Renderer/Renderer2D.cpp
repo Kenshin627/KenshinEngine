@@ -10,13 +10,13 @@ namespace Kenshin
 		glm::vec4 Color;
 		glm::vec2 TexCoord;
 		float TilingFactor;
-		unsigned TexIndex;
+		float TexIndex;
 	};
 
 	struct Renderer2DStorageData
 	{
 		static const unsigned MaxTextureSlots = 32;
-		static const unsigned MaxQuadCount = 10000;
+		static const unsigned MaxQuadCount = 30000;
 		static const unsigned MaxVertices = MaxQuadCount * 4;
 		static const unsigned MaxIndices = MaxQuadCount * 6;
 		Ref<VertexArray> QuadVA;	
@@ -26,7 +26,7 @@ namespace Kenshin
 		QuadVertex* QuadVertexArrayBufferBase = nullptr;
 		QuadVertex* QuadVertexArrayBufferPtr = nullptr;
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
-		unsigned TextureSlotIndex = 0;
+		unsigned TextureSlotIndex = 1;
 	};
 
 	static Renderer2DStorageData s_Data;
@@ -37,17 +37,16 @@ namespace Kenshin
 		s_Data.QuadVA = Kenshin::VertexArray::CreateVertexArray();
 		
 		s_Data.QuadVB = Kenshin::VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
-		Kenshin::VertexBufferLayout quadLayout =
-		{
+
+		s_Data.QuadVB->SetLayout({
 			{ "aPosition", Kenshin::ShaderDataType::Float3 },
 			{ "aColor", Kenshin::ShaderDataType::Float4 },
 			{ "aTexCoord", Kenshin::ShaderDataType::Float2 },
 			{ "aTilingFactor", Kenshin::ShaderDataType::Float },
-			{ "aTexid", Kenshin::ShaderDataType::Int },
-		};
-		s_Data.QuadVB->SetLayout(quadLayout);
+			{ "aTexIndex", Kenshin::ShaderDataType::Float }
+		});
 		s_Data.QuadVA->AddVertexBuffer(s_Data.QuadVB);
-		
+		s_Data.QuadVertexArrayBufferBase = new QuadVertex[s_Data.MaxVertices];
 		//Indices
 		uint32_t* indices = new uint32_t[s_Data.MaxIndices];
 		unsigned offset = 0;
@@ -71,10 +70,12 @@ namespace Kenshin
 		s_Data.TextureShader = Shader::Create("resource/shaders/texture.glsl");
 		#pragma endregion				 
 
+		#pragma region Texture
 		auto whiteTexture = Texture2D::Create(1, 1);
 		uint32_t data = 0xffffffff;
 		whiteTexture->SetData(&data, sizeof(uint32_t));
 		s_Data.TextureSlots[0] = whiteTexture;
+		#pragma endregion
 	}
 	void Renderer2D::ShutDown()
 	{
@@ -82,13 +83,11 @@ namespace Kenshin
 	}
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_Data.QuadVA->Bind();
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		
 		s_Data.QuadIndexedCount = 0;
-		s_Data.QuadVertexArrayBufferBase = new QuadVertex[s_Data.MaxVertices];
 		s_Data.QuadVertexArrayBufferPtr = s_Data.QuadVertexArrayBufferBase;
-
+		s_Data.TextureSlotIndex = 1;
 	}
 	void Renderer2D::EndScene()
 	{
@@ -115,32 +114,34 @@ namespace Kenshin
 	{
 		float half_W = size.x / 2.0f;
 		float half_H = size.y / 2.0f;
+		constexpr float tilingFactor = 1.0f;
+		constexpr float TexIndex = 0.0f;
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y - half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = color;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = 0;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y - half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = color;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = 0;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y + half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = color;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = 0;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y + half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = color;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = 0;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadIndexedCount += 6;
@@ -171,35 +172,35 @@ namespace Kenshin
 		if (textureIndex == 0.0f)
 		{
 			//TODO::check maxtexture Slots..
+			textureIndex = (float)s_Data.TextureSlotIndex;
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
 		}
-
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y - half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y - half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y + half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 
 		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y + half_H, 0 };
 		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
 		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1.0f;
+		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
 		s_Data.QuadVertexArrayBufferPtr++;
 

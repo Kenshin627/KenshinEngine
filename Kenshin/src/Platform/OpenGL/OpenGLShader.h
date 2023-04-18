@@ -13,6 +13,7 @@ namespace Kenshin
 		virtual void Bind() override;
 		virtual void unBind() override;
 		virtual void SetInt(const std::string& key, int val) const override;
+		virtual void SetIntArray(const std::string& key, int* value, uint32_t count) const override;
 		virtual void SetFloat(const std::string& key, float val) const override;
 		virtual void SetVec2(const std::string& key, const glm::vec2& v2) const override;
 		virtual void SetVec3(const std::string& key, const glm::vec3& v3) const override;

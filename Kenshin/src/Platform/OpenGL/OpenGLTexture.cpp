@@ -61,11 +61,13 @@ namespace Kenshin
 
 	void OpenGLTexture::Bind(unsigned slot) const
 	{
+		//OpenGL 4.5+
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
 	void OpenGLTexture::UnBind(unsigned slot) const
 	{
+		//OpenGL 4.5+
 		glBindTextureUnit(slot, 0);
 	}
 }

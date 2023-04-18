@@ -111,6 +111,10 @@ namespace Kenshin
 	{
 		glUniform1i(GetUniformLocation(key), val);
 	}
+	void OpenGLShader::SetIntArray(const std::string& key, int* value, uint32_t count) const
+	{
+		glUniform1iv(GetUniformLocation(key), count, value);
+	}
 
 	void OpenGLShader::SetFloat(const std::string& key, float val) const
 	{
@@ -155,7 +159,7 @@ namespace Kenshin
 			return iter->second;
 		}
 		int location = glGetUniformLocation(m_RendererID, key.c_str());
-		KS_CORE_ASSERT(location != -1, "uniform {0} not found", key);
+		//KS_CORE_ASSERT(location != -1, "uniform {0} not found", key);
 		return location;
 	}
 
