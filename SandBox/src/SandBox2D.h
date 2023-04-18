@@ -23,4 +23,5 @@ private:
 	Kenshin::OrthoGraphicCameraController m_CameraController;
 	glm::vec4 m_SquareColor;
 	Kenshin::Ref<Kenshin::Texture2D> m_checkboardTexture;
+	Kenshin::Ref<Kenshin::Texture2D> m_BandTexture;
 };

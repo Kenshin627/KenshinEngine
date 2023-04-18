@@ -7,6 +7,7 @@ SandBox2D::SandBox2D() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D"
 void SandBox2D::OnAttach() 
 {
 	m_checkboardTexture = Kenshin::Texture2D::Create("resource/textures/Checkerboard.png");
+	m_BandTexture = Kenshin::Texture2D::Create("resource/textures/ledZepppelin.jpg");
 }
 void SandBox2D::OnDetach() { }
 
@@ -21,7 +22,9 @@ void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f), glm::vec4(0.2, 0.6, 0.5, 1.0));
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(-0.3f), glm::vec2(0.5f, 0.8), glm::vec4(0.8, 0.3, 0.7, 1.0));
-	Kenshin::Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(5.0f), m_checkboardTexture, 10.0f);
+	
+	Kenshin::Renderer2D::DrawQuad(glm::vec3(0.0f, 0.0f, -0.1f), glm::vec2(5.0f), m_checkboardTexture, 10.0f);
+	Kenshin::Renderer2D::DrawRorateQuad(glm::vec2(1.0f, 0.0f), 45.0f, glm::vec2(1.0f), m_BandTexture, 1.0f);
 		
 	Kenshin::Renderer2D::EndScene();
 }

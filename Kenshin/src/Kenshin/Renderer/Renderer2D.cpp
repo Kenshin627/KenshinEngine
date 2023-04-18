@@ -19,6 +19,7 @@ namespace Kenshin
 		static const unsigned MaxQuadCount = 30000;
 		static const unsigned MaxVertices = MaxQuadCount * 4;
 		static const unsigned MaxIndices = MaxQuadCount * 6;
+		static const unsigned VerticeCount = 4;
 		Ref<VertexArray> QuadVA;	
 		Ref<VertexBuffer> QuadVB;
 		Ref<Shader> TextureShader;
@@ -27,6 +28,8 @@ namespace Kenshin
 		QuadVertex* QuadVertexArrayBufferPtr = nullptr;
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		unsigned TextureSlotIndex = 1;
+		glm::vec4 QuadPosition[4];
+		glm::vec2 QuadTexCoord[4];
 	};
 
 	static Renderer2DStorageData s_Data;
@@ -64,6 +67,16 @@ namespace Kenshin
 		Kenshin::Ref<Kenshin::IndexBuffer> quadEBO = Kenshin::IndexBuffer::Create(indices, s_Data.MaxIndices);
 		s_Data.QuadVA->SetIndexBuffer(quadEBO);
 		delete[] indices;
+
+		s_Data.QuadPosition[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+		s_Data.QuadPosition[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
+		s_Data.QuadPosition[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
+		s_Data.QuadPosition[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+		s_Data.QuadTexCoord[0] = { 0.0f, 0.0f };
+		s_Data.QuadTexCoord[1] = { 1.0f, 0.0f };
+		s_Data.QuadTexCoord[2] = { 1.0f, 1.0f };
+		s_Data.QuadTexCoord[3] = { 0.0f, 1.0f };
 		#pragma endregion
 
 		#pragma region SHADER		
@@ -112,38 +125,19 @@ namespace Kenshin
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		float half_W = size.x / 2.0f;
-		float half_H = size.y / 2.0f;
+		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 		constexpr float tilingFactor = 1.0f;
 		constexpr float TexIndex = 0.0f;
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y - half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = color;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
 
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y - half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = color;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
-
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y + half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = color;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
-
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y + half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = color;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
-
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
+		{
+			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.QuadVertexArrayBufferPtr->Color = color;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
+			s_Data.QuadVertexArrayBufferPtr++;
+		}
 		s_Data.QuadIndexedCount += 6;
 	}
 
@@ -153,11 +147,7 @@ namespace Kenshin
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
-	{
-		constexpr size_t vertexCount = 4;
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-		float half_W = size.x / 2.0f;
-		float half_H = size.y / 2.0f;
+	{		
 		float textureIndex = 0.0f;
 		//TODO: check maxIndices..
 
@@ -176,34 +166,17 @@ namespace Kenshin
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
 		}
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y - half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
 
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y - half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 0.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
-
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x + half_W, position.y + half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 1.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
-
-		s_Data.QuadVertexArrayBufferPtr->Position = { position.x - half_W, position.y + half_H, 0 };
-		s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
-		s_Data.QuadVertexArrayBufferPtr->TexCoord = { 0.0f, 1.0f };
-		s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
-		s_Data.QuadVertexArrayBufferPtr++;
-
+		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });		
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
+		{
+			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexArrayBufferPtr++;
+		}
 		s_Data.QuadIndexedCount += 6;
 	}
 
@@ -214,16 +187,20 @@ namespace Kenshin
 
 	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
 	{
-		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 1.0f));
-		auto translate = glm::translate(glm::mat4(1.0), position);
-		auto rotate = glm::rotate(glm::mat4(1.0), rotation, { 0, 0, 1 });
-		//s_Data.WhiteTexture->Bind();
-		s_Data.TextureShader->SetVec4("u_Color", color);
-		s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
-		s_Data.TextureShader->SetMat4("u_ModelMatrix", translate * rotate * scale);
-		s_Data.QuadVA->Bind();
-		RendererCommand::DrawIndexed(s_Data.QuadVA);
-		//s_Data.WhiteTexture->UnBind();
+		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		constexpr float tilingFactor = 1.0f;
+		constexpr float TexIndex = 0.0f;
+
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
+		{
+			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.QuadVertexArrayBufferPtr->Color = color;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = TexIndex;
+			s_Data.QuadVertexArrayBufferPtr++;
+		}
+		s_Data.QuadIndexedCount += 6;
 	}
 
 	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
@@ -233,15 +210,35 @@ namespace Kenshin
 
 	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
-		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 1.0f));
-		auto translate = glm::translate(glm::mat4(1.0), position);
-		auto rotate = glm::rotate(glm::mat4(1.0f), rotation, { 0, 0, 1 });
-		texture->Bind();
-		s_Data.TextureShader->SetVec4("u_Color", tintColor);
-		s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
-		s_Data.TextureShader->SetMat4("u_ModelMatrix", translate * rotate * scale);
-		s_Data.QuadVA->Bind();
-		RendererCommand::DrawIndexed(s_Data.QuadVA);
-		texture->UnBind();
+		float textureIndex = 0.0f;
+		//TODO: check maxIndices..
+
+		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			if (*s_Data.TextureSlots[i] == *texture)
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+		if (textureIndex == 0.0f)
+		{
+			//TODO::check maxtexture Slots..
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+			s_Data.TextureSlotIndex++;
+		}
+
+		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
+		{
+			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexArrayBufferPtr++;
+		}
+		s_Data.QuadIndexedCount += 6;
 	}
 }
