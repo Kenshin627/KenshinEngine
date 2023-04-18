@@ -14,7 +14,8 @@ void SandBox2D::OnDetach() { }
 void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 {
 	m_CameraController.OnUpdate(ts);
-
+	static float rotation = 0.0f;
+	rotation += ts * 60.0f;
 	Kenshin::RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 	Kenshin::RendererCommand::Clear();
 
@@ -24,7 +25,7 @@ void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(-0.3f), glm::vec2(0.5f, 0.8), glm::vec4(0.8, 0.3, 0.7, 1.0));
 	
 	Kenshin::Renderer2D::DrawQuad(glm::vec3(0.0f, 0.0f, -0.1f), glm::vec2(5.0f), m_checkboardTexture, 10.0f);
-	Kenshin::Renderer2D::DrawRorateQuad(glm::vec2(1.0f, 0.0f), 45.0f, glm::vec2(1.0f), m_BandTexture, 1.0f);
+	Kenshin::Renderer2D::DrawRorateQuad(glm::vec2(1.0f, 0.0f), rotation, glm::vec2(1.0f), m_BandTexture, 1.0f);
 		
 	Kenshin::Renderer2D::EndScene();
 }
