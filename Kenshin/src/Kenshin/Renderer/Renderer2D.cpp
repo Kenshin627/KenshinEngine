@@ -71,25 +71,65 @@ namespace Kenshin
 		auto translate = glm::translate(glm::mat4(1.0), position);
 		s_Data->WhiteTexture->Bind();
 		s_Data->TextureShader->SetVec4("u_Color", color);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", 1.0f);
 		s_Data->TextureShader->SetMat4("u_ModelMatrix", translate * scale);
 		s_Data->QuadVA->Bind();
 		RendererCommand::DrawIndexed(s_Data->QuadVA);
 		s_Data->WhiteTexture->UnBind();
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{
 		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 1.0f));
 		auto translate = glm::translate(glm::mat4(1.0), position);
 
 		texture->Bind();
-		s_Data->TextureShader->SetVec4("u_Color", glm::vec4(1.0f));
+		s_Data->TextureShader->SetVec4("u_Color", tintColor);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", tilingFactor);
 		s_Data->TextureShader->SetMat4("u_ModelMatrix", translate * scale);
+		s_Data->QuadVA->Bind();
+		RendererCommand::DrawIndexed(s_Data->QuadVA);
+		texture->UnBind();
+	}
+
+	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
+	{
+		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, color);
+	}
+
+	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
+	{
+		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 1.0f));
+		auto translate = glm::translate(glm::mat4(1.0), position);
+		auto rotate = glm::rotate(glm::mat4(1.0), rotation, { 0, 0, 1 });
+		s_Data->WhiteTexture->Bind();
+		s_Data->TextureShader->SetVec4("u_Color", color);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", 1.0f);
+		s_Data->TextureShader->SetMat4("u_ModelMatrix", translate * rotate * scale);
+		s_Data->QuadVA->Bind();
+		RendererCommand::DrawIndexed(s_Data->QuadVA);
+		s_Data->WhiteTexture->UnBind();
+	}
+
+	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		auto scale = glm::scale(glm::mat4(1.0), glm::vec3(size.x, size.y, 1.0f));
+		auto translate = glm::translate(glm::mat4(1.0), position);
+		auto rotate = glm::rotate(glm::mat4(1.0f), rotation, { 0, 0, 1 });
+		texture->Bind();
+		s_Data->TextureShader->SetVec4("u_Color", tintColor);
+		s_Data->TextureShader->SetFloat("u_TilingFactor", tilingFactor);
+		s_Data->TextureShader->SetMat4("u_ModelMatrix", translate * rotate * scale);
 		s_Data->QuadVA->Bind();
 		RendererCommand::DrawIndexed(s_Data->QuadVA);
 		texture->UnBind();
