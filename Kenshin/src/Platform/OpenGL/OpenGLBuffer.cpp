@@ -8,6 +8,14 @@ namespace Kenshin
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////  OpenGLVertexBuffer  //////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	OpenGLVertexBuffer::OpenGLVertexBuffer(unsigned size) :m_RendererID(0)
+	{
+		glCreateBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
 	OpenGLVertexBuffer::OpenGLVertexBuffer(const float* vertices, unsigned size):m_RendererID(0)
 	{
 		glCreateBuffers(1, &m_RendererID);
@@ -36,6 +44,12 @@ namespace Kenshin
 		m_Layout = layout;
 	}
 
+	void OpenGLVertexBuffer::SetData(void* data, unsigned size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+	}
+
 	const VertexBufferLayout& OpenGLVertexBuffer::GetLayout() const { return m_Layout; };
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +73,7 @@ namespace Kenshin
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
+	
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
 		glDeleteBuffers(1, &m_RendererID);

@@ -5,23 +5,34 @@
 
 namespace Kenshin
 {
-	VertexBuffer* VertexBuffer::CreateBuffer(const float* vertices, unsigned size)
+	Ref<VertexBuffer> VertexBuffer::Create(const float* vertices, unsigned size)
 	{
 		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL: return  new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::API::OpenGL: return  CreateRef<OpenGLVertexBuffer>(vertices, size);
 		}
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::CreateBuffer(const unsigned* indices, unsigned count)
+	Ref<VertexBuffer> VertexBuffer::Create(unsigned size)
+	{
+		switch (RendererAPI::GetAPI())
+		{
+		case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL: return  CreateRef<OpenGLVertexBuffer>(size);
+		}
+		KS_CORE_ASSERT(false, "unknown RenderAPI!");
+		return nullptr;
+	}
+
+	Ref<IndexBuffer> IndexBuffer::Create(const unsigned* indices, unsigned count)
 	{
 		switch (RendererAPI::GetAPI())
 		{
 		case RendererAPI::API::None: KS_CORE_ASSERT(false, "RendererAPI::None not suppoted!"); return nullptr;
-		case RendererAPI::API::OpenGL: return new OpenGLIndexBuffer(indices, count);
+		case RendererAPI::API::OpenGL: return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 		KS_CORE_ASSERT(false, "unknown RenderAPI!");
 		return nullptr;

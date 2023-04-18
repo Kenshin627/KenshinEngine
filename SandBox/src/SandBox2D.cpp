@@ -20,8 +20,8 @@ void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 	Kenshin::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f), glm::vec4(0.2, 0.6, 0.5, 1.0));
-	Kenshin::Renderer2D::DrawRorateQuad({ -1.5f, 0.0f }, glm::radians(45.0f), glm::vec2(0.5f), glm::vec4(0.9, 0.2, 0.6, 1.0));
-	Kenshin::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_checkboardTexture, 8.0f, m_SquareColor);
+	Kenshin::Renderer2D::DrawQuad(glm::vec2(-0.3f), glm::vec2(0.5f, 0.8), glm::vec4(0.8, 0.3, 0.7, 1.0));
+		
 	Kenshin::Renderer2D::EndScene();
 }
 

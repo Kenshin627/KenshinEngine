@@ -115,9 +115,11 @@ namespace Kenshin
 		virtual ~VertexBuffer() {}
 		virtual void Bind() = 0;
 		virtual void unBind() = 0;
+		virtual void SetData(void* data, unsigned size) = 0;
 		virtual void SetLayout(const VertexBufferLayout& layout) = 0;
 		virtual const VertexBufferLayout& GetLayout() const = 0;
-		static VertexBuffer* CreateBuffer(const float* vertices, unsigned size);
+		static Ref<VertexBuffer> Create(const float* vertices, unsigned size);
+		static Ref<VertexBuffer> Create(unsigned size);
 	};
 
 	class KENSHIN_API IndexBuffer
@@ -127,6 +129,6 @@ namespace Kenshin
 		virtual void Bind() = 0;
 		virtual void unBind() = 0;
 		virtual unsigned GetCount() const = 0;
-		static IndexBuffer* CreateBuffer(const unsigned* indices, unsigned count);
+		static Ref<IndexBuffer> Create(const unsigned* indices, unsigned count);
 	};
 }

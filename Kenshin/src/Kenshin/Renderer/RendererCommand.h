@@ -20,9 +20,9 @@ namespace Kenshin
 		{
 			s_RendererAPI->SetClearColor(color);
 		};
-		void static DrawIndexed(const Ref<VertexArray>& vertexArray) 
+		void static DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0) 
 		{
-			s_RendererAPI->DrawIndexed(vertexArray);
+			s_RendererAPI->DrawIndexed(vertexArray, count);
 		};
 
 		void static ResizeViewport(size_t x, size_t y, size_t width, size_t height)

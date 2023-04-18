@@ -6,10 +6,12 @@ namespace Kenshin
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
+		OpenGLVertexBuffer(unsigned size);
 		OpenGLVertexBuffer(const float* vertices, unsigned size);
 		virtual ~OpenGLVertexBuffer();
 		virtual void Bind() override;
 		virtual void unBind() override;
+		virtual void SetData(void* data, unsigned size) override;
 		virtual void SetLayout(const VertexBufferLayout& layout) override;
 		virtual const VertexBufferLayout& GetLayout() const override;
 
