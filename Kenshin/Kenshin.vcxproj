@@ -180,6 +180,7 @@
     <ClInclude Include="src\Kenshin\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Kenshin\Renderer\RendererCommand.h" />
     <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
+    <ClInclude Include="src\Kenshin\Renderer\SubTexture2D.h" />
     <ClInclude Include="src\Kenshin\Renderer\Texture.h" />
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h" />
     <ClInclude Include="src\Kenshin\Core\Window.h" />
@@ -487,6 +488,7 @@
     <ClCompile Include="src\Kenshin\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\RendererCommand.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Texture.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Core\Window.cpp" />

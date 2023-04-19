@@ -161,6 +161,37 @@ namespace Kenshin
 		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor);
 	}
 
+	//SubTexture
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tilingFactor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		float textureIndex = 0.0f;
+		//TODO: check maxIndices..
+
+		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			if (*s_Data.TextureSlots[i] == *subTexture->GetTexture())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+		if (textureIndex == 0.0f)
+		{
+			//TODO::check maxtexture Slots..
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = subTexture->GetTexture();
+			s_Data.TextureSlotIndex++;
+		}
+
+		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor, subTexture->GetCoords());
+	}
+
 	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
 	{
 		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, color);
@@ -204,13 +235,45 @@ namespace Kenshin
 		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor);
 	}
 
-	void Renderer2D::DrawTransformQuad(const glm::mat4& transform, float texIndex, const glm::vec4& color, float tilingFactor)
+	//Subtextures
+	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
 	{
+		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, subTexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		float textureIndex = 0.0f;
+		//TODO: check maxIndices..
+
+		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		{
+			if (*s_Data.TextureSlots[i] == *subTexture->GetTexture())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+		if (textureIndex == 0.0f)
+		{
+			//TODO::check maxtexture Slots..
+			textureIndex = (float)s_Data.TextureSlotIndex;
+			s_Data.TextureSlots[s_Data.TextureSlotIndex] = subTexture->GetTexture();
+			s_Data.TextureSlotIndex++;
+		}
+
+		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor, subTexture->GetCoords());
+	}
+
+	void Renderer2D::DrawTransformQuad(const glm::mat4& transform, float texIndex, const glm::vec4& color, float tilingFactor, const glm::vec2* coords)
+	{
+		
 		for (size_t i = 0; i < s_Data.VerticeCount; i++)
 		{
 			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
 			s_Data.QuadVertexArrayBufferPtr->Color = color;
-			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = coords == nullptr? s_Data.QuadTexCoord[i] : coords[i];
 			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexArrayBufferPtr->TexIndex = texIndex;
 			s_Data.QuadVertexArrayBufferPtr++;

@@ -24,4 +24,11 @@ private:
 	glm::vec4 m_SquareColor;
 	Kenshin::Ref<Kenshin::Texture2D> m_checkboardTexture;
 	Kenshin::Ref<Kenshin::Texture2D> m_BandTexture;
+	Kenshin::Ref<Kenshin::Texture2D> m_SpiriteSheet;
+	Kenshin::Ref<Kenshin::Texture2D> m_SpirteAnima;
+	Kenshin::Ref<Kenshin::SubTexture2D> m_Tree;
+	Kenshin::Ref<Kenshin::SubTexture2D> m_Bush;
+
+	Kenshin::Ref<Kenshin::SubTexture2D> m_Pig;
+	Kenshin::Ref<Kenshin::SubTexture2D> m_Cat;
 };
