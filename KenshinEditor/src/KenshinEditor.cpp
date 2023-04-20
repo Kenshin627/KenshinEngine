@@ -5,17 +5,20 @@
 #include <gtc/matrix_transform.hpp>
 #include "EditLayer.h"
 
-class KenshinEditor :public Kenshin::Application
+namespace Kenshin
 {
-public:
-	KenshinEditor()
+	class KenshinEditor :public Application
 	{
-		PushOverLay(new EditLayer());
-	}
-	~KenshinEditor() {};
-};
+	public:
+		KenshinEditor()
+		{
+			PushOverLay(new EditLayer());
+		}
+		~KenshinEditor() {};
+	};
 
-Kenshin::Application* Kenshin::createApplication(int argc, char** argv)
-{
-	return new KenshinEditor();
+	Application* createApplication(int argc, char** argv)
+	{
+		return new KenshinEditor();
+	}
 }

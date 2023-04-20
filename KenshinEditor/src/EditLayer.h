@@ -11,25 +11,30 @@
 #include "Kenshin/Renderer/Renderer2D.h"
 #include "Kenshin/Renderer/FrameBuffer.h"
 
-class EditLayer : public Kenshin::Layer
+namespace Kenshin
 {
-public:
-	EditLayer();
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
-	virtual void OnUpdate(Kenshin::TimeStamp ts) override;
-	virtual void OnImGuiRender(Kenshin::TimeStamp ts) override;
-	virtual void OnEvent(Kenshin::Event& e) override;
-private:
-	Kenshin::OrthoGraphicCameraController m_CameraController;
-	glm::vec4 m_SquareColor;
-	Kenshin::Ref<Kenshin::Texture2D> m_checkboardTexture;
-	Kenshin::Ref<Kenshin::Texture2D> m_BandTexture;
-	Kenshin::Ref<Kenshin::Texture2D> m_SpiriteSheet;
-	Kenshin::Ref<Kenshin::Texture2D> m_SpirteAnima;
-	Kenshin::Ref<Kenshin::SubTexture2D> m_Tree;
-	Kenshin::Ref<Kenshin::SubTexture2D> m_Bush;
-	Kenshin::Ref<Kenshin::SubTexture2D> m_Pig;
-	Kenshin::Ref<Kenshin::SubTexture2D> m_Cat;
-	Kenshin::Ref<Kenshin::FrameBuffer> m_Framebuffer;
-};
+
+	class EditLayer : public Layer
+	{
+	public:
+		EditLayer();
+		virtual void OnAttach() override;
+		virtual void OnDetach() override;
+		virtual void OnUpdate(TimeStamp ts) override;
+		virtual void OnImGuiRender(TimeStamp ts) override;
+		virtual void OnEvent(Event& e) override;
+	private:
+		OrthoGraphicCameraController m_CameraController;
+		glm::vec4 m_SquareColor;
+		Ref<Texture2D> m_checkboardTexture;
+		Ref<Texture2D> m_BandTexture;
+		Ref<Texture2D> m_SpiriteSheet;
+		Ref<Texture2D> m_SpirteAnima;
+		Ref<SubTexture2D> m_Tree;
+		Ref<SubTexture2D> m_Bush;
+		Ref<SubTexture2D> m_Pig;
+		Ref<SubTexture2D> m_Cat;
+		Ref<FrameBuffer> m_Framebuffer;
+		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+	};
+}

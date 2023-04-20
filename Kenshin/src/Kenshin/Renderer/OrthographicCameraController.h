@@ -14,7 +14,7 @@ namespace Kenshin
 		~OrthoGraphicCameraController() = default;
 		void OnUpdate(TimeStamp ts);
 		void OnEvent(Event& e);
-		void OnResize(unsigned width, unsigned height);
+		void OnResize(uint32_t width, uint32_t height);
 		void SetZoomLevel(float zoomLevel);
 		float GetZoomLevel() const { return m_ZoomLevel; }
 

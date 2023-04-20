@@ -74,7 +74,7 @@ namespace Kenshin
 		return false;
 	}
 
-	void OrthoGraphicCameraController::OnResize(unsigned width, unsigned height)
+	void OrthoGraphicCameraController::OnResize(uint32_t width, uint32_t height)
 	{
 		m_AspectRatio = (float)width / (float)height;
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
