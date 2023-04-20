@@ -1,6 +1,6 @@
 workspace "KenshinEngine"
 	architecture "x64"
-	startproject "SandBox"
+	startproject "KenshinEditor"
 	configurations{ "Debug", "Release", "Dist" }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -15,6 +15,52 @@ IncludeDir["stb_image"] = "Kenshin/vendor/stb_image"
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
 include "Kenshin/vendor/ImGui"
+
+project "KenshinEditor"
+	location "KenshinEditor"
+	kind "consoleApp"
+	language "c++"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-in/" .. outputdir .. "/%{prj.name}")
+
+	files{ "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
+
+	includedirs
+	{ 
+		"Kenshin/vendor/spdlog/include;",
+		"Kenshin/src;",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Kenshin"
+	}
+
+	filter "system:windows"
+		cppdialect "c++17"
+		staticruntime "On"
+		systemversion "latest"
+
+		defines
+		{
+			"KS_PLATFORM_WINDOWS",
+		}
+
+	filter "configurations:Debug"
+		defines "KS_DEBUG"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "KS_RELEASE"
+		optimize "On"
+
+	filter "configurations:Dist"
+		defines "KS_DIST"
+		optimize "On"
+
 
 project "SandBox"
 	location "SandBox"
@@ -94,7 +140,8 @@ project "Kenshin"
 	}
 	postbuildcommands
 	{
-		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/SandBox"
+		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/SandBox",
+		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/KenshinEditor"
 	}
 
 	links
