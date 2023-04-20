@@ -1,15 +1,16 @@
 #pragma once
-#include "Kenshin/Core/Core.h"
-#include "Kenshin/Core/Layer.h"
-#include "Kenshin/Core/TimeStamp.h"
-#include "Kenshin/Events/Event.h"
-#include "Kenshin/Renderer/VertexArray.h"
-#include "Kenshin/Renderer/Texture.h"
-#include "Kenshin/Renderer/OrthographicCameraController.h"
-#include "Kenshin/Renderer/Shader.h"
-#include "Kenshin/Renderer/Renderer.h"
-#include "Kenshin/Renderer/Renderer2D.h"
-#include "Kenshin/Renderer/FrameBuffer.h"
+//#include "Kenshin/Core/Core.h"
+//#include "Kenshin/Core/Layer.h"
+//#include "Kenshin/Core/TimeStamp.h"
+//#include "Kenshin/Events/Event.h"
+//#include "Kenshin/Renderer/VertexArray.h"
+//#include "Kenshin/Renderer/Texture.h"
+//#include "Kenshin/Renderer/OrthographicCameraController.h"
+//#include "Kenshin/Renderer/Shader.h"
+//#include "Kenshin/Renderer/Renderer.h"
+//#include "Kenshin/Renderer/Renderer2D.h"
+//#include "Kenshin/Renderer/FrameBuffer.h"
+#include "Kenshin.h"
 
 namespace Kenshin
 {
@@ -18,6 +19,7 @@ namespace Kenshin
 	{
 	public:
 		EditLayer();
+		virtual ~EditLayer() = default;
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate(TimeStamp ts) override;
@@ -36,5 +38,6 @@ namespace Kenshin
 		Ref<SubTexture2D> m_Cat;
 		Ref<FrameBuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		bool m_ViewportActive = true;
 	};
 }

@@ -30,7 +30,10 @@ namespace Kenshin
 		}
 
 		Renderer2D::ResetStatistics();
-		m_CameraController.OnUpdate(ts);
+		if (m_ViewportActive)
+		{
+			m_CameraController.OnUpdate(ts);
+		}
 
 		m_Framebuffer->Bind();
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
@@ -55,7 +58,7 @@ namespace Kenshin
 
 	void EditLayer::OnEvent(Event& e)
 	{
-		m_CameraController.OnEvent(e);
+
 	}
 
 	void EditLayer::OnImGuiRender(TimeStamp ts)
@@ -177,6 +180,10 @@ namespace Kenshin
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
+
+		m_ViewportActive = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();		
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportActive);
+		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 

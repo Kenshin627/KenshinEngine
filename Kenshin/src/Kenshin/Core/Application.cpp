@@ -8,7 +8,7 @@
 
 namespace Kenshin
 {
-	Application* Application::s_Instance;
+	Application* Application::s_Instance = nullptr;
 	Application::Application():m_IsRunning(true), m_LastFrameTime(0.0f)
 	{
 		s_Instance = this;
@@ -17,7 +17,7 @@ namespace Kenshin
 
 		Renderer::Init();
 
-		ImGuiLayer* m_ImGuiLayer = new ImGuiLayer();
+		m_ImGuiLayer =  new ImGuiLayer();
 		PushOverLay(m_ImGuiLayer);		
 	}
 	Application::~Application() {}

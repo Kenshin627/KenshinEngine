@@ -21,6 +21,7 @@ namespace Kenshin
 		void PushOverLay(Layer* overlay);
 		static Application& Get() { return *s_Instance; };
 		Window& GetWindow() const { return *m_Window; };
+		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 	private:
 		bool OnWindowCloseEvent(const WindowCloseEvent& e);
 		bool OnWindowResize(const WindowResizeEvent& e);

@@ -4,6 +4,7 @@
 #include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
 #include "SandBox2D.h"
+#include "Kenshin/Core/EntityPoint.h"
 
 class SandBox :public Kenshin::Application
 {

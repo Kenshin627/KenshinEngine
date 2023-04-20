@@ -1,9 +1,6 @@
 #include "Kenshin.h"
-#include "imgui.h"
-#include <glm.hpp>
-#include <gtc/type_ptr.hpp>
-#include <gtc/matrix_transform.hpp>
 #include "EditLayer.h"
+#include "Kenshin/Core/EntityPoint.h"
 
 namespace Kenshin
 {
