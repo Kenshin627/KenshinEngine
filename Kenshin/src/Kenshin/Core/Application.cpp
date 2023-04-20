@@ -47,7 +47,7 @@ namespace Kenshin
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 			{
-				layer->OnImGuiRender();
+				layer->OnImGuiRender(ts);
 			}
 			m_ImGuiLayer->End();
 

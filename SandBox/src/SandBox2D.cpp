@@ -21,6 +21,7 @@ void SandBox2D::OnDetach() { }
 
 void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 {
+	Kenshin::Renderer2D::ResetStatistics();
 	m_CameraController.OnUpdate(ts);
 	static float rotation = 0.0f;
 	rotation += ts * 60.0f;
@@ -33,16 +34,12 @@ void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(-0.3f), glm::vec2(0.5f, 0.8), glm::vec4(0.8, 0.3, 0.7, 1.0));
 
 	Kenshin::Renderer2D::DrawQuad(glm::vec3(0.0f, 0.0f, -0.1f), glm::vec2(5.0f), m_checkboardTexture, 10.0f);
-	Kenshin::Renderer2D::DrawRorateQuad(glm::vec2(1.0f, 0.0f), rotation, glm::vec2(1.0f), m_BandTexture, 1.0f);
+	Kenshin::Renderer2D::DrawRotateQuad(glm::vec2(1.0f, 0.0f), rotation, glm::vec2(1.0f), m_BandTexture, 1.0f);
 
 	#endif // 0		
-	
-	
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f, 2.0f), m_Tree);
-
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(-1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Pig);
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Cat);
-
 	Kenshin::Renderer2D::EndScene();
 }
 
@@ -51,9 +48,15 @@ void SandBox2D::OnEvent(Kenshin::Event& e)
 	m_CameraController.OnEvent(e);
 }
 
-void SandBox2D::OnImGuiRender()
+void SandBox2D::OnImGuiRender(Kenshin::TimeStamp ts)
 {
-	ImGui::Begin("QuadColor");
-	ImGui::ColorEdit4("QuadColor", glm::value_ptr(m_SquareColor));
+	auto stattistics = Kenshin::Renderer2D::GetStatistics();
+	ImGui::Begin("Statistics");	
+	ImGui::Text("DrawCalls: %d", stattistics.DrawCalls);
+	ImGui::Text("QuadCount: %d", stattistics.QuadCount);
+	ImGui::Text("TotalVertices: %d", stattistics.GetTotalVertexCount());
+	ImGui::Text("TotalIndices: %d", stattistics.GetTotalIndexCount());
+	ImGui::Text("TotalIndices: %d", stattistics.GetTotalIndexCount());
+	ImGui::Text("TimeStamp: %d ms", ts.GetmileSeconds());
 	ImGui::End();
 }

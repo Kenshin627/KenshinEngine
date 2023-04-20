@@ -3,6 +3,7 @@
 #include "VertexArray.h"
 #include "RendererAPI.h"
 #include "glm.hpp"
+
 namespace Kenshin
 {
 	class KENSHIN_API RendererCommand

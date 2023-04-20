@@ -11,8 +11,10 @@
 //Renderer
 #include "Kenshin/Renderer/Renderer.h"
 #include "Kenshin/Renderer/RendererCommand.h"
+#include "Kenshin/Renderer/Renderer2D.h"
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/Texture.h"
+#include "Kenshin/Renderer/SubTexture2D.h"
 #include "Kenshin/Renderer/VertexArray.h"
 #include "Kenshin/Renderer/OrthographicCameraController.h"
 #include "Kenshin/Core/TimeStamp.h"

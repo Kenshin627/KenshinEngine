@@ -16,13 +16,13 @@ namespace Kenshin
 	struct Renderer2DStorageData
 	{
 		static const unsigned MaxTextureSlots = 32;
-		static const unsigned MaxQuadCount = 30000;
+		static const unsigned MaxQuadCount = 200000;
 		static const unsigned MaxVertices = MaxQuadCount * 4;
 		static const unsigned MaxIndices = MaxQuadCount * 6;
 		static const unsigned VerticeCount = 4;
 		Ref<VertexArray> QuadVA;	
 		Ref<VertexBuffer> QuadVB;
-		Ref<Shader> TextureShader;
+		Ref<Shader> QuadShader;
 		unsigned QuadIndexedCount = 0;
 		QuadVertex* QuadVertexArrayBufferBase = nullptr;
 		QuadVertex* QuadVertexArrayBufferPtr = nullptr;
@@ -30,6 +30,7 @@ namespace Kenshin
 		unsigned TextureSlotIndex = 1;
 		glm::vec4 QuadPosition[4];
 		glm::vec2 QuadTexCoord[4];
+		Renderer2D::Statistics Stats;
 	};
 
 	static Renderer2DStorageData s_Data;
@@ -80,7 +81,7 @@ namespace Kenshin
 		#pragma endregion
 
 		#pragma region SHADER		
-		s_Data.TextureShader = Shader::Create("resource/shaders/texture.glsl");
+		s_Data.QuadShader = Shader::Create("resource/shaders/quad.glsl");
 		#pragma endregion				 
 
 		#pragma region Texture
@@ -90,18 +91,15 @@ namespace Kenshin
 		s_Data.TextureSlots[0] = whiteTexture;
 		#pragma endregion
 	}
-	void Renderer2D::ShutDown()
-	{
-		
-	}
+
+	void Renderer2D::ShutDown() { }
+
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
-	{
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		
-		s_Data.QuadIndexedCount = 0;
-		s_Data.QuadVertexArrayBufferPtr = s_Data.QuadVertexArrayBufferBase;
-		s_Data.TextureSlotIndex = 1;
+	{		
+		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		
+		StartBatch();
 	}
+
 	void Renderer2D::EndScene()
 	{
 		Flush();
@@ -109,13 +107,18 @@ namespace Kenshin
 
 	void Renderer2D::Flush()
 	{
-		uint32_t size = (uint8_t*)s_Data.QuadVertexArrayBufferPtr - (uint8_t*)s_Data.QuadVertexArrayBufferBase;
-		s_Data.QuadVB->SetData(s_Data.QuadVertexArrayBufferBase, size);
-		for (size_t i = 0; i < s_Data.TextureSlotIndex; i++)
+		if (s_Data.QuadIndexedCount)
 		{
-			s_Data.TextureSlots[i]->Bind(i);
+			uint32_t size = (uint8_t*)s_Data.QuadVertexArrayBufferPtr - (uint8_t*)s_Data.QuadVertexArrayBufferBase;
+			s_Data.QuadVB->SetData(s_Data.QuadVertexArrayBufferBase, size);
+			for (size_t i = 0; i < s_Data.TextureSlotIndex; i++)
+			{
+				s_Data.TextureSlots[i]->Bind(i);
+			}
+			s_Data.QuadShader->Bind();
+			RendererCommand::DrawIndexed(s_Data.QuadVA, s_Data.QuadIndexedCount);
+			s_Data.Stats.DrawCalls++;
 		}
-		RendererCommand::DrawIndexed(s_Data.QuadVA, s_Data.QuadIndexedCount);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -125,10 +128,8 @@ namespace Kenshin
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		constexpr float tilingFactor = 1.0f;
-		constexpr float TexIndex = 0.0f;
-		DrawTransformQuad(transform, TexIndex, color, tilingFactor);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
@@ -138,30 +139,10 @@ namespace Kenshin
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
 	{		
-		float textureIndex = 0.0f;
-		//TODO: check maxIndices..
-
-		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
-		{
-			if (*s_Data.TextureSlots[i] == *texture)
-			{
-				textureIndex = (float)i;
-				break;
-			}
-		}
-		if (textureIndex == 0.0f)
-		{
-			//TODO::check maxtexture Slots..
-			textureIndex = (float)s_Data.TextureSlotIndex;
-			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
-			s_Data.TextureSlotIndex++;
-		}
-
-		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });		
-		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });		
+		DrawQuad(transform, texture, tilingFactor, tintColor);
 	}
 
-	//SubTexture
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tilingFactor);
@@ -169,52 +150,71 @@ namespace Kenshin
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
 	{
-		float textureIndex = 0.0f;
-		//TODO: check maxIndices..
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawQuad(transform, subTexture, tilingFactor, tintColor);
+	}
 
-		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
+	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
+	{
+		DrawRotateQuad({ position.x, position.y, 0.0f }, rotation, size, color);
+	}
+
+	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawQuad(transform, color);
+	}
+
+	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DrawRotateQuad({ position.x, position.y, 0.0f }, rotation, size, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawQuad(transform, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DrawRotateQuad({ position.x, position.y, 0.0f }, rotation, size, subTexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		DrawQuad(transform, subTexture, tilingFactor, tintColor);
+	}
+	
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	{
+		//TODO:检查maxIndices，如果到达上限，进入下一次Batch
+		if (s_Data.QuadIndexedCount >= s_Data.MaxIndices)
 		{
-			if (*s_Data.TextureSlots[i] == *subTexture->GetTexture())
-			{
-				textureIndex = (float)i;
-				break;
-			}
+			NextBatch();
 		}
-		if (textureIndex == 0.0f)
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
 		{
-			//TODO::check maxtexture Slots..
-			textureIndex = (float)s_Data.TextureSlotIndex;
-			s_Data.TextureSlots[s_Data.TextureSlotIndex] = subTexture->GetTexture();
-			s_Data.TextureSlotIndex++;
+			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.QuadVertexArrayBufferPtr->Color = color;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = 0; //whiteTexture
+			s_Data.QuadVertexArrayBufferPtr++;
+		}
+		s_Data.QuadIndexedCount += 6;
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		if (s_Data.QuadIndexedCount >= s_Data.MaxIndices)
+		{
+			NextBatch();
 		}
 
-		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor, subTexture->GetCoords());
-	}
-
-	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
-	{
-		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, color);
-	}
-
-	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
-	{
-		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		constexpr float tilingFactor = 1.0f;
-		constexpr float TexIndex = 0.0f;
-		DrawTransformQuad(transform, TexIndex, color, tilingFactor);
-	}
-
-	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
-	{
-		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, texture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
-	{
 		float textureIndex = 0.0f;
-		//TODO: check maxIndices..
-
 		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i] == *texture)
@@ -225,27 +225,38 @@ namespace Kenshin
 		}
 		if (textureIndex == 0.0f)
 		{
-			//TODO::check maxtexture Slots..
-			textureIndex = (float)s_Data.TextureSlotIndex;
-			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
-			s_Data.TextureSlotIndex++;
+			if (s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots)
+			{
+				NextBatch();
+			}
+			else {
+				textureIndex = (float)s_Data.TextureSlotIndex;
+				s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+				s_Data.TextureSlotIndex++;
+			}			
 		}
 
-		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor);
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
+		{
+			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
+			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexArrayBufferPtr++;
+		}
+		s_Data.QuadIndexedCount += 6;
+		s_Data.Stats.QuadCount++;
 	}
 
-	//Subtextures
-	void Renderer2D::DrawRorateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
 	{
-		DrawRorateQuad({ position.x, position.y, 0.0f }, rotation, size, subTexture, tilingFactor, tintColor);
-	}
+		if (s_Data.QuadIndexedCount >= s_Data.MaxIndices)
+		{
+			NextBatch();
+		}
 
-	void Renderer2D::DrawRorateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
-	{
 		float textureIndex = 0.0f;
-		//TODO: check maxIndices..
-
 		for (size_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
 			if (*s_Data.TextureSlots[i] == *subTexture->GetTexture())
@@ -256,28 +267,51 @@ namespace Kenshin
 		}
 		if (textureIndex == 0.0f)
 		{
-			//TODO::check maxtexture Slots..
-			textureIndex = (float)s_Data.TextureSlotIndex;
-			s_Data.TextureSlots[s_Data.TextureSlotIndex] = subTexture->GetTexture();
-			s_Data.TextureSlotIndex++;
+			if (s_Data.TextureSlotIndex >= s_Data.MaxTextureSlots)
+			{
+				NextBatch();
+			}
+			else {
+				textureIndex = (float)s_Data.TextureSlotIndex;
+				s_Data.TextureSlots[s_Data.TextureSlotIndex] = subTexture->GetTexture();
+				s_Data.TextureSlotIndex++;
+			}
 		}
 
-		auto transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawTransformQuad(transform, textureIndex, tintColor, tilingFactor, subTexture->GetCoords());
-	}
-
-	void Renderer2D::DrawTransformQuad(const glm::mat4& transform, float texIndex, const glm::vec4& color, float tilingFactor, const glm::vec2* coords)
-	{
-		
+		auto texCoords = subTexture->GetCoords();
 		for (size_t i = 0; i < s_Data.VerticeCount; i++)
 		{
 			s_Data.QuadVertexArrayBufferPtr->Position = glm::vec3(transform * s_Data.QuadPosition[i]);
-			s_Data.QuadVertexArrayBufferPtr->Color = color;
-			s_Data.QuadVertexArrayBufferPtr->TexCoord = coords == nullptr? s_Data.QuadTexCoord[i] : coords[i];
+			s_Data.QuadVertexArrayBufferPtr->Color = tintColor;
+			s_Data.QuadVertexArrayBufferPtr->TexCoord = texCoords[i];
 			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
-			s_Data.QuadVertexArrayBufferPtr->TexIndex = texIndex;
+			s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexArrayBufferPtr++;
 		}
 		s_Data.QuadIndexedCount += 6;
+		s_Data.Stats.QuadCount++;
+	}
+
+	const Renderer2D::Statistics& Renderer2D::GetStatistics()
+	{
+		return s_Data.Stats;
+	}
+
+	void Renderer2D::ResetStatistics()
+	{
+		memset(&s_Data.Stats, 0, sizeof(Statistics));
+	}
+
+	void Renderer2D::StartBatch()
+	{
+		s_Data.QuadIndexedCount = 0;
+		s_Data.QuadVertexArrayBufferPtr = s_Data.QuadVertexArrayBufferBase;
+		s_Data.TextureSlotIndex = 1;
+	}
+
+	void Renderer2D::NextBatch()
+	{
+		Flush();
+		StartBatch();
 	}
 }

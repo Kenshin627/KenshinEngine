@@ -12,5 +12,5 @@ namespace Kenshin
 	void Layer::OnDetach() {}
 	void Layer::OnUpdate(TimeStamp ts) {}
 	void Layer::OnEvent(Event& e) {}
-	void Layer::OnImGuiRender() {}
+	void Layer::OnImGuiRender(TimeStamp ts) {}
 }

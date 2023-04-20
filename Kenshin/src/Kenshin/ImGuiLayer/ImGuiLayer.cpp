@@ -83,7 +83,7 @@ namespace Kenshin
 		}
 	}
 
-	void ImGuiLayer::OnImGuiRender()
+	void ImGuiLayer::OnImGuiRender(TimeStamp ts)
 	{		
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
