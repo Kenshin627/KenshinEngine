@@ -9,6 +9,7 @@
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/Renderer.h"
 #include "Kenshin/Renderer/Renderer2D.h"
+#include "Kenshin/Renderer/FrameBuffer.h"
 
 class SandBox2D : public Kenshin::Layer
 {
@@ -28,7 +29,7 @@ private:
 	Kenshin::Ref<Kenshin::Texture2D> m_SpirteAnima;
 	Kenshin::Ref<Kenshin::SubTexture2D> m_Tree;
 	Kenshin::Ref<Kenshin::SubTexture2D> m_Bush;
-
 	Kenshin::Ref<Kenshin::SubTexture2D> m_Pig;
 	Kenshin::Ref<Kenshin::SubTexture2D> m_Cat;
+	Kenshin::Ref<Kenshin::FrameBuffer> m_Framebuffer;
 };
