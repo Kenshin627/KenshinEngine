@@ -11,7 +11,7 @@ namespace Kenshin
 
 	OpenGLFrameBuffer::~OpenGLFrameBuffer()
 	{
-		glDeleteBuffers(1, &m_RendererID);
+		glDeleteFramebuffers(1, &m_RendererID);
 		glDeleteTextures(1, &m_ColorAttachmentID);
 		glDeleteTextures(1, &m_DepthAttachmentID);
 	}
@@ -31,7 +31,7 @@ namespace Kenshin
 	{
 		if (m_RendererID)
 		{
-			glDeleteBuffers(1, &m_RendererID);
+			glDeleteFramebuffers(1, &m_RendererID);
 			glDeleteTextures(1, &m_ColorAttachmentID);
 			glDeleteTextures(1, &m_DepthAttachmentID);
 		}
