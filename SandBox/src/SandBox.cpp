@@ -5,7 +5,7 @@
 class SandBox :public Kenshin::Application
 {
 public:
-	SandBox() 
+	SandBox() : Application(Kenshin::WindowProps("SandBox", 1920, 1080))
 	{
 		PushOverLay(new SandBox2D());
 	}
