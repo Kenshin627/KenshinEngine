@@ -36,7 +36,7 @@ void SandBox2D::OnEvent(Kenshin::Event& e)
 	m_CameraController.OnEvent(e);
 }
 
-void SandBox2D::OnImGuiRender(Kenshin::TimeStamp ts)
+void SandBox2D::OnImGuiRender()
 {
 	auto stattistics = Kenshin::Renderer2D::GetStatistics();
 	ImGui::Begin("Statistics");	
@@ -44,6 +44,5 @@ void SandBox2D::OnImGuiRender(Kenshin::TimeStamp ts)
 	ImGui::Text("QuadCount: %d", stattistics.QuadCount);
 	ImGui::Text("TotalVertices: %d", stattistics.GetTotalVertexCount());
 	ImGui::Text("TotalIndices: %d", stattistics.GetTotalIndexCount());	
-	ImGui::Text("TimeStamp: %d ms", ts.GetmileSeconds());
 	ImGui::End();
 }

@@ -15,7 +15,7 @@ namespace Kenshin
 			void SetDarkThemecolors();
 			void Begin();
 			void End();
-			void BlockEvents(bool block);
+			void BlockEvents(bool block) { m_BlockEvents = block; }
 			uint32_t GetActiveWidgetID() const;
 	private:
 			bool m_BlockEvents = false;

@@ -9,6 +9,7 @@
 namespace Kenshin
 {
 	Application* Application::s_Instance = nullptr;
+
 	Application::Application():m_IsRunning(true), m_LastFrameTime(0.0f)
 	{
 		s_Instance = this;
@@ -20,22 +21,25 @@ namespace Kenshin
 		m_ImGuiLayer =  new ImGuiLayer();
 		PushOverLay(m_ImGuiLayer);		
 	}
+
 	Application::~Application() {}
+
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowCloseEvent, std::placeholders::_1));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize, std::placeholders::_1));
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend();)
 		{
-			(*--it)->OnEvent(e);
+			(*it++)->OnEvent(e);
 			if (e.Handled)
 			{
 				break;
 			}
 		}
 	}
+
 	void Application::Run() 
 	{	
 		while (m_IsRunning)
@@ -52,7 +56,7 @@ namespace Kenshin
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 			{
-				layer->OnImGuiRender(ts);
+				layer->OnImGuiRender();
 			}
 			m_ImGuiLayer->End();
 									

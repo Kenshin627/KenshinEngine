@@ -13,7 +13,7 @@ namespace Kenshin
 		virtual void OnAttach();
 		virtual void OnDetach();
 		virtual void OnUpdate(TimeStamp ts);
-		virtual void OnImGuiRender(TimeStamp ts);
+		virtual void OnImGuiRender();
 		virtual void OnEvent(Event& e);
 		std::string GetName() const { return m_DebugName; };
 	private:

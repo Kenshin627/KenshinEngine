@@ -77,9 +77,7 @@ namespace Kenshin
 		if (m_BlockEvents)
 		{
 			ImGuiIO& io = ImGui::GetIO();
-			//& io.WantCaptureMouse
 			e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
-			//& io.WantCaptureKeyboard
 			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
 	}
@@ -115,11 +113,6 @@ namespace Kenshin
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-	}
-
-	void ImGuiLayer::BlockEvents(bool block)
-	{
-		m_BlockEvents = block;
 	}
 
 	uint32_t ImGuiLayer::GetActiveWidgetID() const

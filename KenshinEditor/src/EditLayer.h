@@ -1,15 +1,4 @@
 #pragma once
-//#include "Kenshin/Core/Core.h"
-//#include "Kenshin/Core/Layer.h"
-//#include "Kenshin/Core/TimeStamp.h"
-//#include "Kenshin/Events/Event.h"
-//#include "Kenshin/Renderer/VertexArray.h"
-//#include "Kenshin/Renderer/Texture.h"
-//#include "Kenshin/Renderer/OrthographicCameraController.h"
-//#include "Kenshin/Renderer/Shader.h"
-//#include "Kenshin/Renderer/Renderer.h"
-//#include "Kenshin/Renderer/Renderer2D.h"
-//#include "Kenshin/Renderer/FrameBuffer.h"
 #include "Kenshin.h"
 
 namespace Kenshin
@@ -23,7 +12,7 @@ namespace Kenshin
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate(TimeStamp ts) override;
-		virtual void OnImGuiRender(TimeStamp ts) override;
+		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& e) override;
 	private:
 		OrthoGraphicCameraController m_CameraController;

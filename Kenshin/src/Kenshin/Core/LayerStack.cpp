@@ -7,7 +7,7 @@ namespace Kenshin
 
 	LayerStack::~LayerStack()
 	{
-		for (auto& layer : m_Layers)
+		for (Layer* layer : m_Layers)
 		{
 			delete layer;
 		}

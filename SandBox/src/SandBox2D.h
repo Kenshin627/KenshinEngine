@@ -8,7 +8,7 @@ public:
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 	virtual void OnUpdate(Kenshin::TimeStamp ts) override;
-	virtual void OnImGuiRender(Kenshin::TimeStamp ts) override;
+	virtual void OnImGuiRender() override;
 	virtual void OnEvent(Kenshin::Event& e) override;
 private:
 	Kenshin::OrthoGraphicCameraController m_CameraController;

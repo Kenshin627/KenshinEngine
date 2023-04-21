@@ -61,7 +61,7 @@ namespace Kenshin
 		m_CameraController.OnEvent(e);
 	}
 
-	void EditLayer::OnImGuiRender(TimeStamp ts)
+	void EditLayer::OnImGuiRender()
 	{
 		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
