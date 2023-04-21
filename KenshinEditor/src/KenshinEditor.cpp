@@ -4,10 +4,10 @@
 
 namespace Kenshin
 {
-	class KenshinEditor :public Application
+	class KenshinEditor : public Application
 	{
 	public:
-		KenshinEditor()
+		KenshinEditor(): Application(WindowProps("Kenshin-Editor"))
 		{
 			PushLayer(new EditLayer());
 		}

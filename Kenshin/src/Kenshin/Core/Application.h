@@ -13,7 +13,7 @@ namespace Kenshin
 	class KENSHIN_API Application
 	{
 	public:
-		Application();
+		Application(const WindowProps& props);
 		virtual ~Application();
 		void Run();
 		void OnEvent(Event& e);

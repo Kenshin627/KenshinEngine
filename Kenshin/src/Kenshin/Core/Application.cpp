@@ -10,14 +10,12 @@ namespace Kenshin
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application():m_IsRunning(true), m_LastFrameTime(0.0f)
+	Application::Application(const WindowProps& props):m_IsRunning(true), m_LastFrameTime(0.0f)
 	{
 		s_Instance = this;
-		m_Window = Window::Create();
+		m_Window = Window::Create(props);
 		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent, std::placeholders::_1));
-
 		Renderer::Init();
-
 		m_ImGuiLayer =  new ImGuiLayer();
 		PushOverLay(m_ImGuiLayer);		
 	}
