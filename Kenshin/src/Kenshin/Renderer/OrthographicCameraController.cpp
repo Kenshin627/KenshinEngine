@@ -4,7 +4,17 @@
 
 namespace Kenshin
 {
-	OrthoGraphicCameraController::OrthoGraphicCameraController(float aspectRatio, bool rotation) :m_AspectRatio(aspectRatio), m_ZoomLevel(1.0f), m_Rotation(rotation), m_CameraPosition({ 0.0f, 0.0f, 0.0f }), m_CameraRotation(0.0f), m_CameraTranslateSpeed(5.0f), m_CameraRotationSpeed(180.0f), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel, m_CameraTranslateSpeed, m_CameraRotationSpeed) {}
+	OrthoGraphicCameraController::OrthoGraphicCameraController(float aspectRatio, bool rotation, float zoomSpeed, const glm::vec2& zoomlevelBounds) :
+		m_AspectRatio(aspectRatio), 
+		m_ZoomLevel(1.0f), 
+		m_EnableRotation(rotation), 
+		m_CameraPosition({ 0.0f, 0.0f, 0.0f }), 
+		m_CameraRotation(0.0f), 
+		m_CameraTranslateSpeed(5.0f), 
+		m_CameraRotationSpeed(180.0f),
+		m_ZoomSpeed(zoomSpeed),
+		m_ZoomlevelBounds(zoomlevelBounds),
+		m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel, m_CameraTranslateSpeed, m_CameraRotationSpeed) {}
 
 	void OrthoGraphicCameraController::OnUpdate(TimeStamp ts)
 	{
@@ -30,7 +40,7 @@ namespace Kenshin
 			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslateSpeed * ts;
 		}
 
-		if (m_Rotation)
+		if (m_EnableRotation)
 		{
 			if (Input::IsKeyPressed(Key::Q))
 				m_CameraRotation += m_CameraRotationSpeed * ts;
@@ -67,9 +77,8 @@ namespace Kenshin
 
 	bool OrthoGraphicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
-		m_ZoomLevel -= e.GetYOffset() * 0.25;
-		KS_CORE_INFO("zoomLevel:{0}", m_ZoomLevel);
-		m_ZoomLevel = glm::max(m_ZoomLevel, 0.25f);
+		m_ZoomLevel -= e.GetYOffset() * m_ZoomSpeed;
+		m_ZoomLevel = glm::min(glm::max(m_ZoomLevel, m_ZoomlevelBounds.x), m_ZoomlevelBounds.y);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}

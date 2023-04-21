@@ -10,7 +10,7 @@ namespace Kenshin
 	class KENSHIN_API OrthoGraphicCameraController
 	{
 	public:
-		OrthoGraphicCameraController(float aspectRatio, bool rotaion = false);
+		OrthoGraphicCameraController(float aspectRatio, bool rotaion = false, float zoomSpeed = 0.3f, const glm::vec2& zoomlevelBounds = { 0.1f, 2.0f });
 		~OrthoGraphicCameraController() = default;
 		void OnUpdate(TimeStamp ts);
 		void OnEvent(Event& e);
@@ -26,12 +26,14 @@ namespace Kenshin
 	private:
 		float m_AspectRatio;
 		float m_ZoomLevel;
-		bool m_Rotation;
+		bool m_EnableRotation;
 
 		glm::vec3 m_CameraPosition;
 		float m_CameraRotation;
 		float m_CameraTranslateSpeed;
 		float m_CameraRotationSpeed;
+		float m_ZoomSpeed;
+		glm::vec2 m_ZoomlevelBounds; //x:min y:max
 
 		OrthographicCamera m_Camera;
 	};

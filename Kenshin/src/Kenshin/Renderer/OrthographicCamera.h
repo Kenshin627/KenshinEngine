@@ -25,6 +25,7 @@ namespace Kenshin
 		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 
 		float GetTranslateSpeed() const { return m_TranslateSpeed; }
+
 		float GetRotationSpeed() const { return m_RotationSpeed; }
 
 	private:

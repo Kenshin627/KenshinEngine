@@ -5,7 +5,7 @@
 
 namespace Kenshin
 {
-	Ref<VertexBuffer> VertexBuffer::Create(const float* vertices, unsigned size)
+	Ref<VertexBuffer> VertexBuffer::Create(const float* vertices, uint32_t size)
 	{
 		switch (RendererAPI::GetAPI())
 		{
@@ -16,7 +16,7 @@ namespace Kenshin
 		return nullptr;
 	}
 
-	Ref<VertexBuffer> VertexBuffer::Create(unsigned size)
+	Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
 	{
 		switch (RendererAPI::GetAPI())
 		{
@@ -27,7 +27,7 @@ namespace Kenshin
 		return nullptr;
 	}
 
-	Ref<IndexBuffer> IndexBuffer::Create(const unsigned* indices, unsigned count)
+	Ref<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, uint32_t count)
 	{
 		switch (RendererAPI::GetAPI())
 		{

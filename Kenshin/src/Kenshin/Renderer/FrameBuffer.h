@@ -6,9 +6,10 @@ namespace Kenshin
 
 	struct FrameBufferSpecification
 	{
-		FrameBufferSpecification(uint32_t width, uint32_t height, uint32_t samples, bool swapchain) : Width(width), Height(height), Samples(samples), SwapChainTarget(swapchain) {}
-		uint32_t Width = 0, Height = 0;
-		uint32_t Samples = 1;
+		FrameBufferSpecification(uint32_t width = 0, uint32_t height = 0, uint32_t samples = 1, bool swapchain = false) : Width(width), Height(height), Samples(samples), SwapChainTarget(swapchain) {}
+		uint32_t Width       = 0;
+		uint32_t Height      = 0;
+		uint32_t Samples     = 1;
 		bool SwapChainTarget = false;
 	};
 

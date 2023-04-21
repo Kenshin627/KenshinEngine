@@ -7,9 +7,9 @@
 		#define KENSHIN_API __declspec(dllexport)
 	#else
 		#define KENSHIN_API __declspec(dllimport)
-	#endif // DEBUG
+	#endif
 
-#endif // PLATFORM_WINDW
+#endif
 
 #define BIT(x) (1 << x)
 

@@ -1,8 +1,4 @@
 #include "Kenshin.h"
-#include "imgui.h"
-#include <glm.hpp>
-#include <gtc/type_ptr.hpp>
-#include <gtc/matrix_transform.hpp>
 #include "SandBox2D.h"
 #include "Kenshin/Core/EntityPoint.h"
 
