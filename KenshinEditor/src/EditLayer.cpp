@@ -58,67 +58,11 @@ namespace Kenshin
 
 	void EditLayer::OnEvent(Event& e)
 	{
-
+		m_CameraController.OnEvent(e);
 	}
 
 	void EditLayer::OnImGuiRender(TimeStamp ts)
 	{
-#if 0
-		static bool opt_fullscreen = true;
-		static bool opt_padding = false;
-		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-		if (opt_fullscreen)
-		{
-			const ImGuiViewport* viewport = ImGui::GetMainViewport();
-			ImGui::SetNextWindowPos(viewport->WorkPos);
-			ImGui::SetNextWindowSize(viewport->WorkSize);
-			ImGui::SetNextWindowViewport(viewport->ID);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-		}
-		else
-		{
-			dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-		}
-
-		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-			window_flags |= ImGuiWindowFlags_NoBackground;
-		if (!opt_padding)
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		bool p_open = true;
-		ImGui::Begin("DockSpace", &p_open, window_flags);
-		if (!opt_padding)
-			ImGui::PopStyleVar();
-
-		if (opt_fullscreen)
-			ImGui::PopStyleVar(2);
-		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-
-
-		auto stattistics = Renderer2D::GetStatistics();
-		ImGui::Begin("Statistics");
-		ImGui::Text("DrawCalls: %d", stattistics.DrawCalls);
-		ImGui::Text("QuadCount: %d", stattistics.QuadCount);
-		ImGui::Text("TotalVertices: %d", stattistics.GetTotalVertexCount());
-		ImGui::Text("TotalIndices: %d", stattistics.GetTotalIndexCount());
-
-		ImGui::Text("TimeStamp: %d ms", ts.GetmileSeconds());
-		ImGui::End();
-
-		ImGui::Begin("viewport");
-	 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-		ImGui::Image(reinterpret_cast<void*>(m_Framebuffer->GetColorAttachment()), { 1280, 720 }, { 0,1 }, { 1,0 });
-		ImGui::End();
-
-		ImGui::End();
-
-#endif
-
 		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;

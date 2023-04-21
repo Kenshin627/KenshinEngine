@@ -9,7 +9,7 @@ namespace Kenshin
 	public:
 		KenshinEditor()
 		{
-			PushOverLay(new EditLayer());
+			PushLayer(new EditLayer());
 		}
 		~KenshinEditor() {};
 	};

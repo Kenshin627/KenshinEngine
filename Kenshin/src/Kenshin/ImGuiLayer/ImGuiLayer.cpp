@@ -77,7 +77,9 @@ namespace Kenshin
 		if (m_BlockEvents)
 		{
 			ImGuiIO& io = ImGui::GetIO();
+			//& io.WantCaptureMouse
 			e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+			//& io.WantCaptureKeyboard
 			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
 	}
