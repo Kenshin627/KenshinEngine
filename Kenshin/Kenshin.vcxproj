@@ -176,6 +176,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Kenshin\Kenshin.dll\ (xcopy /Q /E /Y /I ..\b
     <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\ImGuiLayer\ImGuiLayer.h" />
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
+    <ClInclude Include="src\Kenshin\Renderer\Camera.h" />
     <ClInclude Include="src\Kenshin\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Kenshin\Renderer\OrthographicCamera.h" />
@@ -487,6 +488,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Kenshin\Kenshin.dll\ (xcopy /Q /E /Y /I ..\b
     <ClCompile Include="src\Kenshin\Core\Window.cpp" />
     <ClCompile Include="src\Kenshin\ImGuiLayer\ImGuiLayer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\Camera.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCameraController.cpp" />
