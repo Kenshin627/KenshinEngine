@@ -17,6 +17,15 @@ namespace Kenshin
 		m_Pig = SubTexture2D::Create(m_SpirteAnima, { 4, 4 }, { 136, 136 });
 		m_Cat = SubTexture2D::Create(m_SpirteAnima, { 0, 3 }, { 136, 136 });
 		m_CameraController.SetZoomLevel(5.5f);
+
+		m_ActiveScene = CreateRef<Scene>();
+		Entity entity = m_ActiveScene->CreateEntity("blueQuad");
+		entity.AddComponent<SpiriteRendererComponent>(0.0f, 0.0f, 1.0f, 1.0f);
+
+
+		Entity entity1 = m_ActiveScene->CreateEntity("redQuad");
+		entity1.AddComponent<SpiriteRendererComponent>(0.8f, 0.1f, 0.1f, 1.0f);
+		entity1.Replace<TransformComponent>(glm::translate(glm::mat4(1.0f), { -2.0f, 0.0f, 0.0f }));
 	}
 
 	void EditLayer::OnDetach() { }
@@ -39,18 +48,11 @@ namespace Kenshin
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		RendererCommand::Clear();
 
-		Renderer2D::BeginScene(m_CameraController.GetCamera());
-#if 0
-		Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f), glm::vec4(0.2, 0.6, 0.5, 1.0));
-		Renderer2D::DrawQuad(glm::vec2(-0.3f), glm::vec2(0.5f, 0.8), glm::vec4(0.8, 0.3, 0.7, 1.0));
-
-		Renderer2D::DrawQuad(glm::vec3(0.0f, 0.0f, -0.1f), glm::vec2(5.0f), m_checkboardTexture, 10.0f);
-		Renderer2D::DrawRotateQuad(glm::vec2(1.0f, 0.0f), rotation, glm::vec2(1.0f), m_BandTexture, 1.0f);
-
-#endif // 0		
-		Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f, 2.0f), m_Tree);
+		Renderer2D::BeginScene(m_CameraController.GetCamera());	
+		/*Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f, 2.0f), m_Tree);
 		Renderer2D::DrawQuad(glm::vec2(-1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Pig);
-		Renderer2D::DrawQuad(glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Cat);
+		Renderer2D::DrawQuad(glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Cat);*/
+		m_ActiveScene->RenderScene();
 		Renderer2D::EndScene();
 
 		m_Framebuffer->Unbind();

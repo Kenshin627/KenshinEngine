@@ -19,6 +19,9 @@
     <Filter Include="src\Kenshin\Renderer">
       <UniqueIdentifier>{12DE3C0A-FE6C-C6D3-A78B-DACE93F9D679}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Kenshin\Scene">
+      <UniqueIdentifier>{093F6E54-7555-6CEA-BECC-F70B2A223D72}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -30,6 +33,12 @@
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\entt">
+      <UniqueIdentifier>{DD8078C1-4936-F1B6-D22A-EB8D3EDFE7BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\entt\include">
+      <UniqueIdentifier>{5035F37B-BC96-D089-4504-173CB1640749}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
@@ -108,6 +117,9 @@
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Renderer\Camera.h">
+      <Filter>src\Kenshin\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Kenshin\Renderer\FrameBuffer.h">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClInclude>
@@ -144,6 +156,15 @@
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\Components.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\Entity.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\Scene.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
@@ -179,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="src\kspch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\entt\include\entt.hpp">
+      <Filter>vendor\entt\include</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1037,6 +1061,9 @@
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Kenshin\Renderer\Camera.cpp">
+      <Filter>src\Kenshin\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Kenshin\Renderer\FrameBuffer.cpp">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClCompile>
@@ -1069,6 +1096,12 @@
     </ClCompile>
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp">
       <Filter>src\Kenshin\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Scene\Entity.cpp">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Scene\Scene.cpp">
+      <Filter>src\Kenshin\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp">
       <Filter>src\Platform\OpenGL</Filter>

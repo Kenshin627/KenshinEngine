@@ -28,5 +28,6 @@ namespace Kenshin
 		Ref<FrameBuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		bool m_ViewportActive = true;
+		Ref<Scene> m_ActiveScene;
 	};
 }
