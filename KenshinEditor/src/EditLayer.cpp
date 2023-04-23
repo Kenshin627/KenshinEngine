@@ -18,22 +18,18 @@ namespace Kenshin
 		m_Cat = SubTexture2D::Create(m_SpirteAnima, { 0, 3 }, { 136, 136 });
 		m_CameraController.SetZoomLevel(5.5f);
 
+		//Entites
 		m_ActiveScene = CreateRef<Scene>();
-		Entity entity = m_ActiveScene->CreateEntity("blueQuad");
-		entity.AddComponent<SpiriteRendererComponent>(0.0f, 0.0f, 1.0f, 1.0f);
-
-
-		Entity entity1 = m_ActiveScene->CreateEntity("redQuad");
-		entity1.AddComponent<SpiriteRendererComponent>(0.8f, 0.1f, 0.1f, 1.0f);
-		entity1.Replace<TransformComponent>(glm::translate(glm::mat4(1.0f), { -2.0f, 0.0f, 0.0f }));
 	}
 
 	void EditLayer::OnDetach() { }
 
 	void EditLayer::OnUpdate(TimeStamp ts)
 	{
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		if (FrameBufferSpecification spec = m_Framebuffer->GetSpecification(); m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
+			
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
@@ -48,12 +44,7 @@ namespace Kenshin
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		RendererCommand::Clear();
 
-		Renderer2D::BeginScene(m_CameraController.GetCamera());	
-		/*Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f, 2.0f), m_Tree);
-		Renderer2D::DrawQuad(glm::vec2(-1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Pig);
-		Renderer2D::DrawQuad(glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Cat);*/
 		m_ActiveScene->RenderScene();
-		Renderer2D::EndScene();
 
 		m_Framebuffer->Unbind();
 	}
@@ -123,6 +114,17 @@ namespace Kenshin
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 		ImGui::End();
+
+		//Camera
+		/*ImGui::Begin("Camera");
+		auto& cameras = m_ActiveScene->Registry().group<TagComponent, TransformComponent, CameraComponent>();
+		for (auto& entity : cameras)
+		{
+			auto& [tag, transform, camera] = cameras.get<TagComponent, TransformComponent, CameraComponent>(entity);
+			ImGui::Text(tag.Tag.c_str());
+			ImGui::Checkbox("mainCamera", &camera.Primary);
+		}
+		ImGui::End();*/
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");

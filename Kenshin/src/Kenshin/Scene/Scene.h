@@ -12,10 +12,12 @@ namespace Kenshin
 		Scene();
 		~Scene();
 		void OnUpdate(TimeStamp ts);
+		void OnViewportResize(uint32_t width, uint32_t height);
 		Entity CreateEntity(const std::string& name);
-		const entt::registry& Registry() const { return m_Registry; }
+		entt::registry& Registry() { return m_Registry; }
 		void RenderScene();
 	private:
 		entt::registry m_Registry;
+		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;
 	};
 }

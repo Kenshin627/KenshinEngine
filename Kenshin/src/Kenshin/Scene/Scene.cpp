@@ -4,16 +4,37 @@
 #include "Entity.h"
 #include "Components.h"
 
-class Entity;
 namespace Kenshin
 {
-	Scene::Scene() {}
-	Scene::~Scene() {}
+	Scene::Scene() 
+	{
+		Entity entity = CreateEntity("blueQuad");
+		entity.AddComponent<SpiriteRendererComponent>(0.0f, 0.0f, 1.0f, 1.0f);
+
+		Entity entity1 = CreateEntity("redQuad");
+		entity1.AddComponent<SpiriteRendererComponent>(0.8f, 0.1f, 0.1f, 1.0f);
+		entity1.Replace<TransformComponent>(glm::translate(glm::mat4(1.0f), { -2.0f, 0.0f, 0.0f }));
+
+		//SceneCamera
+		Entity mainCamera = CreateEntity("CameraA");
+		auto cameraAComponent = mainCamera.AddComponent<CameraComponent>();
+		cameraAComponent.Primary = true;
+		cameraAComponent.FixedAspectRatio = false;
+
+		Entity secondCamera = CreateEntity("CameraB");
+		auto cameraBComponent = secondCamera.AddComponent<CameraComponent>();
+		cameraBComponent.Primary = false;
+		cameraBComponent.FixedAspectRatio = true;
+	}
+	Scene::~Scene() 
+	{
+	
+	}
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Entity entity = { m_Registry.create(), this, name };
+		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
-		entity.AddComponent<TagComponent>();
+		entity.AddComponent<TagComponent>(name);
 		return entity;
 	}
 
@@ -22,14 +43,51 @@ namespace Kenshin
 		
 	}
 
+	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	{
+		if (width != m_ViewportWidth || height != m_ViewportHeight)
+		{
+			m_ViewportWidth = width;
+			m_ViewportHeight = height;
+			auto cameraGroups = m_Registry.view<CameraComponent>();
+			for (auto& entity : cameraGroups)
+			{
+				CameraComponent& cameraComponent = cameraGroups.get<CameraComponent>(entity);
+				if (!cameraComponent.FixedAspectRatio)
+				{
+					cameraComponent.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+				}
+			}
+		}		
+	}
+
 	void Scene::RenderScene()
 	{
-		auto group = m_Registry.group<TransformComponent, SpiriteRendererComponent>();
-		for (auto& entity : group)
+		Camera* mainCamera = nullptr;
+		glm::mat4 transform;
+		auto cameraGroup = m_Registry.group<TransformComponent, CameraComponent>();
+		for (auto& entity : cameraGroup)
 		{
-			glm::mat4 transform = group.get<TransformComponent>(entity).Transform;
-			glm::vec4 color = group.get<SpiriteRendererComponent>(entity).Color;
-			Renderer2D::DrawQuad(transform, color);
+			auto[transformComponent, cameraComponent] = cameraGroup.get<TransformComponent, CameraComponent>(entity);
+			if (cameraComponent.Primary)
+			{
+				mainCamera = &cameraComponent.Camera;
+				transform = transformComponent.Transform;
+				break;
+			}
+		}
+
+		if (mainCamera)
+		{
+			Renderer2D::BeginScene(*mainCamera, transform);
+			auto group = m_Registry.view<TransformComponent, SpiriteRendererComponent>();
+			for (auto& entity : group)
+			{
+				glm::mat4 transform = group.get<TransformComponent>(entity).Transform;
+				glm::vec4 color = group.get<SpiriteRendererComponent>(entity).Color;
+				Renderer2D::DrawQuad(transform, color);
+			}
+			Renderer2D::EndScene();
 		}
 	}
 }

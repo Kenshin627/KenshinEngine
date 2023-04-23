@@ -100,6 +100,12 @@ namespace Kenshin
 		StartBatch();
 	}
 
+	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
+	{
+		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);
+		StartBatch();
+	}
+
 	void Renderer2D::EndScene()
 	{
 		Flush();

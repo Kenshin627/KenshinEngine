@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <glm.hpp>
+#include "SceneCamera.h"
 
 namespace Kenshin
 {
@@ -28,5 +29,14 @@ namespace Kenshin
 		SpiriteRendererComponent(const SpiriteRendererComponent& rhs) = default;
 		SpiriteRendererComponent(const glm::vec4& color) :Color(color) {}
 		SpiriteRendererComponent(float r, float g, float b, float a) : Color({ r, g, b, a }) {}
+	};
+
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = true;
+		bool FixedAspectRatio = false;
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent& rhs) = default;
 	};
 }

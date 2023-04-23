@@ -6,6 +6,7 @@
 #include "Kenshin/Renderer/Shader.h"
 #include "Texture.h"
 #include "SubTexture2D.h"
+#include "Camera.h"
 
 namespace Kenshin
 {
@@ -16,6 +17,7 @@ namespace Kenshin
 		static void Init();
 		static void ShutDown();
 		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		static void EndScene();
 		static void Flush();
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
