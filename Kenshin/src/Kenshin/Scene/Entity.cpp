@@ -1,6 +1,5 @@
 #include "kspch.h"
 #include "Entity.h"
-#include "Scene.h"
 
 namespace Kenshin
 {

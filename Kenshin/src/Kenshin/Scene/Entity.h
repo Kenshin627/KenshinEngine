@@ -1,10 +1,10 @@
 #pragma once
 #include "Kenshin/Core/Core.h"
 #include "entt.hpp"
+#include "Scene.h"
 
 namespace Kenshin
 {
-	class Scene;
 	class Entity
 	{
 	public:
@@ -40,7 +40,7 @@ namespace Kenshin
 		T& GetComponent()
 		{
 			KS_CORE_ASSERT(HasComponent<T>(), "entity not exists in the entity!");
-			return scene->m_Registry.get<T>(m_EntityHandle);
+			return m_Scene->m_Registry.get<T>(m_EntityHandle);
 		}
 
 		template<typename T>

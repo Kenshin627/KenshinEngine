@@ -44,7 +44,7 @@ namespace Kenshin
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		RendererCommand::Clear();
 
-		m_ActiveScene->RenderScene();
+		m_ActiveScene->RenderScene(ts);
 
 		m_Framebuffer->Unbind();
 	}

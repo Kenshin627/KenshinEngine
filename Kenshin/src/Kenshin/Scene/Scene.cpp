@@ -1,8 +1,9 @@
 #include "kspch.h"
 #include "Scene.h"
 #include "Kenshin/Renderer/Renderer2D.h"
-#include "Entity.h"
 #include "Components.h"
+#include "Entity.h"
+#include "Kenshin/Scene/CameraController.h"
 
 namespace Kenshin
 {
@@ -17,12 +18,15 @@ namespace Kenshin
 
 		//SceneCamera
 		Entity mainCamera = CreateEntity("CameraA");
-		auto cameraAComponent = mainCamera.AddComponent<CameraComponent>();
+		auto& cameraAComponent = mainCamera.AddComponent<CameraComponent>();
 		cameraAComponent.Primary = true;
 		cameraAComponent.FixedAspectRatio = false;
+		NativeScriptComponent& cameraScripts = mainCamera.AddComponent<NativeScriptComponent>();
+		cameraScripts.Bind<CameraController>(mainCamera);
+		cameraScripts.OnCreate(cameraScripts.Instance);
 
 		Entity secondCamera = CreateEntity("CameraB");
-		auto cameraBComponent = secondCamera.AddComponent<CameraComponent>();
+		auto& cameraBComponent = secondCamera.AddComponent<CameraComponent>();
 		cameraBComponent.Primary = false;
 		cameraBComponent.FixedAspectRatio = true;
 	}
@@ -32,7 +36,7 @@ namespace Kenshin
 	}
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Entity entity = { m_Registry.create(), this };
+		Entity entity = Entity (m_Registry.create(), this);
 		entity.AddComponent<TransformComponent>();
 		entity.AddComponent<TagComponent>(name);
 		return entity;
@@ -61,8 +65,16 @@ namespace Kenshin
 		}		
 	}
 
-	void Scene::RenderScene()
+	void Scene::RenderScene(TimeStamp ts)
 	{
+		//updateScripts
+		auto scripts = m_Registry.view<NativeScriptComponent>();
+		for (auto& entity : scripts)
+		{
+			NativeScriptComponent& nsc = scripts.get<NativeScriptComponent>(entity);
+			nsc.OnUpdate(nsc.Instance, ts);
+		}
+
 		Camera* mainCamera = nullptr;
 		glm::mat4 transform;
 		auto cameraGroup = m_Registry.group<TransformComponent, CameraComponent>();
@@ -78,7 +90,7 @@ namespace Kenshin
 		}
 
 		if (mainCamera)
-		{
+		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
 			auto group = m_Registry.view<TransformComponent, SpiriteRendererComponent>();
 			for (auto& entity : group)

@@ -13,3 +13,5 @@ namespace Kenshin
 		float m_Time;
 	};
 }
+
+

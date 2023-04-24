@@ -1039,6 +1039,8 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Kenshin\Scene\CameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Core\Application.cpp">
@@ -1144,5 +1146,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Kenshin\Scene\CameraController.cpp" />
   </ItemGroup>
 </Project>

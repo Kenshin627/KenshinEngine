@@ -24,3 +24,4 @@
 #include "Kenshin/Scene/Entity.h"
 #include "Kenshin/Scene/Components.h"
 #include "Kenshin/Scene/Scene.h"
+#include "Kenshin/Scene/ScriptableEntity.h"

@@ -2,6 +2,8 @@
 #include <string>
 #include <glm.hpp>
 #include "SceneCamera.h"
+#include "ScriptableEntity.h"
+#include <functional>
 
 namespace Kenshin
 {
@@ -38,5 +40,23 @@ namespace Kenshin
 		bool FixedAspectRatio = false;
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& rhs) = default;
+	};
+
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+		std::function<void(ScriptableEntity*)> OnCreate = nullptr;
+		std::function<void(ScriptableEntity*)> OnDestroy = nullptr;
+		std::function<void(ScriptableEntity*, TimeStamp)> OnUpdate = nullptr;
+
+		template<typename T>
+		void Bind(const Entity& entity)
+		{
+			Instance = new T();
+			Instance->SetEntity(entity);
+			OnCreate = [](ScriptableEntity* script) { return script->OnCreate(); };
+			OnDestroy = [](ScriptableEntity* script) { return script->OnDestroy(); };
+			OnUpdate = [](ScriptableEntity* script, TimeStamp ts) { return script->OnUpdate(ts); };
+		}
 	};
 }
