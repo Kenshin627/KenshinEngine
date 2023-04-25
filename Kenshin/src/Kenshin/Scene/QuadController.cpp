@@ -9,8 +9,8 @@ namespace Kenshin
 		auto tag = m_Entity.GetComponent<TagComponent>();
 		KS_INFO("{0} entity has created!", tag.Tag);
 
-		auto& transform = m_Entity.GetComponent<TransformComponent>().Transform;
-		transform[3][0] = 4.0f;
+		auto& transformComponent = m_Entity.GetComponent<TransformComponent>();
+		transformComponent.Translation.x = 4.0f;
 	}
 
 	void QuadController::OnDestroy()
@@ -22,8 +22,8 @@ namespace Kenshin
 	{
 		m_time += ts;
 		float moveSpeed = 2.0f;
-		auto& transform = m_Entity.GetComponent<TransformComponent>().Transform;
-		transform[3][0] = glm::cos(m_time * moveSpeed) * 4.0f;
-		transform[3][1] = glm::sin(m_time * moveSpeed) * 4.0f;
+		auto& transformComponent = m_Entity.GetComponent<TransformComponent>();
+		transformComponent.Translation.x = glm::cos(m_time * moveSpeed) * 4.0f;
+		transformComponent.Translation.y = glm::sin(m_time * moveSpeed) * 4.0f;
 	}
 }

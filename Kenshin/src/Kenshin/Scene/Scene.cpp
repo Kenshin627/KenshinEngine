@@ -14,7 +14,7 @@ namespace Kenshin
 
 		Entity entity1 = CreateEntity("redQuad");
 		entity1.AddComponent<SpiriteRendererComponent>(glm::vec4(0.8f, 0.1f, 0.1f, 1.0f));
-		entity1.Replace<TransformComponent>(glm::translate(glm::mat4(1.0f), { -2.0f, 0.0f, 0.0f }));
+		entity1.Replace<TransformComponent>(glm::vec3{ -2.0f, 0.0f, 0.0f });
 
 		//SceneCamera
 		Entity mainCamera = CreateEntity("CameraA");
@@ -95,7 +95,7 @@ namespace Kenshin
 			if (cameraComponent.Primary)
 			{
 				mainCamera = &cameraComponent.Camera;
-				transform = transformComponent.Transform;
+				transform = transformComponent;
 				break;
 			}
 		}
@@ -104,7 +104,7 @@ namespace Kenshin
 		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
 			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
-				Renderer2D::DrawQuad(transformComponent.Transform, spirite.Color);
+				Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color);
 			});
 			Renderer2D::EndScene();
 		}
