@@ -42,6 +42,7 @@ namespace Kenshin
 
 	struct NativeScriptComponent
 	{
+		bool IsBind = false;
 		ScriptableEntity* Instance = nullptr;
 		ScriptableEntity* (*IsntantiateScript)();
 		void(*DestroyScript)(NativeScriptComponent*);
@@ -50,6 +51,7 @@ namespace Kenshin
 		{
 			IsntantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
 			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
+			IsBind = true;
 		}
 	};
 }

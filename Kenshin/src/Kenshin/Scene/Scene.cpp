@@ -68,13 +68,17 @@ namespace Kenshin
 	{
 		//updateScripts
 		m_Registry.view<NativeScriptComponent>().each([&](entt::entity entity, NativeScriptComponent& nsc) {
-			if (!nsc.Instance)
+			if (!nsc.Instance && nsc.IsBind)
 			{
 				nsc.Instance = nsc.IsntantiateScript();
 				nsc.Instance->m_Entity = { entity, this };
 				nsc.Instance->OnCreate();
 			}
-			nsc.Instance->OnUpdate(ts);
+
+			if (nsc.IsBind && nsc.Instance)
+			{
+				nsc.Instance->OnUpdate(ts);
+			}
 		});
 
 		Camera* mainCamera = nullptr;

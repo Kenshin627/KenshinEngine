@@ -16,6 +16,8 @@ namespace Kenshin
 		void DrawEntityNode(Entity&& entity);
 		void DrawPropertyPanel(Entity&& entity);
 		void OnImGuiRender();
+		template<typename T>
+		void DisplayAddComponentEntity(const std::string& name);
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;
