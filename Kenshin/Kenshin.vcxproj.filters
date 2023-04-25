@@ -156,6 +156,9 @@
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\CameraController.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\Components.h">
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
@@ -163,6 +166,12 @@
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\Scene.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\SceneCamera.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h">
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h">
@@ -1038,9 +1047,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Scene\SceneCamera.h" />
-    <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h" />
-    <ClInclude Include="src\Kenshin\Scene\CameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Core\Application.cpp">
@@ -1100,10 +1106,16 @@
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp">
       <Filter>src\Kenshin\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Kenshin\Scene\CameraController.cpp">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Kenshin\Scene\Entity.cpp">
       <Filter>src\Kenshin\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Scene\Scene.cpp">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Scene\SceneCamera.cpp">
       <Filter>src\Kenshin\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp">
@@ -1145,7 +1157,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\Scene\SceneCamera.cpp" />
-    <ClCompile Include="src\Kenshin\Scene\CameraController.cpp" />
   </ItemGroup>
 </Project>

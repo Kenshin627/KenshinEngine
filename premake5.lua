@@ -79,7 +79,8 @@ project "SandBox"
 		"Kenshin/vendor/spdlog/include;",
 		"Kenshin/src;",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links

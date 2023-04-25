@@ -20,6 +20,9 @@ namespace Kenshin
 
 		//Entites
 		m_ActiveScene = CreateRef<Scene>();
+		
+		//Panels
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditLayer::OnDetach() { }
@@ -97,7 +100,7 @@ namespace Kenshin
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuiStyle& style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
-		style.WindowMinSize.x = 370.0f;
+		//style.WindowMinSize.x = 370.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -115,16 +118,10 @@ namespace Kenshin
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 		ImGui::End();
 
-		//Camera
-		/*ImGui::Begin("Camera");
-		auto& cameras = m_ActiveScene->Registry().group<TagComponent, TransformComponent, CameraComponent>();
-		for (auto& entity : cameras)
-		{
-			auto& [tag, transform, camera] = cameras.get<TagComponent, TransformComponent, CameraComponent>(entity);
-			ImGui::Text(tag.Tag.c_str());
-			ImGui::Checkbox("mainCamera", &camera.Primary);
-		}
-		ImGui::End();*/
+		
+
+		//hierarchyPanel
+		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");

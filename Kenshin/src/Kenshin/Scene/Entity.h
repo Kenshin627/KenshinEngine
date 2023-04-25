@@ -5,7 +5,7 @@
 
 namespace Kenshin
 {
-	class Entity
+	class KENSHIN_API Entity
 	{
 	public:
 		Entity(entt::entity id = entt::null, Scene* scene = nullptr, const std::string& name = "Entity");
@@ -65,10 +65,11 @@ namespace Kenshin
 			return !(*this == rhs);
 		}
 
-		operator entt::entity() { return m_EntityHandle; }
+		operator entt::entity() const { return m_EntityHandle; }
+		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
 
 	private:
-		entt::entity m_EntityHandle;
+		entt::entity m_EntityHandle; //uint32_t
 		Scene* m_Scene;
 	};
 }

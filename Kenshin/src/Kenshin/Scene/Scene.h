@@ -3,7 +3,6 @@
 #include "entt.hpp"
 #include "Kenshin/Core/TimeStamp.h"
 
-
 namespace Kenshin
 {
 	class Entity;

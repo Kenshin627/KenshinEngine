@@ -1,5 +1,6 @@
 #pragma once
 #include "Kenshin.h"
+#include "panel/SceneHierarchyPanel .h"
 
 namespace Kenshin
 {
@@ -29,5 +30,6 @@ namespace Kenshin
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		bool m_ViewportActive = true;
 		Ref<Scene> m_ActiveScene;
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
 }
