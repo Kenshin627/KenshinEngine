@@ -10,10 +10,10 @@ namespace Kenshin
 	Scene::Scene() 
 	{
 		Entity entity = CreateEntity("blueQuad");
-		entity.AddComponent<SpiriteRendererComponent>(0.0f, 0.0f, 1.0f, 1.0f);
+		entity.AddComponent<SpiriteRendererComponent>(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		Entity entity1 = CreateEntity("redQuad");
-		entity1.AddComponent<SpiriteRendererComponent>(0.8f, 0.1f, 0.1f, 1.0f);
+		entity1.AddComponent<SpiriteRendererComponent>(glm::vec4(0.8f, 0.1f, 0.1f, 1.0f));
 		entity1.Replace<TransformComponent>(glm::translate(glm::mat4(1.0f), { -2.0f, 0.0f, 0.0f }));
 
 		//SceneCamera
@@ -72,6 +72,7 @@ namespace Kenshin
 			{
 				nsc.Instance = nsc.IsntantiateScript();
 				nsc.Instance->m_Entity = { entity, this };
+				nsc.Instance->OnCreate();
 			}
 			nsc.Instance->OnUpdate(ts);
 		});

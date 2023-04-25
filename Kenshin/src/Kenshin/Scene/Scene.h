@@ -14,7 +14,7 @@ namespace Kenshin
 		~Scene();
 		void OnUpdate(TimeStamp ts);
 		void OnViewportResize(uint32_t width, uint32_t height);
-		Entity CreateEntity(const std::string& name);
+		Entity CreateEntity(const std::string& name = "Entity");
 		entt::registry& Registry() { return m_Registry; }
 		void RenderScene(TimeStamp ts);
 	private:

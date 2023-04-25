@@ -18,7 +18,7 @@ namespace Kenshin
 		virtual void OnCreate() {}
 		virtual void OnDestroy() {}
 		virtual void OnUpdate(TimeStamp ts) {}
-	private:
+	protected:
 		Entity m_Entity;
 		friend class Scene;
 	};

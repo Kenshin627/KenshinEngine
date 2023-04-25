@@ -27,9 +27,8 @@ namespace Kenshin
 	{
 		glm::vec4 Color{ 1.0f };
 		SpiriteRendererComponent() = default;
-		SpiriteRendererComponent(const SpiriteRendererComponent& rhs) = default;
+		SpiriteRendererComponent(const SpiriteRendererComponent&) = default;
 		SpiriteRendererComponent(const glm::vec4& color) :Color(color) {}
-		SpiriteRendererComponent(float r, float g, float b, float a) : Color({ r, g, b, a }) {}
 	};
 
 	struct CameraComponent

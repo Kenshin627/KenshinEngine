@@ -192,6 +192,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Kenshin\Kenshin.dll\ (xcopy /Q /E /Y /I ..\b
     <ClInclude Include="src\Kenshin\Scene\CameraController.h" />
     <ClInclude Include="src\Kenshin\Scene\Components.h" />
     <ClInclude Include="src\Kenshin\Scene\Entity.h" />
+    <ClInclude Include="src\Kenshin\Scene\QuadController.h" />
     <ClInclude Include="src\Kenshin\Scene\Scene.h" />
     <ClInclude Include="src\Kenshin\Scene\SceneCamera.h" />
     <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h" />
@@ -509,6 +510,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\Kenshin\Kenshin.dll\ (xcopy /Q /E /Y /I ..\b
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Scene\CameraController.cpp" />
     <ClCompile Include="src\Kenshin\Scene\Entity.cpp" />
+    <ClCompile Include="src\Kenshin\Scene\QuadController.cpp" />
     <ClCompile Include="src\Kenshin\Scene\Scene.cpp" />
     <ClCompile Include="src\Kenshin\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp" />

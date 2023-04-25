@@ -2,6 +2,7 @@
 #include "SceneHierarchyPanel .h"
 #include "Kenshin/Scene/Components.h"
 #include <imgui.h>
+#include "Kenshin/Scene/QuadController.h"
 
 namespace Kenshin
 {
@@ -16,26 +17,44 @@ namespace Kenshin
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& scene)
 	{
 		m_Context = scene;
+		m_SelectionContext = {};
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
+		ImGui::Begin("Scene Hierachy");
 		if (m_Context)
 		{
-			ImGui::Begin("Scene Hierachy");
 			m_Context->Registry().each([&](auto id) {				
 				Entity entity { id, m_Context.get() };				
 				DrawEntityNode({ entity, m_Context.get() });								
 			});
-			ImGui::End();
-		}
 
-		if (m_SelectionContext)
-		{
-			ImGui::Begin("properties");
-			DrawPropertyPanel(std::forward<Entity>(m_SelectionContext));
-			ImGui::End();
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+			{
+				m_SelectionContext = {};
+			}
+
+			if (ImGui::BeginPopupContextWindow(0))
+			{
+				if (ImGui::MenuItem("Create empty Entity"))
+				{
+					//BUG: .AddComponent<SpiriteRendererComponent>(glm::vec4(0.2, 0.8, 0.6, 1.0));
+					Entity entity = m_Context->CreateEntity();
+					entity.AddComponent<NativeScriptComponent>().Bind<QuadController>();
+					entity.AddComponent<SpiriteRendererComponent>(glm::vec4(0.2, 0.8, 0.6, 1.0));
+				}
+				ImGui::EndPopup();
+			}
 		}
+		ImGui::End();
+
+		ImGui::Begin("properties");
+		if (m_SelectionContext)
+		{			
+			DrawPropertyPanel(std::forward<Entity>(m_SelectionContext));			
+		}
+		ImGui::End();
 	}
 
 	void SceneHierarchyPanel::DrawEntityNode(Entity&& entity)
