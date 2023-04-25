@@ -80,7 +80,7 @@ namespace Kenshin
 				m_SelectionContext = {};
 			}
 
-			if (ImGui::BeginPopupContextWindow(0))
+			if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
 			{
 				if (ImGui::MenuItem("Create empty Entity"))
 				{
@@ -105,14 +105,31 @@ namespace Kenshin
 		auto& tag = entity.GetComponent<TagComponent>();
 		ImGuiTreeNodeFlags flags = (m_SelectionContext == entity ? ImGuiTreeNodeFlags_Selected:ImGuiTreeNodeFlags_None) | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 		bool isOpend = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.Tag.c_str());
-		if (isOpend)
-		{
-			ImGui::TreePop();
-		}
+
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectionContext = entity;
 		}
+
+		bool isDeleted = false;
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Delete Entity"))
+			{
+				isDeleted = true;
+			}
+			ImGui::EndPopup();
+		}
+
+		if (isOpend)
+		{
+			ImGui::TreePop();
+		}
+
+		if (isDeleted)
+		{
+			m_Context->DestroyEntity(entity);
+		}		
 	}
 
 	void SceneHierarchyPanel::DrawPropertyPanel(Entity&& entity)

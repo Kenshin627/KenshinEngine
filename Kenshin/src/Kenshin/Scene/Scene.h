@@ -15,6 +15,7 @@ namespace Kenshin
 		void OnUpdate(TimeStamp ts);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		Entity CreateEntity(const std::string& name = "Entity");
+		void DestroyEntity(Entity entity);
 		entt::registry& Registry() { return m_Registry; }
 		void RenderScene(TimeStamp ts);
 	private:

@@ -165,6 +165,9 @@
     <ClInclude Include="src\Kenshin\Scene\Entity.h">
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\QuadController.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\Scene.h">
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
@@ -1047,7 +1050,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Scene\QuadController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Core\Application.cpp">
@@ -1113,6 +1115,9 @@
     <ClCompile Include="src\Kenshin\Scene\Entity.cpp">
       <Filter>src\Kenshin\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Kenshin\Scene\QuadController.cpp">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Kenshin\Scene\Scene.cpp">
       <Filter>src\Kenshin\Scene</Filter>
     </ClCompile>
@@ -1158,6 +1163,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\Scene\QuadController.cpp" />
   </ItemGroup>
 </Project>
