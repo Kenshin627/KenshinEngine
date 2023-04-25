@@ -14,7 +14,7 @@ namespace Kenshin
 		{
 			return m_Entity.GetComponent<T>();
 		}
-		void SetEntity(const Entity& entity) { m_Entity = entity; }
+		
 		virtual void OnCreate() {}
 		virtual void OnDestroy() {}
 		virtual void OnUpdate(TimeStamp ts) {}

@@ -3,7 +3,6 @@
 #include <glm.hpp>
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
-#include <functional>
 
 namespace Kenshin
 {
@@ -45,18 +44,13 @@ namespace Kenshin
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
-		std::function<void(ScriptableEntity*)> OnCreate = nullptr;
-		std::function<void(ScriptableEntity*)> OnDestroy = nullptr;
-		std::function<void(ScriptableEntity*, TimeStamp)> OnUpdate = nullptr;
-
+		ScriptableEntity* (*IsntantiateScript)();
+		void(*DestroyScript)(NativeScriptComponent*);
 		template<typename T>
-		void Bind(const Entity& entity)
+		void Bind()
 		{
-			Instance = new T();
-			Instance->SetEntity(entity);
-			OnCreate = [](ScriptableEntity* script) { return script->OnCreate(); };
-			OnDestroy = [](ScriptableEntity* script) { return script->OnDestroy(); };
-			OnUpdate = [](ScriptableEntity* script, TimeStamp ts) { return script->OnUpdate(ts); };
+			IsntantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
 		}
 	};
 }

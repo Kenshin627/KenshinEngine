@@ -22,8 +22,7 @@ namespace Kenshin
 		cameraAComponent.Primary = true;
 		cameraAComponent.FixedAspectRatio = false;
 		NativeScriptComponent& cameraScripts = mainCamera.AddComponent<NativeScriptComponent>();
-		cameraScripts.Bind<CameraController>(mainCamera);
-		cameraScripts.OnCreate(cameraScripts.Instance);
+		cameraScripts.Bind<CameraController>();
 
 		Entity secondCamera = CreateEntity("CameraB");
 		auto& cameraBComponent = secondCamera.AddComponent<CameraComponent>();
@@ -68,17 +67,19 @@ namespace Kenshin
 	void Scene::RenderScene(TimeStamp ts)
 	{
 		//updateScripts
-		auto scripts = m_Registry.view<NativeScriptComponent>();
-		for (auto& entity : scripts)
-		{
-			NativeScriptComponent& nsc = scripts.get<NativeScriptComponent>(entity);
-			nsc.OnUpdate(nsc.Instance, ts);
-		}
+		m_Registry.view<NativeScriptComponent>().each([&](entt::entity entity, NativeScriptComponent& nsc) {
+			if (!nsc.Instance)
+			{
+				nsc.Instance = nsc.IsntantiateScript();
+				nsc.Instance->m_Entity = { entity, this };
+			}
+			nsc.Instance->OnUpdate(ts);
+		});
 
 		Camera* mainCamera = nullptr;
 		glm::mat4 transform;
 		auto cameraGroup = m_Registry.group<TransformComponent, CameraComponent>();
-		for (auto& entity : cameraGroup)
+		for (auto entity : cameraGroup)
 		{
 			auto[transformComponent, cameraComponent] = cameraGroup.get<TransformComponent, CameraComponent>(entity);
 			if (cameraComponent.Primary)
@@ -92,13 +93,9 @@ namespace Kenshin
 		if (mainCamera)
 		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
-			auto group = m_Registry.view<TransformComponent, SpiriteRendererComponent>();
-			for (auto& entity : group)
-			{
-				glm::mat4 transform = group.get<TransformComponent>(entity).Transform;
-				glm::vec4 color = group.get<SpiriteRendererComponent>(entity).Color;
-				Renderer2D::DrawQuad(transform, color);
-			}
+			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
+				Renderer2D::DrawQuad(transformComponent.Transform, spirite.Color);
+			});
 			Renderer2D::EndScene();
 		}
 	}
