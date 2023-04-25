@@ -10,9 +10,19 @@ namespace Kenshin
 
 	void SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 	{
+		m_ProjectionType = ProjectionType::Orthographic;
 		m_OrthographicSize = size;
 		m_OrthographicNear = nearClip;
 		m_OrthographicFar = farClip;
+		RecalculateProjection();
+	}
+
+	void SceneCamera::SetPerspective(float verticalFov, float nearClip, float farClip)
+	{
+		m_ProjectionType = ProjectionType::Perspective;
+		m_PerpectiveVerticalFOV = verticalFov;
+		m_PerpectiveNear = nearClip;
+		m_PerpectiveFar = farClip;
 		RecalculateProjection();
 	}
 
@@ -27,30 +37,19 @@ namespace Kenshin
 		}
 	}
 
-	void SceneCamera::SetNearClip(float nearClip)
-	{
-		if (nearClip != m_OrthographicNear)
-		{
-			m_OrthographicNear = nearClip;
-			RecalculateProjection();
-		}
-	}
-
-	void SceneCamera::SetFarClip(float farClip)
-	{
-		if (farClip != m_OrthographicFar)
-		{
-			m_OrthographicFar = farClip;
-			RecalculateProjection();
-		}
-	}
-
 	void SceneCamera::RecalculateProjection()
 	{
-		float left   = -m_AspectRatio * m_OrthographicSize * 0.5f;
-		float right  = m_AspectRatio * m_OrthographicSize * 0.5f;
-		float bottom = -m_OrthographicSize * 0.5f;
-		float top    = m_OrthographicSize * 0.5f;
-		m_Projection = glm::ortho(left, right, bottom, top, m_OrthographicNear, m_OrthographicFar);
+		if (m_ProjectionType == ProjectionType::Orthographic)
+		{
+			float left = -m_AspectRatio * m_OrthographicSize * 0.5f;
+			float right = m_AspectRatio * m_OrthographicSize * 0.5f;
+			float bottom = -m_OrthographicSize * 0.5f;
+			float top = m_OrthographicSize * 0.5f;
+			m_Projection = glm::ortho(left, right, bottom, top, m_OrthographicNear, m_OrthographicFar);
+		}
+		else if(m_ProjectionType == ProjectionType::Perspective)
+		{
+			m_Projection = glm::perspective(m_PerpectiveVerticalFOV, m_AspectRatio, m_PerpectiveNear, m_PerpectiveFar);
+		}
 	}
 }
