@@ -18,7 +18,6 @@ namespace Kenshin
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-			//float lineHeight = 25.0f;
 			ImGui::Separator();
 			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
 			ImGui::PopStyleVar();
@@ -67,7 +66,6 @@ namespace Kenshin
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		//float lineHeight = 20.0f;
 		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
@@ -151,7 +149,6 @@ namespace Kenshin
 			{
 				if (ImGui::MenuItem("Create empty Entity"))
 				{
-					//BUG: .AddComponent<SpiriteRendererComponent>(glm::vec4(0.2, 0.8, 0.6, 1.0));
 					Entity entity = m_Context->CreateEntity();
 				}
 				ImGui::EndPopup();
@@ -226,6 +223,7 @@ namespace Kenshin
 			DisplayAddComponentEntity<TransformComponent>("Transform Component");
 			DisplayAddComponentEntity<SpiriteRendererComponent>("Spirite Component");
 			DisplayAddComponentEntity<NativeScriptComponent>("Native Script");
+			DisplayAddComponentEntity<CameraComponent>("Camera Component");
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();

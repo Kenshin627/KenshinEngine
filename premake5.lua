@@ -12,6 +12,7 @@ IncludeDir["ImGui"] = "Kenshin/vendor/ImGui"
 IncludeDir["glm"] = "Kenshin/vendor/glm/glm"
 IncludeDir["stb_image"] = "Kenshin/vendor/stb_image"
 IncludeDir["entt"] = "Kenshin/vendor/entt/include"
+IncludeDir["ImGuizmo"] = "Kenshin/vendor/ImGuizmo"
 
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
@@ -33,7 +34,8 @@ project "KenshinEditor"
 		"Kenshin/src;",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
@@ -62,7 +64,6 @@ project "KenshinEditor"
 	filter "configurations:Dist"
 		defines "KS_DIST"
 		optimize "On"
-
 
 project "SandBox"
 	location "SandBox"
@@ -129,6 +130,8 @@ project "Kenshin"
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/entt/include/**.hpp",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
 	}
 	
 
@@ -142,7 +145,8 @@ project "Kenshin"
 		"%{IncludeDir.ImGui}/backends",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 
@@ -159,6 +163,9 @@ project "Kenshin"
 		"_CRT_SECURE_NO_WARNINGS",
 		"GLFW_INCLUDE_NONE"
 	}
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
 
 
 	filter "system:windows"
@@ -200,4 +207,7 @@ project "Kenshin"
 
 	filter "files:src/Platform/OpenGLimgui_impl_glfw.cpp"
 		flags { "NoPCH" }
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+	flags { "NoPCH" }
 
