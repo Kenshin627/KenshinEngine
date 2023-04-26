@@ -118,8 +118,6 @@ namespace Kenshin
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 		ImGui::End();
 
-		
-
 		//hierarchyPanel
 		m_SceneHierarchyPanel.OnImGuiRender();
 
@@ -134,6 +132,12 @@ namespace Kenshin
 
 		uint64_t textureID = m_Framebuffer->GetColorAttachment();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		//guizmo
+		auto camera = m_ActiveScene->GetMainCamera();
+		auto selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+
+
 
 		ImGui::End();
 		ImGui::PopStyleVar();

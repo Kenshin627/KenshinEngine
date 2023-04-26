@@ -149,4 +149,18 @@ namespace Kenshin
 	{
 		com.Bind<QuadController>();
 	}
+
+	SceneCamera& Scene::GetMainCamera()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto& entity : view)
+		{
+			auto& cameraComponent = view.get<CameraComponent>(entity);
+			if (cameraComponent.Primary)
+			{
+				return cameraComponent.Camera;
+			}
+		}
+		return {};
+	}
 }

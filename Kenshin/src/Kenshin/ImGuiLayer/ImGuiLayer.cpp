@@ -7,6 +7,7 @@
 #include "Kenshin/Core/Application.h"
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "ImGuizmo.h"
 
 namespace Kenshin
 {
@@ -53,9 +54,8 @@ namespace Kenshin
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		ImGui::ShowDemoWindow();
+		ImGuizmo::BeginFrame();
+		ImGui::NewFrame();		
 	}
 
 	void ImGuiLayer::End()

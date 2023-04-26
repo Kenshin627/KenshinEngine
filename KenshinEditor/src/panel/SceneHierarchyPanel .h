@@ -18,6 +18,7 @@ namespace Kenshin
 		void OnImGuiRender();
 		template<typename T>
 		void DisplayAddComponentEntity(const std::string& name);
+		Entity GetSelectedEntity();
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;

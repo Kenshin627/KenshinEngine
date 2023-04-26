@@ -20,6 +20,7 @@ namespace Kenshin
 		void RenderScene(TimeStamp ts);
 		template<typename T>
 		void OnEntityAddComponent(Entity* entity, T& component);
+		SceneCamera& GetMainCamera();
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;

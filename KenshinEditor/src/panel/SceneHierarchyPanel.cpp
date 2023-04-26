@@ -320,4 +320,9 @@ namespace Kenshin
 			}
 		}
 	}
+
+	Entity SceneHierarchyPanel::GetSelectedEntity()
+	{
+		return m_SelectionContext;
+	}
 }
