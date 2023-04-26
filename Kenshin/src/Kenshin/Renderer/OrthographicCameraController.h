@@ -7,7 +7,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API OrthoGraphicCameraController
+	class  OrthoGraphicCameraController
 	{
 	public:
 		OrthoGraphicCameraController(float aspectRatio, bool rotaion = false, float zoomSpeed = 0.3f, const glm::vec2& zoomlevelBounds = { 0.1f, 2.0f });

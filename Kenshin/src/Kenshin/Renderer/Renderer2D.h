@@ -11,7 +11,7 @@
 namespace Kenshin
 {
 	struct RenderStats;
-	class KENSHIN_API Renderer2D
+	class  Renderer2D
 	{
 	public:
 		static void Init();

@@ -3,7 +3,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API OrthographicCamera
+	class  OrthographicCamera
 	{
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top, float translateSpeed = 5.0f, float rotationSpeed = 180.0f);

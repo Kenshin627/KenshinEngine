@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Entity.h"
 #include "Kenshin/Scene/CameraController.h"
+#include "Kenshin/Scene/QuadController.h"
 
 namespace Kenshin
 {
@@ -108,5 +109,44 @@ namespace Kenshin
 			});
 			Renderer2D::EndScene();
 		}
+	}
+
+	template<typename T>
+	void Scene::OnEntityAddComponent(Entity* entity, T& component)
+	{
+		static_assert(sizeof(T) == 0);
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<CameraComponent>(Entity* entity, CameraComponent& com)
+	{
+		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
+		{
+			com.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+		}
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<TagComponent>(Entity* entity, TagComponent& com)
+	{
+		
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<TransformComponent>(Entity* entity, TransformComponent& com)
+	{
+
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<SpiriteRendererComponent>(Entity* entity, SpiriteRendererComponent& com)
+	{
+
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<NativeScriptComponent>(Entity* entity, NativeScriptComponent& com)
+	{
+		com.Bind<QuadController>();
 	}
 }

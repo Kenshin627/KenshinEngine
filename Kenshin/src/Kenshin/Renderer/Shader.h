@@ -5,7 +5,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API Shader
+	class  Shader
 	{
 	public:
 		virtual ~Shader() = default;
@@ -24,7 +24,7 @@ namespace Kenshin
 		static Ref<Shader> Create(const std::string& path);
 	};
 
-	class KENSHIN_API ShaderLibrary
+	class  ShaderLibrary
 	{
 	public:
 		ShaderLibrary() = default;

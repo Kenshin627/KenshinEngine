@@ -6,7 +6,7 @@
 namespace Kenshin
 {
 	class Entity;
-	class KENSHIN_API Scene
+	class  Scene
 	{		
 	public:
 		friend class Entity;
@@ -18,6 +18,8 @@ namespace Kenshin
 		void DestroyEntity(Entity entity);
 		entt::registry& Registry() { return m_Registry; }
 		void RenderScene(TimeStamp ts);
+		template<typename T>
+		void OnEntityAddComponent(Entity* entity, T& component);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;

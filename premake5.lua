@@ -112,8 +112,9 @@ project "SandBox"
 
 project "Kenshin"
 	location "Kenshin"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "c++"
+	staticruntime "off"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-in/" .. outputdir .. "/%{prj.name}")
 
@@ -143,11 +144,7 @@ project "Kenshin"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}"
 	}
-	postbuildcommands
-	{
-		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/SandBox",
-		"{COPY} %{cfg.buildtarget.relpath} ../bin/"  .. outputdir .. "/KenshinEditor"
-	}
+
 
 	links
 	{
@@ -155,6 +152,12 @@ project "Kenshin"
 		"Glad",
 		"opengl32.lib",
 		"imgui"
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 
 
@@ -178,23 +181,23 @@ project "Kenshin"
 			"KS_DEBUG",
 			"KS_ENABLE_ASSERTS"
 		}
-		buildoptions "/MDd"
+		buildoptions "/MTd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "KS_RELEASE"
-		buildoptions "/MD"
+		buildoptions "/MT"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "KS_DIST"
-		buildoptions "/MD"
+		buildoptions "/MT"
 		optimize "On"
 
 	filter "files:vendor/**.cpp"
-	flags { "NoPCH" }
+		flags { "NoPCH" }
 
 
-	filter "files:src/Platform/OpenGL/**.cpp"
-	flags { "NoPCH" }
+	filter "files:src/Platform/OpenGLimgui_impl_glfw.cpp"
+		flags { "NoPCH" }
 

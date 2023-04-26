@@ -13,7 +13,7 @@ namespace Kenshin
 		bool SwapChainTarget = false;
 	};
 
-	class KENSHIN_API FrameBuffer
+	class  FrameBuffer
 	{
 	public:
 		virtual~FrameBuffer() = default;

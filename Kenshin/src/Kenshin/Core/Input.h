@@ -5,7 +5,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API Input
+	class  Input
 	{
 	public:
 		Input() {};

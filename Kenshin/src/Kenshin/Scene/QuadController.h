@@ -4,7 +4,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API QuadController : public ScriptableEntity
+	class  QuadController : public ScriptableEntity
 	{
 	public:
 		QuadController() = default;

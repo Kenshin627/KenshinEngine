@@ -4,7 +4,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API VertexArray
+	class  VertexArray
 	{
 	public:
 		VertexArray() {};

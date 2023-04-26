@@ -4,7 +4,7 @@
 namespace Kenshin
 {
 	enum class ProjectionType { Perspective = 0, Orthographic };
-	class KENSHIN_API SceneCamera : public Camera
+	class  SceneCamera : public Camera
 	{
 	public:
 		SceneCamera();

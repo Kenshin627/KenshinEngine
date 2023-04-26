@@ -10,7 +10,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API Application
+	class  Application
 	{
 	public:
 		Application(const WindowProps& props);

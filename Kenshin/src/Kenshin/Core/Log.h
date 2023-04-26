@@ -6,7 +6,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API Log
+	class  Log
 	{
 	public:
 		static void init();

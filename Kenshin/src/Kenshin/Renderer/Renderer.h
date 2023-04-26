@@ -6,7 +6,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API Renderer
+	class  Renderer
 	{
 	public:
 		static void Init();

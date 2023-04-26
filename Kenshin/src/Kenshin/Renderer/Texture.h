@@ -2,7 +2,7 @@
 
 namespace Kenshin
 {
-	class KENSHIN_API Texture
+	class  Texture
 	{
 	public:
 		virtual unsigned GetWidth() const = 0;
@@ -14,7 +14,7 @@ namespace Kenshin
 		virtual bool operator==(const Texture& other) const = 0;
 	};
 
-	class KENSHIN_API Texture2D : public Texture
+	class  Texture2D : public Texture
 	{
 	public:
 		virtual ~Texture2D() = default;
