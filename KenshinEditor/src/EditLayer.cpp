@@ -1,6 +1,8 @@
 #include "kspch.h"
 #include "EditLayer.h"
 #include <imgui.h>
+#include <ImGuizmo.h>
+#include <gtc/type_ptr.hpp>
 
 namespace Kenshin
 {
@@ -20,9 +22,14 @@ namespace Kenshin
 
 		//Entites
 		m_ActiveScene = CreateRef<Scene>();
-		
+
 		//Panels
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		//gizmoButtons
+		m_GizmoBtns[0] = Texture2D::Create("resource/textures/translate.png");
+		m_GizmoBtns[1] = Texture2D::Create("resource/textures/rotate.png");
+		m_GizmoBtns[2] = Texture2D::Create("resource/textures/scale.png");
 	}
 
 	void EditLayer::OnDetach() { }
@@ -32,7 +39,7 @@ namespace Kenshin
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		if (FrameBufferSpecification spec = m_Framebuffer->GetSpecification(); m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
-			
+
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
@@ -55,6 +62,56 @@ namespace Kenshin
 	void EditLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditLayer::OnKeyPressed, std::placeholders::_1));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(EditLayer::OnMouseEvent, std::placeholders::_1));
+	}
+
+	bool EditLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		if (e.IsRepeat())
+		{
+			return false;
+		}
+
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		switch (e.GetKeyCode())
+		{
+		case Key::Q:
+			if (!ImGuizmo::IsUsing())
+			{
+				m_GizmoType = -1;				
+			}
+			break;
+		
+		case Key::W:
+			if (!ImGuizmo::IsUsing())
+			{
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			}
+			break;
+		case Key::E:
+			if (!ImGuizmo::IsUsing())
+			{
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			}
+			break;
+		case Key::R:
+			if (!ImGuizmo::IsUsing())
+			{
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			}
+			break;
+		}
+		return true;
+	}
+
+
+	bool EditLayer::OnMouseEvent(MouseButtonPressedEvent& e)
+	{
+		return false;
 	}
 
 	void EditLayer::OnImGuiRender()
@@ -124,6 +181,14 @@ namespace Kenshin
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
 
+		ImVec2 viewportOffset = ImGui::GetWindowPos();
+		ImVec2 minContentPos = ImGui::GetWindowContentRegionMin();
+		ImVec2 maxContentPos = ImGui::GetWindowContentRegionMax();
+		m_ViewportBounds[0] = glm::vec2(minContentPos.x + viewportOffset.x, minContentPos.y + viewportOffset.y);
+		m_ViewportBounds[1] = glm::vec2(maxContentPos.x + viewportOffset.x, maxContentPos.y + viewportOffset.y);
+
+		
+
 		m_ViewportActive = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();		
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportActive);
 		
@@ -133,11 +198,43 @@ namespace Kenshin
 		uint64_t textureID = m_Framebuffer->GetColorAttachment();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+		/*ImGui::SameLine();
+		for (auto& tex : m_GizmoBtns)
+		{			
+			ImGui::ImageButton(tex->GetPath().c_str(), (void*)tex->GetRendererID(), { 18, 18 });
+		}*/
+
 		//guizmo
+		ImGuizmo::SetOrthographic(true);
+		ImGuizmo::SetDrawlist();
 		auto camera = m_ActiveScene->GetMainCamera();
-		auto selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
+		if (selectedEntity && m_GizmoType != -1)
+		{
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 0.5f;
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+			{
+				snapValue = 45.0f;
+			}
 
+			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
+			auto& proj = camera.first;
+			auto& view = camera.second;
+			auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
+			auto transform = transformComponent.GetTransform();
+			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
+			if (ImGuizmo::IsUsing())
+			{				
+				glm::vec3 translation, rotation, scale;
+				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+				transformComponent.Translation = translation;
+				transformComponent.Rotation = glm::radians(rotation);
+				transformComponent.Scale = scale;
+			}
+		}
 
 		ImGui::End();
 		ImGui::PopStyleVar();

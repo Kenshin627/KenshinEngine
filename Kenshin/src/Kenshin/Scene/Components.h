@@ -23,7 +23,7 @@ namespace Kenshin
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent& rhs) = default;
 		TransformComponent(const glm::vec3& translation) :Translation(translation) {}
-		glm::mat4 GetTransform() const 
+		glm::mat4& GetTransform() const 
 		{
 			glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), Rotation.x, { 1.0f, 0.0f, 0.0f }) *
 								 glm::rotate(glm::mat4(1.0f), Rotation.y, { 0.0f, 1.0f, 0.0f }) *

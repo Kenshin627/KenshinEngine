@@ -150,15 +150,16 @@ namespace Kenshin
 		com.Bind<QuadController>();
 	}
 
-	SceneCamera& Scene::GetMainCamera()
+	std::pair<glm::mat4, glm::mat4> Scene::GetMainCamera()
 	{
-		auto view = m_Registry.view<CameraComponent>();
+		auto view = m_Registry.view<CameraComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
 			auto& cameraComponent = view.get<CameraComponent>(entity);
+			auto& transform = view.get<TransformComponent>(entity).GetTransform();
 			if (cameraComponent.Primary)
 			{
-				return cameraComponent.Camera;
+				return std::make_pair(cameraComponent.Camera.GetProjection(), transform);
 			}
 		}
 		return {};

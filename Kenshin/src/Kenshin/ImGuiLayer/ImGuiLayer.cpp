@@ -54,8 +54,8 @@ namespace Kenshin
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
-		ImGuizmo::BeginFrame();
 		ImGui::NewFrame();		
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End()

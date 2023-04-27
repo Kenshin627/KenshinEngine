@@ -8,6 +8,9 @@
 #include "Kenshin/Core/KeyCodes.h"
 #include "Kenshin/Core/MouseCodes.h"
 #include "Kenshin/Core/TimeStamp.h"
+#include "Kenshin/Events/Event.h"
+#include "Kenshin/Events/KeyEvent.h"
+#include "Kenshin/Events/MouseEvent.h"
 
 //Renderer
 #include "Kenshin/Renderer/Renderer.h"

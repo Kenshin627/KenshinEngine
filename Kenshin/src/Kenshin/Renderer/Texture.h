@@ -12,6 +12,7 @@ namespace Kenshin
 		virtual void UnBind(unsigned slot = 0) const = 0;
 		virtual void SetData(void* data, uint32_t size) const = 0;
 		virtual bool operator==(const Texture& other) const = 0;
+		virtual std::string GetPath() const = 0;
 	};
 
 	class  Texture2D : public Texture

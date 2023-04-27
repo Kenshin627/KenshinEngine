@@ -15,6 +15,8 @@ namespace Kenshin
 		virtual void OnUpdate(TimeStamp ts) override;
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& e) override;
+		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseEvent(MouseButtonPressedEvent& e);
 	private:
 		OrthoGraphicCameraController m_CameraController;
 		glm::vec4 m_SquareColor;
@@ -28,8 +30,11 @@ namespace Kenshin
 		Ref<SubTexture2D> m_Cat;
 		Ref<FrameBuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		glm::vec2 m_ViewportBounds[2];
 		bool m_ViewportActive = true;
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		Ref<Texture2D> m_GizmoBtns[3];
+		int m_GizmoType = -1;
 	};
 }

@@ -19,6 +19,8 @@ namespace Kenshin
 		{
 			return m_RendererID == other.GetRendererID();
 		}
+
+		virtual std::string GetPath() const override { return m_Path; }
 	private:
 		std::string m_Path;
 		unsigned m_RendererID;

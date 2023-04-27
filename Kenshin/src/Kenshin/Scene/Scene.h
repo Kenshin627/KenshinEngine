@@ -2,6 +2,7 @@
 #include "Kenshin/Core/Core.h"
 #include "entt.hpp"
 #include "Kenshin/Core/TimeStamp.h"
+#include "SceneCamera.h"
 
 namespace Kenshin
 {
@@ -20,7 +21,7 @@ namespace Kenshin
 		void RenderScene(TimeStamp ts);
 		template<typename T>
 		void OnEntityAddComponent(Entity* entity, T& component);
-		SceneCamera& GetMainCamera();
+		std::pair<glm::mat4, glm::mat4>  GetMainCamera();
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;
