@@ -6,42 +6,51 @@ layout (location = 1) in vec4 aColor;
 layout (location = 2) in vec2 aTexCoord;
 layout (location = 3) in float aTilingFactor;
 layout (location = 4) in float aTexIndex;
+layout (location = 5) in int aEntityId;
 
 uniform mat4 u_ViewProjectionMatrix;
 
-out VertexOutput
+struct VertexOutput
 {
 	vec4 Color;
 	vec2 TexCoord;
 	float TexIndex;
 	float TilingFactor;
-} vs_out;
+};
 
+layout (location = 0) out VertexOutput Output;
+layout (location = 4) out flat int v_EntityID;
 
 void main()
 {
-	vs_out.Color = aColor;
-	vs_out.TexCoord = aTexCoord;
-	vs_out.TexIndex = aTexIndex;
-	vs_out.TilingFactor = aTilingFactor;
+	Output.Color = aColor;
+	Output.TexCoord = aTexCoord;
+	Output.TexIndex = aTexIndex;
+	Output.TilingFactor = aTilingFactor;
+	
+	v_EntityID = aEntityId;
+	
 	gl_Position = u_ViewProjectionMatrix * vec4(aPosition, 1.0);
 }
 
 #type fragment
 #version 450 core
 
-in VertexOutput
+struct VertexOutput
 {
 	vec4 Color;
 	vec2 TexCoord;
 	float TexIndex;
 	float TilingFactor;
-} vs_In;
+};
+
+layout (location = 0) in VertexOutput vs_In;
+layout (location = 4) in flat int v_EntityID;
 
 layout (binding = 0) uniform sampler2D u_Textures[32];
 
-
-out vec4 fragColor;
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out int pickData;
 
 void main()
 {
@@ -82,5 +91,6 @@ void main()
 		case 30: texColor *= texture(u_Textures[30], vs_In.TexCoord * vs_In.TilingFactor); break;
 		case 31: texColor *= texture(u_Textures[31], vs_In.TexCoord * vs_In.TilingFactor); break;
 	}
-	fragColor = texColor;
+	fragColor = vec4(vec3(v_EntityID), 1.0);
+	pickData = v_EntityID;
 }

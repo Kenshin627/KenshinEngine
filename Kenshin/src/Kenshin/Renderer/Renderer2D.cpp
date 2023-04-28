@@ -11,6 +11,7 @@ namespace Kenshin
 		glm::vec2 TexCoord;
 		float TilingFactor;
 		float TexIndex;
+		int EntityId;
 	};
 
 	struct Renderer2DStorageData
@@ -47,7 +48,8 @@ namespace Kenshin
 			{ "aColor", Kenshin::ShaderDataType::Float4 },
 			{ "aTexCoord", Kenshin::ShaderDataType::Float2 },
 			{ "aTilingFactor", Kenshin::ShaderDataType::Float },
-			{ "aTexIndex", Kenshin::ShaderDataType::Float }
+			{ "aTexIndex", Kenshin::ShaderDataType::Float },
+			{ "aEntityId", Kenshin::ShaderDataType::Int }
 		});
 		s_Data.QuadVA->AddVertexBuffer(s_Data.QuadVB);
 		s_Data.QuadVertexArrayBufferBase = new QuadVertex[s_Data.MaxVertices];
@@ -133,73 +135,40 @@ namespace Kenshin
 		}
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, int entityId)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, color);
+		DrawQuad({ position.x, position.y, 0.0f }, size, color, entityId);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityId)
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuad(transform, color);
+		DrawQuad(transform, color, entityId);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, int entityId, float tilingFactor, const glm::vec4& tintColor)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor);
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, entityId, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, int entityId, float tilingFactor, const glm::vec4& tintColor)
 	{		
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });		
-		DrawQuad(transform, texture, tilingFactor, tintColor);
+		DrawQuad(transform, texture, tilingFactor, tintColor, entityId);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, int entityId, float tilingFactor, const glm::vec4& tintColor)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tilingFactor);
+		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, entityId, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, int entityId, float tilingFactor, const glm::vec4& tintColor)
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuad(transform, subTexture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4& color)
-	{
-		DrawRotateQuad({ position.x, position.y, 0.0f }, rotation, size, color);
-	}
-
-	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
-	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuad(transform, color);
-	}
-
-	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
-	{
-		DrawRotateQuad({ position.x, position.y, 0.0f }, rotation, size, texture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
-	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuad(transform, texture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotateQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
-	{
-		DrawRotateQuad({ position.x, position.y, 0.0f }, rotation, size, subTexture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotateQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
-	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f }) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		DrawQuad(transform, subTexture, tilingFactor, tintColor);
+		DrawQuad(transform, subTexture, tilingFactor, tintColor, entityId);
 	}
 	
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityId)
 	{
 		//TODO:检查maxIndices，如果到达上限，进入下一次Batch
 		if (s_Data.QuadIndexedCount >= s_Data.MaxIndices)
@@ -213,13 +182,14 @@ namespace Kenshin
 			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
 			s_Data.QuadVertexArrayBufferPtr->TilingFactor = 1;
 			s_Data.QuadVertexArrayBufferPtr->TexIndex = 0; //whiteTexture
+			s_Data.QuadVertexArrayBufferPtr->EntityId = entityId;
 			s_Data.QuadVertexArrayBufferPtr++;
 		}
 		s_Data.QuadIndexedCount += 6;
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityId)
 	{
 		if (s_Data.QuadIndexedCount >= s_Data.MaxIndices)
 		{
@@ -255,13 +225,14 @@ namespace Kenshin
 			s_Data.QuadVertexArrayBufferPtr->TexCoord = s_Data.QuadTexCoord[i];
 			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexArrayBufferPtr->EntityId = entityId;
 			s_Data.QuadVertexArrayBufferPtr++;
 		}
 		s_Data.QuadIndexedCount += 6;
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor, int entityId)
 	{
 		if (s_Data.QuadIndexedCount >= s_Data.MaxIndices)
 		{
@@ -298,6 +269,7 @@ namespace Kenshin
 			s_Data.QuadVertexArrayBufferPtr->TexCoord = texCoords[i];
 			s_Data.QuadVertexArrayBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexArrayBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexArrayBufferPtr->EntityId = entityId;
 			s_Data.QuadVertexArrayBufferPtr++;
 		}
 		s_Data.QuadIndexedCount += 6;

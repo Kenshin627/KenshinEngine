@@ -10,7 +10,14 @@ namespace Kenshin
 
 	void EditLayer::OnAttach()
 	{
-		m_Framebuffer = FrameBuffer::Create(FrameBufferSpecification(1280, 720, 1, false));
+		FrameBufferSpecification fbSpec;
+		fbSpec.attachments = { FrameBufferTextureFormat::RGBA8, FrameBufferTextureFormat::RED_INTEGER, FrameBufferTextureFormat::DEPTH };
+		fbSpec.Width = 1280;
+		fbSpec.Height = 720;
+		fbSpec.Samples = 1;
+		fbSpec.SwapChainTarget = false;
+		m_Framebuffer = FrameBuffer::Create(fbSpec);
+		
 		m_checkboardTexture = Texture2D::Create("resource/textures/Checkerboard.png");
 		m_BandTexture = Texture2D::Create("resource/textures/ledZepppelin.jpg");
 		m_SpiriteSheet = Texture2D::Create("resource/textures/RPGpack_sheet.png");
@@ -54,8 +61,26 @@ namespace Kenshin
 		m_Framebuffer->Bind();
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		RendererCommand::Clear();
+		m_Framebuffer->ClearAttachment(1, -1);
 
 		m_ActiveScene->RenderScene(ts, m_EditorCamera);
+
+		//temp
+		auto [mpx, mpy] = ImGui::GetMousePos();
+		mpx -= m_ViewportBounds[0].x;
+		mpy -= m_ViewportBounds[0].y;
+
+		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+
+		mpy = viewportSize.y - mpy;
+		int mouseX = (int)mpx;
+		int mouseY = (int)mpy;
+
+		if (mouseX >= 0 && mouseX < (int)viewportSize.x && mouseY >= 0 && mouseY < (int)viewportSize.y)
+		{
+			int data = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+			KS_CORE_INFO("EntiyId: {0}", data);
+		}
 
 		m_Framebuffer->Unbind();
 	}
@@ -195,7 +220,7 @@ namespace Kenshin
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-		uint64_t textureID = m_Framebuffer->GetColorAttachment();
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID(0);
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		/*ImGui::SameLine();

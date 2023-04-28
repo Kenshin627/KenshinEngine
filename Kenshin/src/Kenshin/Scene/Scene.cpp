@@ -105,7 +105,7 @@ namespace Kenshin
 		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
 			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
-				Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color);
+				Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color, (int)entity);
 			});
 			Renderer2D::EndScene();
 		}
@@ -115,7 +115,7 @@ namespace Kenshin
 	{
 		Renderer2D::BeginScene(camera);
 		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
-			Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color);
+			Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color, (int)entity);
 			});
 		Renderer2D::EndScene();
 	}
