@@ -91,6 +91,6 @@ void main()
 		case 30: texColor *= texture(u_Textures[30], vs_In.TexCoord * vs_In.TilingFactor); break;
 		case 31: texColor *= texture(u_Textures[31], vs_In.TexCoord * vs_In.TilingFactor); break;
 	}
-	fragColor = vec4(vec3(v_EntityID), 1.0);
+	fragColor = texColor;
 	pickData = v_EntityID;
 }

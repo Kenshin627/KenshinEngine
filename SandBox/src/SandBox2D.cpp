@@ -25,9 +25,9 @@ void SandBox2D::OnUpdate(Kenshin::TimeStamp ts)
 	Kenshin::RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 	Kenshin::RendererCommand::Clear();
 	Kenshin::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Kenshin::Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f, 2.0f), m_Tree);
+	/*Kenshin::Renderer2D::DrawQuad(glm::vec2(0.0f), glm::vec2(1.0f, 2.0f), m_Tree);
 	Kenshin::Renderer2D::DrawQuad(glm::vec2(-1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Pig);
-	Kenshin::Renderer2D::DrawQuad(glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Cat);
+	Kenshin::Renderer2D::DrawQuad(glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 1.0f), m_Cat);*/
 	Kenshin::Renderer2D::EndScene();
 }
 

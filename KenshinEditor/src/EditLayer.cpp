@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include <gtc/type_ptr.hpp>
+#include <entt.hpp>
 
 namespace Kenshin
 {
@@ -76,9 +77,13 @@ namespace Kenshin
 		int mouseX = (int)mpx;
 		int mouseY = (int)mpy;
 
-		if (mouseX >= 0 && mouseX < (int)viewportSize.x && mouseY >= 0 && mouseY < (int)viewportSize.y)
+		if (mouseX >= 0 && mouseX < (int)viewportSize.x && mouseY >= 0 && mouseY < (int)viewportSize.y && Input::IsMousePressed(Mouse::ButtonLeft))
 		{
 			int data = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+			if (data != -1)
+			{
+				m_SelectionEntity = Entity((entt::entity)data, m_ActiveScene.get());
+			}
 			KS_CORE_INFO("EntiyId: {0}", data);
 		}
 
@@ -235,7 +240,7 @@ namespace Kenshin
 		auto camera = m_EditorCamera;
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
-		if (selectedEntity && m_GizmoType != -1)
+		if (m_SelectionEntity && m_GizmoType != -1)
 		{
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
 			float snapValue = 0.5f;
@@ -247,7 +252,7 @@ namespace Kenshin
 			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
 			auto& proj = m_EditorCamera.GetProjection();
 			auto& view = m_EditorCamera.GetViewMatrix();
-			auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
+			auto& transformComponent = m_SelectionEntity.GetComponent<TransformComponent>();
 			auto transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);

@@ -36,6 +36,7 @@ namespace Kenshin
 		bool m_ViewportActive = true;
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		Entity m_SelectionEntity;
 		Ref<Texture2D> m_GizmoBtns[3];
 		int m_GizmoType = -1;
 	};
