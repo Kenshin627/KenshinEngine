@@ -179,6 +179,7 @@
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h" />
     <ClInclude Include="src\Kenshin\Scene\CameraController.h" />
     <ClInclude Include="src\Kenshin\Scene\Components.h" />
+    <ClInclude Include="src\Kenshin\Scene\EditorCamera.h" />
     <ClInclude Include="src\Kenshin\Scene\Entity.h" />
     <ClInclude Include="src\Kenshin\Scene\QuadController.h" />
     <ClInclude Include="src\Kenshin\Scene\Scene.h" />
@@ -498,6 +499,7 @@
     <ClCompile Include="src\Kenshin\Renderer\Texture.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Scene\CameraController.cpp" />
+    <ClCompile Include="src\Kenshin\Scene\EditorCamera.cpp" />
     <ClCompile Include="src\Kenshin\Scene\Entity.cpp" />
     <ClCompile Include="src\Kenshin\Scene\QuadController.cpp" />
     <ClCompile Include="src\Kenshin\Scene\Scene.cpp" />

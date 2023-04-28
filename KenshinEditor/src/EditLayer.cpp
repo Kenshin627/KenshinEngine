@@ -19,6 +19,7 @@ namespace Kenshin
 		m_Pig = SubTexture2D::Create(m_SpirteAnima, { 4, 4 }, { 136, 136 });
 		m_Cat = SubTexture2D::Create(m_SpirteAnima, { 0, 3 }, { 136, 136 });
 		m_CameraController.SetZoomLevel(5.5f);
+		m_EditorCamera = EditorCamera();
 
 		//Entites
 		m_ActiveScene = CreateRef<Scene>();
@@ -39,30 +40,29 @@ namespace Kenshin
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		if (FrameBufferSpecification spec = m_Framebuffer->GetSpecification(); m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
-
+			m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
 			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		Renderer2D::ResetStatistics();
 		if (m_ViewportActive)
-		{
-			m_CameraController.OnUpdate(ts);
+		{			
+			m_EditorCamera.OnUpdate(ts);
 		}
 
 		m_Framebuffer->Bind();
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		RendererCommand::Clear();
 
-		m_ActiveScene->RenderScene(ts);
+		m_ActiveScene->RenderScene(ts, m_EditorCamera);
 
 		m_Framebuffer->Unbind();
 	}
 
 	void EditLayer::OnEvent(Event& e)
 	{
-		m_CameraController.OnEvent(e);
-
+		m_EditorCamera.OnEvent(e);
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(EditLayer::OnKeyPressed, std::placeholders::_1));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(EditLayer::OnMouseEvent, std::placeholders::_1));
@@ -205,9 +205,9 @@ namespace Kenshin
 		}*/
 
 		//guizmo
-		ImGuizmo::SetOrthographic(true);
+		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
-		auto camera = m_ActiveScene->GetMainCamera();
+		auto camera = m_EditorCamera;
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
 		if (selectedEntity && m_GizmoType != -1)
@@ -220,8 +220,8 @@ namespace Kenshin
 			}
 
 			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
-			auto& proj = camera.first;
-			auto& view = camera.second;
+			auto& proj = m_EditorCamera.GetProjection();
+			auto& view = m_EditorCamera.GetViewMatrix();
 			auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
 			auto transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);

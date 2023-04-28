@@ -3,6 +3,7 @@
 #include "entt.hpp"
 #include "Kenshin/Core/TimeStamp.h"
 #include "SceneCamera.h"
+#include "EditorCamera.h"
 
 namespace Kenshin
 {
@@ -19,6 +20,7 @@ namespace Kenshin
 		void DestroyEntity(Entity entity);
 		entt::registry& Registry() { return m_Registry; }
 		void RenderScene(TimeStamp ts);
+		void RenderScene(TimeStamp ts, const EditorCamera& camera);
 		template<typename T>
 		void OnEntityAddComponent(Entity* entity, T& component);
 		std::pair<glm::mat4, glm::mat4>  GetMainCamera();

@@ -1,6 +1,7 @@
 #pragma once
 #include "Kenshin.h"
 #include "panel/SceneHierarchyPanel .h"
+#include "Kenshin/Scene/EditorCamera.h"
 
 namespace Kenshin
 {
@@ -19,6 +20,7 @@ namespace Kenshin
 		bool OnMouseEvent(MouseButtonPressedEvent& e);
 	private:
 		OrthoGraphicCameraController m_CameraController;
+		EditorCamera m_EditorCamera;
 		glm::vec4 m_SquareColor;
 		Ref<Texture2D> m_checkboardTexture;
 		Ref<Texture2D> m_BandTexture;

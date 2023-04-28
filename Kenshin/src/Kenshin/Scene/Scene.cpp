@@ -111,6 +111,15 @@ namespace Kenshin
 		}
 	}
 
+	void Scene::RenderScene(TimeStamp ts, const EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
+			Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color);
+			});
+		Renderer2D::EndScene();
+	}
+
 	template<typename T>
 	void Scene::OnEntityAddComponent(Entity* entity, T& component)
 	{
