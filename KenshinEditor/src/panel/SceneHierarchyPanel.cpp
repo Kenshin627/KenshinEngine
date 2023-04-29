@@ -325,4 +325,9 @@ namespace Kenshin
 	{
 		return m_SelectionContext;
 	}
+
+	void SceneHierarchyPanel::SetSelectiedEntity(const Entity& entity)
+	{
+		m_SelectionContext = entity;
+	}
 }

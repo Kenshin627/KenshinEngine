@@ -33,10 +33,12 @@ namespace Kenshin
 		Ref<FrameBuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		glm::vec2 m_ViewportBounds[2];
-		bool m_ViewportActive = true;
+		bool m_ViewportHovered = false;
+		bool m_ViewportFocus = false;
+		Entity m_HoveredEntity;
+		Entity m_SelectedEntity;
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
-		Entity m_SelectionEntity;
 		Ref<Texture2D> m_GizmoBtns[3];
 		int m_GizmoType = -1;
 	};

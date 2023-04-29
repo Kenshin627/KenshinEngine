@@ -5,6 +5,9 @@
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
 
+#define GLM_ENABLE_EXPERIMENTAL 
+#include <gtx/quaternion.hpp>
+
 namespace Kenshin
 {
 	struct TagComponent

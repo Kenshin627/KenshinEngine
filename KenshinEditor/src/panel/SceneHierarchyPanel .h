@@ -19,6 +19,7 @@ namespace Kenshin
 		template<typename T>
 		void DisplayAddComponentEntity(const std::string& name);
 		Entity GetSelectedEntity();
+		void SetSelectiedEntity(const Entity& entity);
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;

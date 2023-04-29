@@ -54,7 +54,7 @@ namespace Kenshin
 		}
 
 		Renderer2D::ResetStatistics();
-		if (m_ViewportActive)
+		if (m_ViewportFocus && m_ViewportHovered)
 		{			
 			m_EditorCamera.OnUpdate(ts);
 		}
@@ -66,7 +66,6 @@ namespace Kenshin
 
 		m_ActiveScene->RenderScene(ts, m_EditorCamera);
 
-		//temp
 		auto [mpx, mpy] = ImGui::GetMousePos();
 		mpx -= m_ViewportBounds[0].x;
 		mpy -= m_ViewportBounds[0].y;
@@ -77,13 +76,10 @@ namespace Kenshin
 		int mouseX = (int)mpx;
 		int mouseY = (int)mpy;
 
-		if (mouseX >= 0 && mouseX < (int)viewportSize.x && mouseY >= 0 && mouseY < (int)viewportSize.y && Input::IsMousePressed(Mouse::ButtonLeft))
+		if (mouseX >= 0 && mouseX < (int)viewportSize.x && mouseY >= 0 && mouseY < (int)viewportSize.y)
 		{
-			int data = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			if (data != -1)
-			{
-				m_SelectionEntity = Entity((entt::entity)data, m_ActiveScene.get());
-			}
+			int data = m_Framebuffer->ReadPixel(1, mouseX, mouseY);			
+			m_HoveredEntity = data == -1? Entity() : Entity((entt::entity)data, m_ActiveScene.get());			
 			KS_CORE_INFO("EntiyId: {0}", data);
 		}
 
@@ -141,6 +137,11 @@ namespace Kenshin
 
 	bool EditLayer::OnMouseEvent(MouseButtonPressedEvent& e)
 	{
+		if (e.GetMouseButton() == Mouse::ButtonLeft && m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+		{
+			m_SelectedEntity = m_HoveredEntity;
+			m_SceneHierarchyPanel.SetSelectiedEntity(m_HoveredEntity);
+		}
 		return false;
 	}
 
@@ -203,6 +204,8 @@ namespace Kenshin
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+		const char* selectedTag = m_SelectedEntity ? m_SelectedEntity.GetComponent<TagComponent>().Tag.c_str() : "NONE";
+		ImGui::Text("Selected Entity: %s", selectedTag);
 		ImGui::End();
 
 		//hierarchyPanel
@@ -218,9 +221,10 @@ namespace Kenshin
 		m_ViewportBounds[1] = glm::vec2(maxContentPos.x + viewportOffset.x, maxContentPos.y + viewportOffset.y);
 
 		
-
-		m_ViewportActive = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();		
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportActive);
+		m_ViewportFocus = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+			
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocus && !m_ViewportHovered);
 		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -228,19 +232,12 @@ namespace Kenshin
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID(0);
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		/*ImGui::SameLine();
-		for (auto& tex : m_GizmoBtns)
-		{			
-			ImGui::ImageButton(tex->GetPath().c_str(), (void*)tex->GetRendererID(), { 18, 18 });
-		}*/
-
 		//guizmo
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
 		auto camera = m_EditorCamera;
-		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
-		if (m_SelectionEntity && m_GizmoType != -1)
+		if (m_SelectedEntity && m_GizmoType != -1)
 		{
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
 			float snapValue = 0.5f;
@@ -252,7 +249,7 @@ namespace Kenshin
 			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
 			auto& proj = m_EditorCamera.GetProjection();
 			auto& view = m_EditorCamera.GetViewMatrix();
-			auto& transformComponent = m_SelectionEntity.GetComponent<TransformComponent>();
+			auto& transformComponent = m_SelectedEntity.GetComponent<TransformComponent>();
 			auto transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
