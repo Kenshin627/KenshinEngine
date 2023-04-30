@@ -163,6 +163,7 @@
     <ClInclude Include="src\Kenshin\Events\KeyEvent.h" />
     <ClInclude Include="src\Kenshin\Events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\ImGuiLayer\ImGuiLayer.h" />
+    <ClInclude Include="src\Kenshin\Math\Math.h" />
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\Camera.h" />
     <ClInclude Include="src\Kenshin\Renderer\FrameBuffer.h" />
@@ -485,6 +486,7 @@
     <ClCompile Include="src\Kenshin\Core\Log.cpp" />
     <ClCompile Include="src\Kenshin\Core\Window.cpp" />
     <ClCompile Include="src\Kenshin\ImGuiLayer\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Kenshin\Math\Math.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Camera.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\FrameBuffer.cpp" />

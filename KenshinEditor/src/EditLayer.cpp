@@ -4,6 +4,10 @@
 #include <ImGuizmo.h>
 #include <gtc/type_ptr.hpp>
 #include <entt.hpp>
+#include "Kenshin/Math/Math.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <gtx/matrix_decompose.hpp>
 
 namespace Kenshin
 {
@@ -139,7 +143,6 @@ namespace Kenshin
 	{
 		if (e.GetMouseButton() == Mouse::ButtonLeft && m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
 		{
-			m_SelectedEntity = m_HoveredEntity;
 			m_SceneHierarchyPanel.SetSelectiedEntity(m_HoveredEntity);
 		}
 		return false;
@@ -197,6 +200,11 @@ namespace Kenshin
 
 		style.WindowMinSize.x = minWinSizeX;
 
+		//hierarchyPanel
+		m_SceneHierarchyPanel.OnImGuiRender();
+
+		auto selectionEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+
 		ImGui::Begin("Stats");
 		auto stats = Renderer2D::GetStatistics();
 		ImGui::Text("Renderer2D Stats:");
@@ -204,12 +212,9 @@ namespace Kenshin
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-		const char* selectedTag = m_SelectedEntity ? m_SelectedEntity.GetComponent<TagComponent>().Tag.c_str() : "NONE";
+		const char* selectedTag = selectionEntity ? selectionEntity.GetComponent<TagComponent>().Tag.c_str() : "NONE";
 		ImGui::Text("Selected Entity: %s", selectedTag);
 		ImGui::End();
-
-		//hierarchyPanel
-		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
@@ -236,8 +241,9 @@ namespace Kenshin
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
 		auto camera = m_EditorCamera;
+		
 
-		if (m_SelectedEntity && m_GizmoType != -1)
+		if (selectionEntity && m_GizmoType != -1)
 		{
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
 			float snapValue = 0.5f;
@@ -249,16 +255,17 @@ namespace Kenshin
 			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
 			auto& proj = m_EditorCamera.GetProjection();
 			auto& view = m_EditorCamera.GetViewMatrix();
-			auto& transformComponent = m_SelectedEntity.GetComponent<TransformComponent>();
+			auto& transformComponent = selectionEntity.GetComponent<TransformComponent>();
 			auto transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
 			if (ImGuizmo::IsUsing())
 			{				
 				glm::vec3 translation, rotation, scale;
-				ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+				auto deltaRotation = transformComponent.Rotation - rotation;
 				transformComponent.Translation = translation;
-				transformComponent.Rotation = glm::radians(rotation);
+				transformComponent.Rotation += deltaRotation;
 				transformComponent.Scale = scale;
 			}
 		}

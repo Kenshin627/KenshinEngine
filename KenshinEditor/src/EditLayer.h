@@ -36,7 +36,6 @@ namespace Kenshin
 		bool m_ViewportHovered = false;
 		bool m_ViewportFocus = false;
 		Entity m_HoveredEntity;
-		Entity m_SelectedEntity;
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		Ref<Texture2D> m_GizmoBtns[3];
