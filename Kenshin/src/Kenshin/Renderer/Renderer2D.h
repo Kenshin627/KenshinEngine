@@ -8,6 +8,7 @@
 #include "SubTexture2D.h"
 #include "Camera.h"
 #include "Kenshin/Scene/EditorCamera.h"
+#include "Kenshin/Scene/Components.h"
 
 namespace Kenshin
 {
@@ -32,6 +33,8 @@ namespace Kenshin
 		static void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entiyId);
 		static void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityId);
 		static void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor, int entityId);
+
+		static void Renderer2D::DrawSpirite(const glm::mat4& transform, const SpiriteRendererComponent& spirite, int entityId);
 		struct Statistics
 		{
 			uint32_t DrawCalls = 0;

@@ -276,6 +276,18 @@ namespace Kenshin
 		s_Data.Stats.QuadCount++;
 	}
 
+	void Renderer2D::DrawSpirite(const glm::mat4& transform, const SpiriteRendererComponent& spirite, int entityId)
+	{
+		if (spirite.Texture)
+		{
+			DrawQuad(transform, spirite.Texture, spirite.TilingFactor, spirite.Color, entityId);
+		}
+		else 
+		{
+			DrawQuad(transform, spirite.Color, entityId);
+		}
+	}
+
 	const Renderer2D::Statistics& Renderer2D::GetStatistics()
 	{
 		return s_Data.Stats;

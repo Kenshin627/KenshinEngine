@@ -4,11 +4,12 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "Kenshin/Scene/QuadController.h"
+#include <filesystem>
 
 namespace Kenshin
 {
 	template<typename T, typename UIFunction>
-	static void DrawComponent(const std::string& name, Entity entity, UIFunction func)
+	void SceneHierarchyPanel::DrawComponent(const std::string& name, Entity entity, UIFunction func)
 	{
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 		if (entity.HasComponent<T>())
@@ -307,9 +308,28 @@ namespace Kenshin
 			}
 		});
 
-		DrawComponent<SpiriteRendererComponent>("Spirite", entity, [](SpiriteRendererComponent& component) {
+		DrawComponent<SpiriteRendererComponent>("Spirite", entity, [&](SpiriteRendererComponent& component) {
 			glm::vec4& color = component.Color;
 			ImGui::ColorEdit4("Color", &color.x);
+
+			ImGui::Text("Texture");
+			
+			auto textureId = component.Texture ? component.Texture->GetRendererID() : m_DefaultTextureSlot->GetRendererID();
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 20);
+			ImGui::Image((ImTextureID)textureId, { 64, 64 }, { 0,1 }, { 1,0 });
+			ImGui::PopStyleVar();
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* itemPath = (const wchar_t*)payload->Data;
+					std::filesystem::path texturePath(itemPath);
+					Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
+					component.Texture = texture;
+					ImGui::EndDragDropTarget();
+				}				
+			}
+			ImGui::DragFloat("TilingFactor", &component.TilingFactor, 1.0, 0.1f, 100.0f);
 		});
 	}
 

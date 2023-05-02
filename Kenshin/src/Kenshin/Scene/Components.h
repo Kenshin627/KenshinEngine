@@ -4,6 +4,7 @@
 #include <gtc/matrix_transform.hpp>
 #include "SceneCamera.h"
 #include "ScriptableEntity.h"
+#include "Kenshin/Renderer/Texture.h"
 
 #define GLM_ENABLE_EXPERIMENTAL 
 #include <gtx/quaternion.hpp>
@@ -39,6 +40,8 @@ namespace Kenshin
 	struct SpiriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f };
+		Ref<Texture2D> Texture = nullptr;
+		float TilingFactor = 1.0f;
 		SpiriteRendererComponent() = default;
 		SpiriteRendererComponent(const SpiriteRendererComponent&) = default;
 		SpiriteRendererComponent(const glm::vec4& color) :Color(color) {}
