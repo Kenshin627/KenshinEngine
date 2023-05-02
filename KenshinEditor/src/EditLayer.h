@@ -1,6 +1,7 @@
 #pragma once
 #include "Kenshin.h"
 #include "panel/SceneHierarchyPanel .h"
+#include "panel/ContentBrowserPanel.h"
 #include "Kenshin/Scene/EditorCamera.h"
 
 namespace Kenshin
@@ -38,6 +39,7 @@ namespace Kenshin
 		Entity m_HoveredEntity;
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 		Ref<Texture2D> m_GizmoBtns[3];
 		int m_GizmoType = -1;
 	};

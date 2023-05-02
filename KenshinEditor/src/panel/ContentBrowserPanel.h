@@ -5,10 +5,10 @@
 
 namespace Kenshin
 {
-	class ContentBrowerPanel
+	class ContentBrowserPanel
 	{
 	public:
-		ContentBrowerPanel();
+		ContentBrowserPanel();
 		void OnImGuiRender();
 	private:
 		std::filesystem::path m_BaseDictionary;

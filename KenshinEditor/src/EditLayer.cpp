@@ -202,6 +202,7 @@ namespace Kenshin
 
 		//hierarchyPanel
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 		auto selectionEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
