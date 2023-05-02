@@ -86,7 +86,8 @@ namespace Kenshin
 
 	void ImGuiLayer::SetDarkThemecolors()
 	{
-		auto& colors = ImGui::GetStyle().Colors;
+		ImGuiStyle& style = ImGui::GetStyle();
+		auto& colors = style.Colors;
 		colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
 
 		// Headers
@@ -115,6 +116,14 @@ namespace Kenshin
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
+		//Scrollbar
+		colors[ImGuiCol_ScrollbarBg] = ImVec4{ 0, 0, 0, 1 };
+		colors[ImGuiCol_ScrollbarGrab] = ImVec4{ 0.48, 0.48, 0.48,1 };
+		colors[ImGuiCol_Tab] = ImVec4{ 0.121, 0.121, 0.121, 1 };
+		style.ScrollbarSize = 1.0f;
+		style.TabRounding = 0.0f;
+
 	}
 
 	uint32_t ImGuiLayer::GetActiveWidgetID() const

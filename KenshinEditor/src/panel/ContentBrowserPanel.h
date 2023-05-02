@@ -15,5 +15,6 @@ namespace Kenshin
 		std::filesystem::path m_CurrentDictionary;
 		Ref<Texture2D> m_DirectoryIcon;
 		Ref<Texture2D> m_FileIcon;
+		Ref<Texture2D> m_BackIcon;
 	};
 }

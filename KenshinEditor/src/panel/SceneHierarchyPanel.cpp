@@ -132,7 +132,7 @@ namespace Kenshin
 
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
-		ImGui::Begin("Scene Hierachy");
+		ImGui::Begin("Scene Hierachy", nullptr, ImGuiWindowFlags_NoCollapse);
 		if (m_Context)
 		{
 			m_Context->Registry().each([&](auto id) {				
