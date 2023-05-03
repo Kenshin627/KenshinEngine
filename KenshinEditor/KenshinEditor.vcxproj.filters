@@ -7,17 +7,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EditLayer.h" />
+    <ClInclude Include="src\panel\ContentBrowserPanel.h">
+      <Filter>panel</Filter>
+    </ClInclude>
     <ClInclude Include="src\panel\SceneHierarchyPanel .h">
       <Filter>panel</Filter>
     </ClInclude>
-    <ClInclude Include="src\panel\ContentBrowserPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditLayer.cpp" />
     <ClCompile Include="src\KenshinEditor.cpp" />
+    <ClCompile Include="src\panel\ContentBrowserPanel.cpp">
+      <Filter>panel</Filter>
+    </ClCompile>
     <ClCompile Include="src\panel\SceneHierarchyPanel.cpp">
       <Filter>panel</Filter>
     </ClCompile>
-    <ClCompile Include="src\panel\ContentBrowserPanel.cpp" />
   </ItemGroup>
 </Project>

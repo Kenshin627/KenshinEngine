@@ -6,6 +6,13 @@
 #include "Kenshin/Scene/CameraController.h"
 #include "Kenshin/Scene/QuadController.h"
 
+#include "include/box2d/b2_world.h"
+#include "include/box2d/b2_body.h"
+#include "include/box2d/b2_fixture.h"
+#include "include/box2d/b2_polygon_shape.h"
+#include "include/box2d/b2_circle_shape.h"
+#include "Kenshin/Physics/Physics2D.h"
+
 namespace Kenshin
 {
 	Scene::Scene() 
@@ -82,6 +89,26 @@ namespace Kenshin
 			}
 		});
 
+		//Physcis
+		{
+			const int32_t velocityIterations = 6;
+			const int32_t positionIterations = 2;
+			m_PhysicsWorld->Step(ts, 6, 2);
+
+			auto view = m_Registry.view<Rigidbody2DComponent>();
+			for (auto& e : view)
+			{
+				Entity entity = { e, this };
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+				auto runtimeBody = (b2Body*)rb2d.RuntimeBody;
+				transform.Translation.x = runtimeBody->GetPosition().x;
+				transform.Translation.y = runtimeBody->GetPosition().y;
+				transform.Rotation.z = runtimeBody->GetAngle();
+			}
+		}
+
 		Camera* mainCamera = nullptr;
 		glm::mat4 transform;
 		auto cameraGroup = m_Registry.group<TransformComponent, CameraComponent>();
@@ -154,6 +181,18 @@ namespace Kenshin
 		com.Bind<QuadController>();
 	}
 
+	template<>
+	void Scene::OnEntityAddComponent<Rigidbody2DComponent>(Entity* entity, Rigidbody2DComponent& com)
+	{
+		
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<BoxCollider2DComponent>(Entity* entity, BoxCollider2DComponent& com)
+	{
+		
+	}
+
 	std::pair<glm::mat4, glm::mat4> Scene::GetMainCamera()
 	{
 		auto view = m_Registry.view<CameraComponent, TransformComponent>();
@@ -167,5 +206,58 @@ namespace Kenshin
 			}
 		}
 		return {};
+	}
+
+	void Scene::OnRuntimeStart()
+	{
+		OnPhysics2DStart();
+	}
+
+	void Scene::OnRuntimeStop()
+	{
+		OnPhysics2DStop();
+	}
+
+	void Scene::OnPhysics2DStart()
+	{
+		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
+		auto view = m_Registry.view<Rigidbody2DComponent>();
+		for (auto& e : view)
+		{
+			Entity entity = { e, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+			b2BodyDef bodyDef;
+			bodyDef.type = Utils::Rigidbody2DTypeToBox2DBody(rb2d.Type);
+			bodyDef.position.x = transform.Translation.x;
+			bodyDef.position.y = transform.Translation.y;
+			bodyDef.angle = transform.Rotation.z;
+			bodyDef.fixedRotation = rb2d.FixedRotation;
+
+			b2Body* b2body = m_PhysicsWorld->CreateBody(&bodyDef);
+			rb2d.RuntimeBody = b2body;
+			if (entity.HasComponent<BoxCollider2DComponent>())
+			{
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
+				b2PolygonShape boxShape;
+				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y, b2Vec2(bc2d.Offset.x, bc2d.Offset.y), 0.0f);
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &boxShape;
+				fixtureDef.friction = bc2d.Friction;
+				fixtureDef.restitution = bc2d.Restitution;
+				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				fixtureDef.density = bc2d.Density;
+				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
+				bc2d.RuntimeFixture = b2fixture;
+			}
+		}
+	}
+
+	void Scene::OnPhysics2DStop()
+	{
+
 	}
 }

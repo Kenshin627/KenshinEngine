@@ -5,6 +5,8 @@
 #include "SceneCamera.h"
 #include "EditorCamera.h"
 
+
+class b2World;
 namespace Kenshin
 {
 	class Entity;
@@ -20,13 +22,16 @@ namespace Kenshin
 		Entity CreateEntity(const std::string& name = "Entity");
 		void DestroyEntity(Entity entity);
 		entt::registry& Registry() { return m_Registry; }
-		void RenderScene(TimeStamp ts);
-		void RenderScene(TimeStamp ts, const EditorCamera& camera);
+		void OnRuntimeStart();
+		void OnRuntimeStop();
+		void OnPhysics2DStart();
+		void OnPhysics2DStop();
 		template<typename T>
 		void OnEntityAddComponent(Entity* entity, T& component);
 		std::pair<glm::mat4, glm::mat4>  GetMainCamera();
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;
+		b2World* m_PhysicsWorld = nullptr;
 	};
 }

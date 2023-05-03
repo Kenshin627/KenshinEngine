@@ -271,7 +271,7 @@ namespace Kenshin
 			auto transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
-			if (ImGuizmo::IsUsing())
+			if (ImGuizmo::IsUsing() && m_SceneStats == SceneStats::Editor)
 			{				
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);
@@ -306,7 +306,16 @@ namespace Kenshin
 
 		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { size, size }, { 0,1 }, {1,0}, 0))
 		{
-			m_SceneStats = m_SceneStats == SceneStats::Editor ? SceneStats::Play : SceneStats::Editor;
+			if (m_SceneStats == SceneStats::Editor)
+			{
+				m_ActiveScene->OnRuntimeStart();
+				m_SceneStats = SceneStats::Play;
+			}
+			else
+			{
+				m_ActiveScene->OnRuntimeStop();
+				m_SceneStats = SceneStats::Editor;
+			}
 		}
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(3);

@@ -230,6 +230,8 @@ namespace Kenshin
 			DisplayAddComponentEntity<SpiriteRendererComponent>("Spirite Component");
 			DisplayAddComponentEntity<NativeScriptComponent>("Native Script");
 			DisplayAddComponentEntity<CameraComponent>("Camera Component");
+			DisplayAddComponentEntity<Rigidbody2DComponent>("RigidBody Component");
+			DisplayAddComponentEntity<BoxCollider2DComponent>("BoxCollider Component");
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -330,6 +332,34 @@ namespace Kenshin
 				}				
 			}
 			ImGui::DragFloat("TilingFactor", &component.TilingFactor, 1.0, 0.1f, 100.0f);
+		});
+
+		DrawComponent<Rigidbody2DComponent>("RigidBody", entity, [](Rigidbody2DComponent& component) {	
+			const char* rigidBodyType[] = { "Static", "Dynamic", "Kinematic"};
+			const char* currentRigidBodyType = rigidBodyType[(int)component.Type];			
+			if (ImGui::BeginCombo("RigidBodyType", currentRigidBodyType))
+			{
+				for (size_t i = 0; i < 3; i++)
+				{
+					bool isSelected = rigidBodyType[i] == currentRigidBodyType;
+					if (ImGui::Selectable(rigidBodyType[i], isSelected, ImGuiSelectableFlags_None))
+					{
+						currentRigidBodyType = rigidBodyType[i];
+						component.Type = (Rigidbody2DComponent::BodyType)i;
+					}
+				}
+				ImGui::EndCombo();
+			}
+			ImGui::Checkbox("Fixed Rotation", &component.FixedRotation);
+		});
+
+		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](BoxCollider2DComponent& component) {
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+			ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
+			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
 		});
 	}
 
