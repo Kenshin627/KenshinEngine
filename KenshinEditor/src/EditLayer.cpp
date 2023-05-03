@@ -39,6 +39,9 @@ namespace Kenshin
 		//Panels
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
+		m_PlayIcon = Texture2D::Create("resource/toolBar/play.png");
+		m_StopIcon = Texture2D::Create("resource/toolBar/stop.png");
+
 		//gizmoButtons
 		m_GizmoBtns[0] = Texture2D::Create("resource/textures/translate.png");
 		m_GizmoBtns[1] = Texture2D::Create("resource/textures/rotate.png");
@@ -53,22 +56,29 @@ namespace Kenshin
 		if (FrameBufferSpecification spec = m_Framebuffer->GetSpecification(); m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+			/*m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);*/
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
-		Renderer2D::ResetStatistics();
-		if (m_ViewportFocus && m_ViewportHovered)
-		{			
-			m_EditorCamera.OnUpdate(ts);
-		}
-
+		Renderer2D::ResetStatistics();		
 		m_Framebuffer->Bind();
 		RendererCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1.0 });
 		RendererCommand::Clear();
 		m_Framebuffer->ClearAttachment(1, -1);
 
-		m_ActiveScene->RenderScene(ts, m_EditorCamera);
+		switch (m_SceneStats)
+		{
+		case Kenshin::EditLayer::SceneStats::Editor:
+			if (m_ViewportFocus && m_ViewportHovered)
+			{
+				m_EditorCamera.OnUpdate(ts);
+			}
+			m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+			break;
+		case Kenshin::EditLayer::SceneStats::Play:
+			m_ActiveScene->OnUpdateRuntime(ts);
+			break;
+		}
 
 		auto [mpx, mpy] = ImGui::GetMousePos();
 		mpx -= m_ViewportBounds[0].x;
@@ -203,6 +213,7 @@ namespace Kenshin
 		//hierarchyPanel
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel.OnImGuiRender();
+		UIToolBar();
 
 		auto selectionEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
@@ -274,6 +285,31 @@ namespace Kenshin
 		ImGui::End();
 		ImGui::PopStyleVar();
 
+		ImGui::End();
+	}
+
+	void EditLayer::UIToolBar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		auto& colors = ImGui::GetStyle().Colors;
+		auto& buttonActive = colors[ImGuiCol_ButtonActive];
+		auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
+		ImGui::Begin("##UITool", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		float height = ImGui::GetWindowHeight();
+		float size = height - 4.0f;
+		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x * 0.5f - size * 0.5f);
+		auto icon = m_SceneStats == SceneStats::Editor ? m_PlayIcon : m_StopIcon;
+
+		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { size, size }, { 0,1 }, {1,0}, 0))
+		{
+			m_SceneStats = m_SceneStats == SceneStats::Editor ? SceneStats::Play : SceneStats::Editor;
+		}
+		ImGui::PopStyleVar(2);
+		ImGui::PopStyleColor(3);
 		ImGui::End();
 	}
 }

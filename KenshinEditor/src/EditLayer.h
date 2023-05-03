@@ -19,7 +19,9 @@ namespace Kenshin
 		virtual void OnEvent(Event& e) override;
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseEvent(MouseButtonPressedEvent& e);
+		void UIToolBar();
 	private:
+		enum class SceneStats { Editor = 0, Play };
 		OrthoGraphicCameraController m_CameraController;
 		EditorCamera m_EditorCamera;
 		glm::vec4 m_SquareColor;
@@ -40,7 +42,10 @@ namespace Kenshin
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
+		Ref<Texture2D> m_PlayIcon;
+		Ref<Texture2D> m_StopIcon;
 		Ref<Texture2D> m_GizmoBtns[3];
 		int m_GizmoType = -1;
+		SceneStats m_SceneStats = SceneStats::Editor;
 	};
 }

@@ -47,11 +47,6 @@ namespace Kenshin
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdate(TimeStamp ts)
-	{
-		
-	}
-
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
 		if (width != m_ViewportWidth || height != m_ViewportHeight)
@@ -70,7 +65,7 @@ namespace Kenshin
 		}		
 	}
 
-	void Scene::RenderScene(TimeStamp ts)
+	void Scene::OnUpdateRuntime(TimeStamp ts)
 	{
 		//updateScripts
 		m_Registry.view<NativeScriptComponent>().each([&](entt::entity entity, NativeScriptComponent& nsc) {
@@ -105,13 +100,13 @@ namespace Kenshin
 		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
 			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
-				Renderer2D::DrawQuad(transformComponent.GetTransform(), spirite.Color, (int)entity);
+				Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
 			});
 			Renderer2D::EndScene();
 		}
 	}
 
-	void Scene::RenderScene(TimeStamp ts, const EditorCamera& camera)
+	void Scene::OnUpdateEditor(TimeStamp ts, const EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
 		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
