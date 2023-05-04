@@ -1,5 +1,7 @@
 #pragma once
+#include "Kenshin/Core/UUID.h"
 #include "Kenshin/Core/Core.h"
+#include "Kenshin/Scene/Components.h"
 #include "entt.hpp"
 #include "Scene.h"
 
@@ -50,6 +52,16 @@ namespace Kenshin
 		{
 			KS_CORE_ASSERT(HasComponent<T>(), "entity has not the component!");
 			m_Scene->m_Registry.erase<T>(m_EntityHandle);
+		}
+
+		std::string GetName() const 
+		{ 
+			return m_Scene->m_Registry.get<TagComponent>(m_EntityHandle).Tag;
+		}
+
+		UUID GetUUID() const 
+		{
+			return m_Scene->m_Registry.get<IDComponent>(m_EntityHandle).ID;
 		}
 
 		operator bool() const

@@ -1,16 +1,25 @@
 #pragma once
+
+#include "SceneCamera.h"
+#include "Kenshin/Renderer/Texture.h"
+#include "Kenshin/Core/UUID.h"
+
 #include <string>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
-#include "SceneCamera.h"
-#include "ScriptableEntity.h"
-#include "Kenshin/Renderer/Texture.h"
 
 #define GLM_ENABLE_EXPERIMENTAL 
 #include <gtx/quaternion.hpp>
 
 namespace Kenshin
 {
+	struct IDComponent
+	{
+		UUID ID;
+		IDComponent() = default;
+		IDComponent(const IDComponent& rhs) = default;
+	};
+
 	struct TagComponent
 	{
 		std::string Tag{ "Tag" };
@@ -56,6 +65,7 @@ namespace Kenshin
 		CameraComponent(const CameraComponent& rhs) = default;
 	};
 
+	class ScriptableEntity;
 	struct NativeScriptComponent
 	{
 		bool IsBind = false;
@@ -97,4 +107,12 @@ namespace Kenshin
 		BoxCollider2DComponent() = default;
 		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
 	};
+
+	template<typename...Component>
+	struct ComponentGroup
+	{
+
+	};
+
+	using AllComponents = ComponentGroup<TransformComponent, SpiriteRendererComponent, CameraComponent, NativeScriptComponent, Rigidbody2DComponent, BoxCollider2DComponent>;
 }

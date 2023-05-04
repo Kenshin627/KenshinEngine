@@ -20,6 +20,8 @@ namespace Kenshin
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseEvent(MouseButtonPressedEvent& e);
 		void UIToolBar();
+		void OnScenePlay();
+		void OnSceneStop();
 	private:
 		enum class SceneStats { Editor = 0, Play };
 		OrthoGraphicCameraController m_CameraController;
@@ -39,6 +41,7 @@ namespace Kenshin
 		bool m_ViewportHovered = false;
 		bool m_ViewportFocus = false;
 		Entity m_HoveredEntity;
+		Ref<Scene> m_EditScene;
 		Ref<Scene> m_ActiveScene;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;

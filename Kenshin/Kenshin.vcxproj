@@ -154,6 +154,7 @@
     <ClInclude Include="src\Kenshin\Core\Log.h" />
     <ClInclude Include="src\Kenshin\Core\MouseCodes.h" />
     <ClInclude Include="src\Kenshin\Core\TimeStamp.h" />
+    <ClInclude Include="src\Kenshin\Core\UUID.h" />
     <ClInclude Include="src\Kenshin\Core\Window.h" />
     <ClInclude Include="src\Kenshin\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Kenshin\Events\Event.h" />
@@ -482,6 +483,7 @@
     <ClCompile Include="src\Kenshin\Core\Layer.cpp" />
     <ClCompile Include="src\Kenshin\Core\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Core\Log.cpp" />
+    <ClCompile Include="src\Kenshin\Core\UUID.cpp" />
     <ClCompile Include="src\Kenshin\Core\Window.cpp" />
     <ClCompile Include="src\Kenshin\ImGuiLayer\ImGuiLayer.cpp" />
     <ClCompile Include="src\Kenshin\Math\Math.cpp" />

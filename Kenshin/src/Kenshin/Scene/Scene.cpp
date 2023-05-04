@@ -17,35 +17,47 @@ namespace Kenshin
 {
 	Scene::Scene() 
 	{
-		Entity entity = CreateEntity("blueQuad");
-		entity.AddComponent<SpiriteRendererComponent>(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-		Entity entity1 = CreateEntity("redQuad");
-		entity1.AddComponent<SpiriteRendererComponent>(glm::vec4(0.8f, 0.1f, 0.1f, 1.0f));
-		entity1.Replace<TransformComponent>(glm::vec3{ -2.0f, 0.0f, 0.0f });
-
-		//SceneCamera
-		Entity mainCamera = CreateEntity("CameraA");
-		auto& cameraAComponent = mainCamera.AddComponent<CameraComponent>();
-		cameraAComponent.Primary = true;
-		cameraAComponent.FixedAspectRatio = false;
-		NativeScriptComponent& cameraScripts = mainCamera.AddComponent<NativeScriptComponent>();
-		cameraScripts.Bind<CameraController>();
-
-		Entity secondCamera = CreateEntity("CameraB");
-		auto& cameraBComponent = secondCamera.AddComponent<CameraComponent>();
-		cameraBComponent.Primary = false;
-		cameraBComponent.FixedAspectRatio = true;
+		
 	}
+
 	Scene::~Scene() 
 	{
-	
+		delete m_PhysicsWorld;
 	}
-	Entity Scene::CreateEntity(const std::string& name)
+
+	template<typename... Component>
+	static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
-		Entity entity = Entity (m_Registry.create(), this);
-		entity.AddComponent<TransformComponent>();
+		([&]()
+			{
+				auto view = src.view<Component>();
+				for (auto srcEntity : view)
+				{
+					entt::entity dstEntity = enttMap.at(src.get<IDComponent>(srcEntity).ID);
+
+					auto& srcComponent = src.get<Component>(srcEntity);
+					dst.emplace_or_replace<Component>(dstEntity, srcComponent);
+				}
+			}(), ...);
+	}
+
+	template<typename... Component>
+	static void CopyComponent(ComponentGroup<Component...>, entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
+	{
+		CopyComponent<Component...>(dst, src, enttMap);
+	}
+
+	Entity Scene::CreateEntity(const std::string& name)
+	{		
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+	{
+		Entity entity = { m_Registry.create(), this };
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TagComponent>(name);
+		entity.AddComponent<TransformComponent>();
 		return entity;
 	}
 
@@ -159,6 +171,12 @@ namespace Kenshin
 	}
 
 	template<>
+	void Scene::OnEntityAddComponent<IDComponent>(Entity* entity, IDComponent& com)
+	{
+
+	}
+
+	template<>
 	void Scene::OnEntityAddComponent<TagComponent>(Entity* entity, TagComponent& com)
 	{
 		
@@ -264,5 +282,32 @@ namespace Kenshin
 	{
 		delete m_PhysicsWorld;
 		m_PhysicsWorld = nullptr;
+	}
+
+	Ref<Scene> Scene::Copy(const Ref<Scene>& other)
+	{
+		Ref<Scene> newScene = CreateRef<Scene>();
+
+		newScene->m_ViewportWidth = other->m_ViewportWidth;
+		newScene->m_ViewportHeight = other->m_ViewportHeight;
+
+		auto& srcSceneRegistry = other->m_Registry;
+		auto& dstSceneRegistry = newScene->m_Registry;
+		std::unordered_map<UUID, entt::entity> enttMap;
+
+		// Create entities in new scene
+		auto idView = srcSceneRegistry.view<IDComponent>();
+		for (auto e : idView)
+		{
+			UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
+			const auto& name = srcSceneRegistry.get<TagComponent>(e).Tag;
+			Entity newEntity = newScene->CreateEntityWithUUID(uuid, name);
+			enttMap[uuid] = (entt::entity)newEntity;
+		}
+
+		// Copy components (except IDComponent and TagComponent)
+		CopyComponent(AllComponents{}, dstSceneRegistry, srcSceneRegistry, enttMap);
+
+		return newScene;
 	}
 }

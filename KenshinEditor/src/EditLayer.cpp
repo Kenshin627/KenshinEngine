@@ -34,10 +34,10 @@ namespace Kenshin
 		m_EditorCamera = EditorCamera();
 
 		//Entites
-		m_ActiveScene = CreateRef<Scene>();
-
+		m_EditScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditScene;
 		//Panels
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_SceneHierarchyPanel.SetContext(m_EditScene);
 
 		m_PlayIcon = Texture2D::Create("resource/toolBar/play.png");
 		m_StopIcon = Texture2D::Create("resource/toolBar/stop.png");
@@ -147,7 +147,6 @@ namespace Kenshin
 		}
 		return true;
 	}
-
 
 	bool EditLayer::OnMouseEvent(MouseButtonPressedEvent& e)
 	{
@@ -308,17 +307,36 @@ namespace Kenshin
 		{
 			if (m_SceneStats == SceneStats::Editor)
 			{
-				m_ActiveScene->OnRuntimeStart();
-				m_SceneStats = SceneStats::Play;
+				OnScenePlay();				
 			}
 			else
 			{
-				m_ActiveScene->OnRuntimeStop();
-				m_SceneStats = SceneStats::Editor;
+				OnSceneStop();				
 			}
 		}
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(3);
 		ImGui::End();
+	}
+
+	void EditLayer::OnScenePlay()
+	{
+		m_ActiveScene = Scene::Copy(m_EditScene);
+		auto view = m_ActiveScene->m_Registry.view<TagComponent>();
+		for (auto& i : view)
+		{
+			KS_CORE_INFO(view.get<TagComponent>(i).Tag);
+		}
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_ActiveScene->OnRuntimeStart();
+		m_SceneStats = SceneStats::Play;
+	}
+
+	void EditLayer::OnSceneStop()
+	{
+		m_ActiveScene->OnRuntimeStop();
+		m_SceneStats = SceneStats::Editor;
+		m_ActiveScene = m_EditScene;
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 }
