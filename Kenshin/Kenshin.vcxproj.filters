@@ -1072,6 +1072,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Core\UUID.h" />
+    <ClInclude Include="src\Kenshin\Scene\SceneSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Core\Application.cpp">
@@ -1195,5 +1196,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Core\UUID.cpp" />
+    <ClCompile Include="src\Kenshin\Scene\SceneSerializer.cpp" />
   </ItemGroup>
 </Project>

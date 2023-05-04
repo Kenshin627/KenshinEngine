@@ -184,6 +184,7 @@
     <ClInclude Include="src\Kenshin\Scene\QuadController.h" />
     <ClInclude Include="src\Kenshin\Scene\Scene.h" />
     <ClInclude Include="src\Kenshin\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Kenshin\Scene\SceneSerializer.h" />
     <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
@@ -506,6 +507,7 @@
     <ClCompile Include="src\Kenshin\Scene\QuadController.cpp" />
     <ClCompile Include="src\Kenshin\Scene\Scene.cpp" />
     <ClCompile Include="src\Kenshin\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Kenshin\Scene\SceneSerializer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
