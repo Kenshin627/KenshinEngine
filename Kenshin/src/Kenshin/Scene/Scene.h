@@ -37,5 +37,6 @@ namespace Kenshin
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;
 		b2World* m_PhysicsWorld = nullptr;
 		friend class EditLayer;
+		friend class SceneSerializer;
 	};
 }

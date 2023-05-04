@@ -2,10 +2,11 @@
 #include "Kenshin/Renderer/Camera.h"
 
 namespace Kenshin
-{
-	enum class ProjectionType { Perspective = 0, Orthographic };
+{	
 	class  SceneCamera : public Camera
 	{
+	public:
+		enum class ProjectionType { Perspective = 0, Orthographic };
 	public:
 		SceneCamera();
 
