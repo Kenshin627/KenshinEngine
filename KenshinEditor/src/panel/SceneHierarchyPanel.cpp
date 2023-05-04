@@ -350,6 +350,9 @@ namespace Kenshin
 				}
 				ImGui::EndCombo();
 			}
+			ImGui::DragFloat("Damping", &component.Damping, 0.01f, 0.0f, 0.1f);
+			ImGui::DragFloat("GravityScale", &component.GravityScale, 0.1, -10.0f, 10.0f);
+			ImGui::Checkbox("CCD", &component.CCD);
 			ImGui::Checkbox("Fixed Rotation", &component.FixedRotation);
 		});
 

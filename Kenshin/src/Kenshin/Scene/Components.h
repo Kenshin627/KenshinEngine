@@ -75,8 +75,10 @@ namespace Kenshin
 	{
 		enum class BodyType { Static = 0, Dynamic, Kinematic };
 		BodyType Type = BodyType::Static;
+		float Damping = 0.01f;
+		float GravityScale = 0.0f;
 		bool FixedRotation = false;
-
+		bool CCD = false;
 		void* RuntimeBody = nullptr;
 
 		Rigidbody2DComponent() = default;

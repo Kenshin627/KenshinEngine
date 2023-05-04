@@ -19,6 +19,9 @@
     <Filter Include="src\Kenshin\Math">
       <UniqueIdentifier>{45A98B02-31A2-AA54-5AD4-8FD9462C8A60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Kenshin\Physics">
+      <UniqueIdentifier>{5E00224F-CA61-FF5C-53CF-450FBF2F361C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Kenshin\Renderer">
       <UniqueIdentifier>{12DE3C0A-FE6C-C6D3-A78B-DACE93F9D679}</UniqueIdentifier>
     </Filter>
@@ -122,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="src\Kenshin\Math\Math.h">
       <Filter>src\Kenshin\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Physics\Physics2D.h">
+      <Filter>src\Kenshin\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h">
       <Filter>src\Kenshin\Renderer</Filter>
@@ -1065,7 +1071,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Physics\Physics2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Core\Application.cpp">

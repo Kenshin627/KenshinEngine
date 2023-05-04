@@ -255,7 +255,7 @@ namespace Kenshin
 		auto camera = m_EditorCamera;
 		
 
-		if (selectionEntity && m_GizmoType != -1)
+		if (selectionEntity && m_GizmoType != -1 && m_SceneStats == SceneStats::Editor)
 		{
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
 			float snapValue = 0.5f;
@@ -271,7 +271,7 @@ namespace Kenshin
 			auto transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
-			if (ImGuizmo::IsUsing() && m_SceneStats == SceneStats::Editor)
+			if (ImGuizmo::IsUsing())
 			{				
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);

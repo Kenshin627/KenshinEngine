@@ -20,4 +20,4 @@
 	url = https://github.com/Kenshin627/ImGuizmo.git
 [submodule "Kenshin/vendor/box2d"]
 	path = Kenshin/vendor/box2d
-	url = https://github.com/Kenshin627/box2d.git
+	url = git@github.com:Kenshin627/box2d.git

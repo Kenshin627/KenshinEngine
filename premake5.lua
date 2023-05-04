@@ -22,8 +22,10 @@ include "Kenshin/vendor/box2d"
 
 project "KenshinEditor"
 	location "KenshinEditor"
-	kind "consoleApp"
-	language "c++"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-in/" .. outputdir .. "/%{prj.name}")
@@ -47,7 +49,6 @@ project "KenshinEditor"
 
 	filter "system:windows"
 		cppdialect "c++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -69,8 +70,10 @@ project "KenshinEditor"
 
 project "SandBox"
 	location "SandBox"
-	kind "consoleApp"
-	language "c++"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-in/" .. outputdir .. "/%{prj.name}")
@@ -92,8 +95,8 @@ project "SandBox"
 	}
 
 	filter "system:windows"
-		cppdialect "c++17"
-		staticruntime "On"
+		cppdialect "C++17"
+		staticruntime "off"
 		systemversion "latest"
 
 		defines
@@ -174,7 +177,7 @@ project "Kenshin"
 
 	filter "system:windows"
 		cppdialect "c++17"
-		staticruntime "On"
+		staticruntime "off"
 		systemversion "latest"
 
 		defines
@@ -192,17 +195,14 @@ project "Kenshin"
 			"KS_DEBUG",
 			"KS_ENABLE_ASSERTS"
 		}
-		buildoptions "/MTd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "KS_RELEASE"
-		buildoptions "/MT"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "KS_DIST"
-		buildoptions "/MT"
 		optimize "On"
 
 	filter "files:vendor/**.cpp"
@@ -214,4 +214,3 @@ project "Kenshin"
 
 	filter "files:vendor/ImGuizmo/**.cpp"
 	flags { "NoPCH" }
-

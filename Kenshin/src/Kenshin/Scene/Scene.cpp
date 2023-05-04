@@ -102,9 +102,10 @@ namespace Kenshin
 				auto& transform = entity.GetComponent<TransformComponent>();
 				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-				auto runtimeBody = (b2Body*)rb2d.RuntimeBody;
-				transform.Translation.x = runtimeBody->GetPosition().x;
-				transform.Translation.y = runtimeBody->GetPosition().y;
+				b2Body* runtimeBody = (b2Body*)rb2d.RuntimeBody;
+				auto& position = runtimeBody->GetPosition();
+				transform.Translation.x = position.x;
+				transform.Translation.y = position.y;
 				transform.Rotation.z = runtimeBody->GetAngle();
 			}
 		}
@@ -233,6 +234,9 @@ namespace Kenshin
 			bodyDef.position.x = transform.Translation.x;
 			bodyDef.position.y = transform.Translation.y;
 			bodyDef.angle = transform.Rotation.z;
+			bodyDef.angularDamping = rb2d.Damping;
+			bodyDef.gravityScale = rb2d.GravityScale;
+			bodyDef.bullet = rb2d.CCD;
 			bodyDef.fixedRotation = rb2d.FixedRotation;
 
 			b2Body* b2body = m_PhysicsWorld->CreateBody(&bodyDef);
@@ -258,6 +262,7 @@ namespace Kenshin
 
 	void Scene::OnPhysics2DStop()
 	{
-
+		delete m_PhysicsWorld;
+		m_PhysicsWorld = nullptr;
 	}
 }
