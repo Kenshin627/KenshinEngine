@@ -261,13 +261,13 @@ namespace Kenshin
 					if (ImGui::Selectable(projectionTypeStrings[i], isSelected, ImGuiSelectableFlags_None))
 					{
 						currentSelectedType = projectionTypeStrings[i];
-						camera.SetProjectionType((ProjectionType)i);
+						camera.SetProjectionType((SceneCamera::ProjectionType)i);
 					}
 				}
 				ImGui::EndCombo();
 			}
 
-			if (camera.GetProjectionType() == ProjectionType::Orthographic)
+			if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 			{
 				float size = camera.GetOrthographicSize();
 				if (ImGui::DragFloat("Size", &size))
@@ -288,7 +288,7 @@ namespace Kenshin
 				}
 			}
 
-			else if (camera.GetProjectionType() == ProjectionType::Perspective)
+			else if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
 			{
 				float verticalFov = glm::degrees(camera.GetPerpectiveVerticalFov());
 				if (ImGui::DragFloat("Vertical Fov", &verticalFov))
