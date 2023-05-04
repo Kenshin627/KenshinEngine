@@ -21,3 +21,6 @@
 [submodule "Kenshin/vendor/box2d"]
 	path = Kenshin/vendor/box2d
 	url = git@github.com:Kenshin627/box2d.git
+[submodule "Kenshin/vendor/YAML"]
+	path = Kenshin/vendor/YAML
+	url = git@github.com:Kenshin627/yaml-cpp.git

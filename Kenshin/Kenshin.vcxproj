@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>kspch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;KS_PLATFORM_WINDOWS;KS_BUILD_DLL;GLFW_INCLUDE_NONE;KS_DEBUG;KS_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\ImGui;vendor\ImGui\backends;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\ImGuizmo;vendor\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\ImGui;vendor\ImGui\backends;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\ImGuizmo;vendor\box2d;vendor\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>kspch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;KS_PLATFORM_WINDOWS;KS_BUILD_DLL;GLFW_INCLUDE_NONE;KS_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\ImGui;vendor\ImGui\backends;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\ImGuizmo;vendor\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\ImGui;vendor\ImGui\backends;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\ImGuizmo;vendor\box2d;vendor\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>kspch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;KS_PLATFORM_WINDOWS;KS_BUILD_DLL;GLFW_INCLUDE_NONE;KS_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\ImGui;vendor\ImGui\backends;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\ImGuizmo;vendor\box2d;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\ImGui;vendor\ImGui\backends;vendor\glm\glm;vendor\stb_image;vendor\entt\include;vendor\ImGuizmo;vendor\box2d;vendor\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -541,6 +541,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\box2d\box2d.vcxproj">
       <Project>{E4442B0F-5059-53C0-19DB-F61F85AE4FF1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\YAML\YAML.vcxproj">
+      <Project>{F8FB8E7C-E432-900D-8D1F-761079350C0F}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

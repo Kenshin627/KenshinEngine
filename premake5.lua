@@ -14,11 +14,13 @@ IncludeDir["stb_image"] = "Kenshin/vendor/stb_image"
 IncludeDir["entt"] = "Kenshin/vendor/entt/include"
 IncludeDir["ImGuizmo"] = "Kenshin/vendor/ImGuizmo"
 IncludeDir["box2d"] = "Kenshin/vendor/box2d"
+IncludeDir["YAML"] = "Kenshin/vendor/YAML/include"
 
 include "Kenshin/vendor/GLFW"
 include "Kenshin/vendor/Glad"
 include "Kenshin/vendor/ImGui"
 include "Kenshin/vendor/box2d"
+include "Kenshin/vendor/YAML"
 
 project "KenshinEditor"
 	location "KenshinEditor"
@@ -152,7 +154,8 @@ project "Kenshin"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.ImGuizmo}",
-		"%{IncludeDir.box2d}"
+		"%{IncludeDir.box2d}",
+		"%{IncludeDir.YAML}"
 	}
 
 
@@ -162,7 +165,8 @@ project "Kenshin"
 		"Glad",
 		"opengl32.lib",
 		"imgui",
-		"box2d"
+		"box2d",
+		"YAML"
 	}
 
 	defines

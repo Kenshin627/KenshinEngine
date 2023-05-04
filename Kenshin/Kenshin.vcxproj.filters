@@ -105,6 +105,9 @@
     <ClInclude Include="src\Kenshin\Core\TimeStamp.h">
       <Filter>src\Kenshin\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Core\UUID.h">
+      <Filter>src\Kenshin\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Kenshin\Core\Window.h">
       <Filter>src\Kenshin\Core</Filter>
     </ClInclude>
@@ -190,6 +193,9 @@
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\SceneCamera.h">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Scene\SceneSerializer.h">
       <Filter>src\Kenshin\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h">
@@ -1071,8 +1077,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Kenshin\Core\UUID.h" />
-    <ClInclude Include="src\Kenshin\Scene\SceneSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Core\Application.cpp">
@@ -1085,6 +1089,9 @@
       <Filter>src\Kenshin\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Core\Log.cpp">
+      <Filter>src\Kenshin\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Core\UUID.cpp">
       <Filter>src\Kenshin\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Core\Window.cpp">
@@ -1153,6 +1160,9 @@
     <ClCompile Include="src\Kenshin\Scene\SceneCamera.cpp">
       <Filter>src\Kenshin\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Kenshin\Scene\SceneSerializer.cpp">
+      <Filter>src\Kenshin\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenglRenderer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1195,7 +1205,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Kenshin\Core\UUID.cpp" />
-    <ClCompile Include="src\Kenshin\Scene\SceneSerializer.cpp" />
   </ItemGroup>
 </Project>
