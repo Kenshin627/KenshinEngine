@@ -32,6 +32,7 @@ namespace Kenshin
 		void OnEntityAddComponent(Entity* entity, T& component);
 		std::pair<glm::mat4, glm::mat4>  GetMainCamera();
 		static Ref<Scene> Copy(const Ref<Scene>& other);
+		Entity DuplicateEntity(Entity entity);
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;

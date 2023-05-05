@@ -1,0 +1,70 @@
+Scene: Untitled
+Entities:
+  - Entity: 7800150930305208714
+    TagComponent:
+      Tag: Red Square
+    TransformComponent:
+      Translation: [-3.34530067, 1.74802554, 6.10351562e-05]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      TilingFactor: 1
+  - Entity: 10201429803790645161
+    TagComponent:
+      Tag: Red Square
+    TransformComponent:
+      Translation: [2.24189186, 2.29094839, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      TilingFactor: 1
+  - Entity: 5250122134106327432
+    TagComponent:
+      Tag: Red Square
+    TransformComponent:
+      Translation: [-2.03171349, -1.70229185, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      TilingFactor: 1
+  - Entity: 6902904111259729925
+    TagComponent:
+      Tag: Green Square
+    TransformComponent:
+      Translation: [2.4000001, 0, -4.80000019]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [0, 1, 0, 1]
+      TilingFactor: 1
+  - Entity: 4212786185008784347
+    TagComponent:
+      Tag: Red Square
+    TransformComponent:
+      Translation: [-0.1226044, 1.18757021, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      TilingFactor: 1
+  - Entity: 9335076965011521498
+    TagComponent:
+      Tag: Camera B
+    TransformComponent:
+      Translation: [0.899999976, 0, 6]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        PerpectiveVerticalFOV: 0.785398185
+        PerpectiveNear: 0.00999999978
+        PerpectiveFar: 1000
+      Primary: true
+      FixedAspectRatio: false

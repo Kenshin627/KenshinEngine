@@ -1,0 +1,50 @@
+Scene: Untitled
+Entities:
+  - Entity: 8244940659429586525
+    TagComponent:
+      Tag: Left
+    TransformComponent:
+      Translation: [-0.353653222, 0, 0.348653227]
+      Rotation: [0, -0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [0.98455596, 0.475303888, 0.144452229, 1]
+      TilingFactor: 1
+  - Entity: 2335431429201735937
+    TagComponent:
+      Tag: Right
+    TransformComponent:
+      Translation: [0.351999998, 0, 0.349999994]
+      Rotation: [0, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpiriteRendererComponent:
+      Color: [0.586872578, 0.25831458, 0, 1]
+      TilingFactor: 1
+  - Entity: 15355018394736438603
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, -3]
+      Rotation: [0.261799395, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        PerpectiveVerticalFOV: 0.785398185
+        PerpectiveNear: 0.00999999978
+        PerpectiveFar: 1000
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 9235617827118161440
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [1.11758709e-08, 0.49999997, -1.11758709e-08]
+      Rotation: [1.57079637, 0.785398006, -8.42940153e-08]
+      Scale: [0.999999881, 1, 1]
+    SpiriteRendererComponent:
+      Color: [0.876447856, 0.385772407, 0, 1]
+      TilingFactor: 1

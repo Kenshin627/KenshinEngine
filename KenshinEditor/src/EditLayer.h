@@ -23,6 +23,13 @@ namespace Kenshin
 		void OnScenePlay();
 		void OnSceneStop();
 	private:
+		void NewScene();
+		void OpenScene();
+		void SaveScene();
+		void SaveSceneAs();
+		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+		void DuplicateEntity();
+	private:
 		enum class SceneStats { Editor = 0, Play };
 		OrthoGraphicCameraController m_CameraController;
 		EditorCamera m_EditorCamera;
@@ -43,6 +50,7 @@ namespace Kenshin
 		Entity m_HoveredEntity;
 		Ref<Scene> m_EditScene;
 		Ref<Scene> m_ActiveScene;
+		std::filesystem::path m_EditScenePath = std::filesystem::path();
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
 		Ref<Texture2D> m_PlayIcon;

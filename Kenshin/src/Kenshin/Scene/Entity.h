@@ -37,7 +37,7 @@ namespace Kenshin
 		template<typename T, typename...Args>
 		T& AddOrReplace(Args&&...args)
 		{
-			return m_Scene->m_Registry.emplace_or_replace<T>(m_entityHandle, std::forward<Args>(args)...);
+			return m_Scene->m_Registry.emplace_or_replace<T>(m_EntityHandle, std::forward<Args>(args)...);
 		}
 
 		template<typename T>

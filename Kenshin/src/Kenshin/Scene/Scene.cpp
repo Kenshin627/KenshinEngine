@@ -25,6 +25,23 @@ namespace Kenshin
 		delete m_PhysicsWorld;
 	}
 
+	template<typename...Component>
+	static void CopyComponentIfExists(Entity dst, Entity src)
+	{
+		([&]() {
+			if (src.HasComponent<Component>())
+			{
+				dst.AddOrReplace<Component>(src.GetComponent<Component>());
+			}
+		}(), ...);
+	}
+
+	template<typename...Component>
+	static void CopyComponentIfExists(ComponentGroup<Component...>, Entity dst, Entity src)
+	{
+		CopyComponentIfExists<Component...>(dst, src);
+	}
+
 	template<typename... Component>
 	static void CopyComponent(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& enttMap)
 	{
@@ -309,5 +326,14 @@ namespace Kenshin
 		CopyComponent(AllComponents{}, dstSceneRegistry, srcSceneRegistry, enttMap);
 
 		return newScene;
+	}
+
+	Entity Scene::DuplicateEntity(Entity entity)
+	{
+		Entity newEntity = CreateEntity(entity.GetName());
+
+		CopyComponentIfExists(AllComponents{}, newEntity, entity);
+
+		return newEntity;
 	}
 }
