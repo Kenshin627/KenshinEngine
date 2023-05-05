@@ -62,6 +62,11 @@ namespace Kenshin
 		}
 	}
 
+	void Application::Close()
+	{
+		m_IsRunning = false;
+	}
+
 	bool Application::OnWindowCloseEvent(const WindowCloseEvent& e)
 	{
 		m_IsRunning = false;

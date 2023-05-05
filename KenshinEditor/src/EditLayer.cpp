@@ -1,10 +1,12 @@
 #include "kspch.h"
 #include "EditLayer.h"
+#include "Kenshin/Math/Math.h"
+#include "Kenshin/Scene/SceneSerializer.h"
+#include "Kenshin/Utils/PlatformUtils.h"
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include <gtc/type_ptr.hpp>
 #include <entt.hpp>
-#include "Kenshin/Math/Math.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <gtx/matrix_decompose.hpp>
@@ -94,7 +96,6 @@ namespace Kenshin
 		{
 			int data = m_Framebuffer->ReadPixel(1, mouseX, mouseY);			
 			m_HoveredEntity = data == -1? Entity() : Entity((entt::entity)data, m_ActiveScene.get());			
-			KS_CORE_INFO("EntiyId: {0}", data);
 		}
 
 		m_Framebuffer->Unbind();
@@ -119,6 +120,31 @@ namespace Kenshin
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (e.GetKeyCode())
 		{
+		case Key::O:
+			if (control)
+			{
+				OpenScene();				
+			}
+			break;
+		case Key::N:
+			if (control)
+			{
+				NewScene();				
+			}
+			break;
+		case Key::S:
+			if (control)
+			{
+				if (shift)
+				{
+					SaveSceneAs();
+				}
+				else {
+					SaveScene();
+				}
+			}
+			break;
+		//ImGuizmo
 		case Key::Q:
 			if (!ImGuizmo::IsUsing())
 			{
@@ -158,7 +184,7 @@ namespace Kenshin
 	}
 
 	void EditLayer::OnImGuiRender()
-	{
+	{				
 		// Note: Switch this to true to enable dockspace
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
@@ -206,8 +232,39 @@ namespace Kenshin
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
-
 		style.WindowMinSize.x = minWinSizeX;
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("Files"))
+			{				
+				if (ImGui::MenuItem("Open", "Ctrl + O"))
+				{
+					OpenScene();
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("New", "Ctrl + N"))
+				{
+					NewScene();
+				}
+
+				if (ImGui::MenuItem("Save", "Ctrl + S"))
+				{
+					SaveScene();
+				}
+				if (ImGui::MenuItem("Save As", "Ctrl + Shift + S"))
+				{
+					SaveSceneAs();
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Exit", "Ctrl + E"))
+				{
+					Application::Get().Close();
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
 
 		//hierarchyPanel
 		m_SceneHierarchyPanel.OnImGuiRender();
@@ -338,5 +395,70 @@ namespace Kenshin
 		m_SceneStats = SceneStats::Editor;
 		m_ActiveScene = m_EditScene;
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditLayer::NewScene()
+	{
+		m_EditScene = CreateRef<Scene>();
+		m_ActiveScene = m_EditScene;
+		m_EditScenePath = std::filesystem::path();
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditLayer::OpenScene()
+	{
+		if (m_SceneStats != SceneStats::Editor)
+		{
+			m_ActiveScene->OnRuntimeStop();
+			m_ActiveScene = m_EditScene;
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_SceneStats = SceneStats::Editor;
+		}		
+
+		auto path = FileDialog::OpenFile("Kenshin Scene(*.kenshin)\0*.kenshin\0");
+		std::filesystem::path p = path;
+		if (p.extension().string() != ".kenshin")
+		{
+			KS_CORE_WARN("Could not load {0} - not a scene file", p.filename().string());
+			return;
+		}
+		if (!path.empty())
+		{
+			Ref<Scene> newScene = CreateRef<Scene>();
+			SceneSerializer ss(newScene);
+			ss.DeSerialize(path);
+			m_EditScenePath = path;
+			m_EditScene = newScene;
+			m_ActiveScene = newScene;
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		}
+	}
+	
+	void EditLayer::SaveScene()
+	{
+		if (!m_EditScenePath.empty())
+		{
+			SerializeScene(m_ActiveScene, m_EditScenePath);
+		}
+		else
+		{
+			SaveSceneAs();
+		}
+	}	
+
+	void EditLayer::SaveSceneAs() 
+	{
+		auto path = FileDialog::SaveFile("Kenshin Scene (*.kenshin)\0*.kenshin\0");
+		if (!path.empty())
+		{
+			SerializeScene(m_ActiveScene, path);
+			m_EditScenePath = path;
+		}
+	}
+
+	void EditLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneSerializer ss(m_ActiveScene);
+		ss.Serialize(path.string());
 	}
 }

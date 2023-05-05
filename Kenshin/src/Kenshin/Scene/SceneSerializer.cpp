@@ -342,8 +342,8 @@ namespace Kenshin
 					rc.Type = (Rigidbody2DComponent::BodyType)rigidBody["BodyType"].as<int>();
 					rc.Damping = rigidBody["Damping"].as<float>();
 					rc.GravityScale = rigidBody["GravityScale"].as<float>();
-					rc.FixedRotation = rigidBody["FixedRotation"].as<float>();
-					rc.CCD = rigidBody["CCD"].as<float>();
+					rc.FixedRotation = rigidBody["FixedRotation"].as<bool>();
+					rc.CCD = rigidBody["CCD"].as<bool>();
 				}
 
 				//Box2DCollider

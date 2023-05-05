@@ -28,6 +28,9 @@
     <Filter Include="src\Kenshin\Scene">
       <UniqueIdentifier>{093F6E54-7555-6CEA-BECC-F70B2A223D72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Kenshin\Utils">
+      <UniqueIdentifier>{4CD39B54-B8E9-99EA-0161-250C6DB66A72}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="src\Kenshin\Scene\ScriptableEntity.h">
       <Filter>src\Kenshin\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Utils\PlatformUtils.h">
+      <Filter>src\Kenshin\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenglRenderer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -1191,6 +1197,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
