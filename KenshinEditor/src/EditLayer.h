@@ -28,6 +28,7 @@ namespace Kenshin
 		void SaveScene();
 		void SaveSceneAs();
 		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+		void DuplicateEntity();
 	private:
 		enum class SceneStats { Editor = 0, Play };
 		OrthoGraphicCameraController m_CameraController;

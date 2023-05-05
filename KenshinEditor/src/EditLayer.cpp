@@ -115,11 +115,12 @@ namespace Kenshin
 		{
 			return false;
 		}
-
+		
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (e.GetKeyCode())
 		{
+		//files
 		case Key::O:
 			if (control)
 			{
@@ -144,6 +145,7 @@ namespace Kenshin
 				}
 			}
 			break;
+
 		//ImGuizmo
 		case Key::Q:
 			if (!ImGuizmo::IsUsing())
@@ -170,7 +172,13 @@ namespace Kenshin
 				m_GizmoType = ImGuizmo::OPERATION::SCALE;
 			}
 			break;
-		}
+		case Key::D:
+			if (control)
+			{
+				DuplicateEntity();
+			}
+			break;
+		}		
 		return true;
 	}
 
@@ -460,5 +468,19 @@ namespace Kenshin
 	{
 		SceneSerializer ss(m_ActiveScene);
 		ss.Serialize(path.string());
+	}
+
+	void EditLayer::DuplicateEntity()
+	{
+		if (m_SceneStats != SceneStats::Editor)
+		{
+			return;
+		}
+		auto selectEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectEntity)
+		{
+			Entity newEntity = m_ActiveScene->DuplicateEntity(selectEntity);
+			m_SceneHierarchyPanel.SetSelectiedEntity(newEntity);
+		}
 	}
 }
