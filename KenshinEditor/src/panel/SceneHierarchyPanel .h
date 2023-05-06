@@ -27,5 +27,6 @@ namespace Kenshin
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;
 		Ref<Texture2D> m_DefaultTextureSlot = Texture2D::Create("resource/textures/Checkerboard.png");
+		Ref<Texture2D> m_SettingTexture = Texture2D::Create("resource/\propertiesPanel/setting.png");
 	};
 }

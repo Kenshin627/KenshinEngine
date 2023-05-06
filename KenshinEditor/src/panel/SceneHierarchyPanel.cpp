@@ -18,12 +18,16 @@ namespace Kenshin
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 0.5f;
 			ImGui::Separator();
 			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
 			ImGui::PopStyleVar();
-			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
-			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 1.0f);
+			/*if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}*/
+			if (ImGui::ImageButton("settings", (ImTextureID)m_SettingTexture->GetRendererID(), ImVec2{ lineHeight, lineHeight }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 }))
 			{
 				ImGui::OpenPopup("ComponentSettings");
 			}
@@ -228,6 +232,7 @@ namespace Kenshin
 			DisplayAddComponentEntity<TagComponent>("Tag Component");
 			DisplayAddComponentEntity<TransformComponent>("Transform Component");
 			DisplayAddComponentEntity<SpiriteRendererComponent>("Spirite Component");
+			DisplayAddComponentEntity<CircleRendererComponent>("Circle Component");
 			DisplayAddComponentEntity<NativeScriptComponent>("Native Script");
 			DisplayAddComponentEntity<CameraComponent>("Camera Component");
 			DisplayAddComponentEntity<Rigidbody2DComponent>("RigidBody Component");
@@ -332,6 +337,13 @@ namespace Kenshin
 				}				
 			}
 			ImGui::DragFloat("TilingFactor", &component.TilingFactor, 1.0, 0.1f, 100.0f);
+		});
+
+		DrawComponent<CircleRendererComponent>("Circle", entity, [&](CircleRendererComponent& component) {
+			glm::vec4& color = component.Color;
+			ImGui::ColorEdit4("Color", &color.x);
+			ImGui::DragFloat("Thinness", &component.Thinness, 0.001, 0.0, 1.0);
+			ImGui::DragFloat("Fade", &component.Fade, 0.0005, 0.0, 0.1);				
 		});
 
 		DrawComponent<Rigidbody2DComponent>("RigidBody", entity, [](Rigidbody2DComponent& component) {	

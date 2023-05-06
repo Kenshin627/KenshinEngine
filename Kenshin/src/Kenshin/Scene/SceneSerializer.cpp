@@ -195,6 +195,19 @@ namespace Kenshin
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CircleRendererComponent>())
+		{
+			out << YAML::Key << "CircleRendererComponent";
+			out << YAML::BeginMap;
+
+			auto& cc = entity.GetComponent<CircleRendererComponent>();
+			out << YAML::Key << "Color" << YAML::Value << cc.Color;
+			out << YAML::Key << "Thinness" << YAML::Value << cc.Thinness;
+			out << YAML::Key << "Fade" << YAML::Value << cc.Fade;
+
+			out << YAML::EndMap;
+		}
+
 		if (entity.HasComponent<Rigidbody2DComponent>())
 		{
 			out << YAML::Key << "Rigidbody2DComponent";
@@ -332,6 +345,16 @@ namespace Kenshin
 						sc.Texture = Texture2D::Create(texturePath.as<std::string>());
 					}
 					sc.TilingFactor = sprite["TilingFactor"].as<float>();				
+				}
+
+				//CircleRendererComponent
+				auto circle = entity["CircleRendererComponent"];
+				if (circle)
+				{
+					auto& cc = deserializedEntity.AddComponent<CircleRendererComponent>();
+					cc.Color = circle["Color"].as<glm::vec4>();
+					cc.Thinness = circle["Thinness"].as<float>();
+					cc.Fade = circle["Fade"].as<float>();
 				}
 
 				//Rigidbody2DComponent

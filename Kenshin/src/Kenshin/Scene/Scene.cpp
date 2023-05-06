@@ -212,6 +212,12 @@ namespace Kenshin
 	}
 
 	template<>
+	void Scene::OnEntityAddComponent<CircleRendererComponent>(Entity* entity, CircleRendererComponent& com)
+	{
+
+	}
+
+	template<>
 	void Scene::OnEntityAddComponent<NativeScriptComponent>(Entity* entity, NativeScriptComponent& com)
 	{
 		com.Bind<QuadController>();
