@@ -401,12 +401,12 @@ namespace Kenshin
 				if (circle2d)
 				{
 					auto& cc = deserializedEntity.AddComponent<CircleCollider2DComponent>();
-					cc.Offset = box2d["Offset"].as<glm::vec2>();
-					cc.Radius = box2d["Radius"].as<float>();
-					cc.Density = box2d["Density"].as<float>();
-					cc.Friction = box2d["Friction"].as<float>();
-					cc.Restitution = box2d["Restitution"].as<float>();
-					cc.RestitutionThreshold = box2d["RestitutionThreshold"].as<float>();
+					cc.Offset = circle2d["Offset"].as<glm::vec2>();
+					cc.Radius = circle2d["Radius"].as<float>();
+					cc.Density = circle2d["Density"].as<float>();
+					cc.Friction = circle2d["Friction"].as<float>();
+					cc.Restitution = circle2d["Restitution"].as<float>();
+					cc.RestitutionThreshold = circle2d["RestitutionThreshold"].as<float>();
 				}
 			}
 		}

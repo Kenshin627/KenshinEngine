@@ -320,8 +320,8 @@ namespace Kenshin
 				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
 
 				b2CircleShape circleShape;
-				circleShape.m_radius = cc2d.Radius;
-				circleShape.m_p = b2Vec2(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &circleShape;
