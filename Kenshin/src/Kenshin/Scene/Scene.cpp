@@ -245,6 +245,12 @@ namespace Kenshin
 		
 	}
 
+	template<>
+	void Scene::OnEntityAddComponent<CircleCollider2DComponent>(Entity* entity, CircleCollider2DComponent& com)
+	{
+
+	}
+
 	std::pair<glm::mat4, glm::mat4> Scene::GetMainCamera()
 	{
 		auto view = m_Registry.view<CameraComponent, TransformComponent>();
@@ -307,6 +313,24 @@ namespace Kenshin
 				fixtureDef.density = bc2d.Density;
 				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
 				bc2d.RuntimeFixture = b2fixture;
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2CircleShape circleShape;
+				circleShape.m_radius = cc2d.Radius;
+				circleShape.m_p = b2Vec2(cc2d.Offset.x, cc2d.Offset.y);
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				fixtureDef.density = cc2d.Density;
+				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
+				cc2d.RuntimeFixture = b2fixture;
 			}
 		}
 	}

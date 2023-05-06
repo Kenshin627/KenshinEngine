@@ -386,12 +386,7 @@ namespace Kenshin
 
 	void EditLayer::OnScenePlay()
 	{
-		m_ActiveScene = Scene::Copy(m_EditScene);
-		auto view = m_ActiveScene->m_Registry.view<TagComponent>();
-		for (auto& i : view)
-		{
-			KS_CORE_INFO(view.get<TagComponent>(i).Tag);
-		}
+		m_ActiveScene = Scene::Copy(m_EditScene);		
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_ActiveScene->OnRuntimeStart();
 		m_SceneStats = SceneStats::Play;

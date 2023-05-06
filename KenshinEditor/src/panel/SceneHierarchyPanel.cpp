@@ -237,6 +237,7 @@ namespace Kenshin
 			DisplayAddComponentEntity<CameraComponent>("Camera Component");
 			DisplayAddComponentEntity<Rigidbody2DComponent>("RigidBody Component");
 			DisplayAddComponentEntity<BoxCollider2DComponent>("BoxCollider Component");
+			DisplayAddComponentEntity<CircleCollider2DComponent>("CircleCollider Component");
 			ImGui::EndPopup();
 		}
 		ImGui::PopItemWidth();
@@ -376,6 +377,15 @@ namespace Kenshin
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
 		});
+
+		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, [](CircleCollider2DComponent& component) {
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+			ImGui::DragFloat("Radius", &component.Radius, 0.01f, 0.0f, 10.0f);
+			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+			});
 	}
 
 	template <typename T>

@@ -1,0 +1,57 @@
+Scene: Untitled
+Entities:
+  - Entity: 8357985127876631050
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Translation: [0, 0, -4.4000001]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        PerpectiveVerticalFOV: 0.785398185
+        PerpectiveNear: 0.00999999978
+        PerpectiveFar: 100
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 14894470517457155383
+    TagComponent:
+      Tag: Entity
+    TransformComponent:
+      Translation: [-2.23701477, -2.1631732, 0]
+      Rotation: [-0.196165264, 0.544131279, 0.299432218]
+      Scale: [31.8842964, 0.0800052732, 1]
+    SpiriteRendererComponent:
+      Color: [0.547189355, 1, 0.061776042, 1]
+      TilingFactor: 1
+  - Entity: 455564709248519963
+    TagComponent:
+      Tag: Entity
+    TransformComponent:
+      Translation: [-2.23701477, -2.1631732, 0]
+      Rotation: [-0.196165204, 0.544131458, -0.469587445]
+      Scale: [31.8841896, 0.0800049528, 0.999999762]
+    SpiriteRendererComponent:
+      Color: [0.818532825, 0.0347639509, 0.0347639509, 1]
+      TilingFactor: 1
+  - Entity: 457083780175142396
+    TagComponent:
+      Tag: Entity
+    TransformComponent:
+      Translation: [-5.05485535, 4.14732361, 6.10351562e-05]
+      Rotation: [0, 0, 0]
+      Scale: [5, 5, 5]
+    CircleRendererComponent:
+      Color: [0, 0.899999976, 1, 1]
+      Thinness: 1
+      Fade: 0.98299998
+    Rigidbody2DComponent:
+      BodyType: 1
+      Damping: 0.00999999978
+      GravityScale: 1
+      FixedRotation: false
+      CCD: false
