@@ -343,7 +343,7 @@ namespace Kenshin
 			glm::vec4& color = component.Color;
 			ImGui::ColorEdit4("Color", &color.x);
 			ImGui::DragFloat("Thinness", &component.Thinness, 0.001, 0.0, 1.0);
-			ImGui::DragFloat("Fade", &component.Fade, 0.0005, 0.0, 0.1);				
+			ImGui::DragFloat("Fade", &component.Fade, 0.0005, 0.0, 1.0);				
 		});
 
 		DrawComponent<Rigidbody2DComponent>("RigidBody", entity, [](Rigidbody2DComponent& component) {	

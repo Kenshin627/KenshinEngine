@@ -156,9 +156,15 @@ namespace Kenshin
 		if (mainCamera)
 		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
+
 			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
 				Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
 			});
+
+			m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
+				Renderer2D::DrawCircle(transformComponent.GetTransform(), circle, (int)entity);
+			});
+
 			Renderer2D::EndScene();
 		}
 	}
@@ -168,6 +174,10 @@ namespace Kenshin
 		Renderer2D::BeginScene(camera);
 		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
 			Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
+			});
+
+		m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
+			Renderer2D::DrawCircle(transformComponent.GetTransform(), circle, (int)entity);
 			});
 		Renderer2D::EndScene();
 	}

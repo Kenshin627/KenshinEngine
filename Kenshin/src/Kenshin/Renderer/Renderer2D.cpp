@@ -14,6 +14,16 @@ namespace Kenshin
 		int EntityId;
 	};
 
+	struct CircleVertex
+	{
+		glm::vec3 WorldPosition;
+		glm::vec3 LocalPosition;
+		glm::vec4 Color;
+		float Thinness;
+		float Fade;
+		int EntityId;
+	};
+
 	struct Renderer2DStorageData
 	{
 		static const unsigned MaxTextureSlots = 32;
@@ -21,12 +31,23 @@ namespace Kenshin
 		static const unsigned MaxVertices = MaxQuadCount * 4;
 		static const unsigned MaxIndices = MaxQuadCount * 6;
 		static const unsigned VerticeCount = 4;
+
+		//Quad
 		Ref<VertexArray> QuadVA;	
 		Ref<VertexBuffer> QuadVB;
 		Ref<Shader> QuadShader;
 		unsigned QuadIndexedCount = 0;
 		QuadVertex* QuadVertexArrayBufferBase = nullptr;
-		QuadVertex* QuadVertexArrayBufferPtr = nullptr;
+		QuadVertex* QuadVertexArrayBufferPtr  = nullptr;
+
+		//Circle
+		Ref<VertexArray> CircleVA;
+		Ref<VertexBuffer> CircleVB;
+		Ref<Shader> CircleShader;
+		unsigned CirlceIndexedCount = 0;
+		CircleVertex* CircleVertexArrayBufferBase = nullptr;
+		CircleVertex* CircleVertexArrayBufferPtr  = nullptr;
+
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		unsigned TextureSlotIndex = 1;
 		glm::vec4 QuadPosition[4];
@@ -39,17 +60,17 @@ namespace Kenshin
 	void Renderer2D::Init()
 	{		
 		#pragma region QUAD
-		s_Data.QuadVA = Kenshin::VertexArray::CreateVertexArray();
+		s_Data.QuadVA = VertexArray::CreateVertexArray();
 		
-		s_Data.QuadVB = Kenshin::VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
+		s_Data.QuadVB = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 
 		s_Data.QuadVB->SetLayout({
-			{ "aPosition", Kenshin::ShaderDataType::Float3 },
-			{ "aColor", Kenshin::ShaderDataType::Float4 },
-			{ "aTexCoord", Kenshin::ShaderDataType::Float2 },
-			{ "aTilingFactor", Kenshin::ShaderDataType::Float },
-			{ "aTexIndex", Kenshin::ShaderDataType::Float },
-			{ "aEntityId", Kenshin::ShaderDataType::Int }
+			{ "a_Position",     ShaderDataType::Float3 },
+			{ "a_Color",        ShaderDataType::Float4 },
+			{ "a_TexCoord",     ShaderDataType::Float2 },
+			{ "a_TilingFactor", ShaderDataType::Float },
+			{ "a_TexIndex",     ShaderDataType::Float },
+			{ "a_EntityId",     ShaderDataType::Int }
 		});
 		s_Data.QuadVA->AddVertexBuffer(s_Data.QuadVB);
 		s_Data.QuadVertexArrayBufferBase = new QuadVertex[s_Data.MaxVertices];
@@ -68,8 +89,9 @@ namespace Kenshin
 			offset += 4;
 		}
 		Kenshin::Ref<Kenshin::IndexBuffer> quadEBO = Kenshin::IndexBuffer::Create(indices, s_Data.MaxIndices);
-		s_Data.QuadVA->SetIndexBuffer(quadEBO);
-		delete[] indices;
+		Kenshin::Ref<Kenshin::IndexBuffer> circleEBO = Kenshin::IndexBuffer::Create(indices, s_Data.MaxIndices);
+		s_Data.QuadVA->SetIndexBuffer(quadEBO);		
+		
 
 		s_Data.QuadPosition[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadPosition[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
@@ -82,8 +104,27 @@ namespace Kenshin
 		s_Data.QuadTexCoord[3] = { 0.0f, 1.0f };
 		#pragma endregion
 
+		#pragma region CIRCLE
+		s_Data.CircleVA = VertexArray::CreateVertexArray();
+		s_Data.CircleVB = VertexBuffer::Create(s_Data.MaxVertices * sizeof(CircleVertex));
+		s_Data.CircleVB->SetLayout({
+			{ "a_WorldPosition", ShaderDataType::Float3 },
+			{ "a_LocalPosition", ShaderDataType::Float3 },
+			{ "a_Color",         ShaderDataType::Float4 },
+			{ "a_Thinness",      ShaderDataType::Float },
+			{ "a_Fade",          ShaderDataType::Float },
+			{ "a_EntityId",      ShaderDataType::Int },
+		});
+		s_Data.CircleVA->AddVertexBuffer(s_Data.CircleVB);
+		s_Data.CircleVertexArrayBufferBase = new CircleVertex[s_Data.MaxVertices];
+		s_Data.CircleVA->SetIndexBuffer(circleEBO);
+		delete[] indices;
+		#pragma endregion
+
 		#pragma region SHADER		
 		s_Data.QuadShader = Shader::Create("resource/shaders/quad.glsl");
+
+		s_Data.CircleShader = Shader::Create("resource/shaders/circle2d.glsl");
 		#pragma endregion				 
 
 		#pragma region Texture
@@ -99,18 +140,21 @@ namespace Kenshin
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{		
 		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		
+		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
 		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
 		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);
+		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);
 		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const EditorCamera& camera)
 	{
 		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * camera.GetViewMatrix());
+		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * camera.GetViewMatrix());
 		StartBatch();
 	}
 
@@ -131,6 +175,17 @@ namespace Kenshin
 			}
 			s_Data.QuadShader->Bind();
 			RendererCommand::DrawIndexed(s_Data.QuadVA, s_Data.QuadIndexedCount);
+			//s_Data.QuadShader->unBind();
+			s_Data.Stats.DrawCalls++;
+		}
+
+		if (s_Data.CirlceIndexedCount)
+		{
+			uint32_t size = (uint8_t*)s_Data.CircleVertexArrayBufferPtr - (uint8_t*)s_Data.CircleVertexArrayBufferBase;
+			s_Data.CircleVB->SetData(s_Data.CircleVertexArrayBufferBase, size);
+			s_Data.CircleShader->Bind();
+			RendererCommand::DrawIndexed(s_Data.CircleVA, s_Data.CirlceIndexedCount);
+			//s_Data.CircleShader->unBind();
 			s_Data.Stats.DrawCalls++;
 		}
 	}
@@ -288,6 +343,22 @@ namespace Kenshin
 		}
 	}
 
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const CircleRendererComponent& circle, int entityId)
+	{
+		for (size_t i = 0; i < s_Data.VerticeCount; i++)
+		{
+			s_Data.CircleVertexArrayBufferPtr->WorldPosition = glm::vec3(transform * s_Data.QuadPosition[i]);
+			s_Data.CircleVertexArrayBufferPtr->LocalPosition = glm::vec3(s_Data.QuadPosition[i] * 2.0f);
+			s_Data.CircleVertexArrayBufferPtr->Color = circle.Color;
+			s_Data.CircleVertexArrayBufferPtr->Thinness = circle.Thinness;
+			s_Data.CircleVertexArrayBufferPtr->Fade = circle.Fade;
+			s_Data.CircleVertexArrayBufferPtr->EntityId = entityId;
+			s_Data.CircleVertexArrayBufferPtr++;
+		}
+		s_Data.CirlceIndexedCount += 6;
+		s_Data.Stats.QuadCount++;
+	}
+
 	const Renderer2D::Statistics& Renderer2D::GetStatistics()
 	{
 		return s_Data.Stats;
@@ -303,6 +374,9 @@ namespace Kenshin
 		s_Data.QuadIndexedCount = 0;
 		s_Data.QuadVertexArrayBufferPtr = s_Data.QuadVertexArrayBufferBase;
 		s_Data.TextureSlotIndex = 1;
+
+		s_Data.CirlceIndexedCount = 0;
+		s_Data.CircleVertexArrayBufferPtr = s_Data.CircleVertexArrayBufferBase;
 	}
 
 	void Renderer2D::NextBatch()

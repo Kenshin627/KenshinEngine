@@ -58,7 +58,7 @@ namespace Kenshin
 
 	struct CircleRendererComponent
 	{
-		glm::vec4 Color = { 1.0, 1.0, 1.0, 1.0 };
+		glm::vec4 Color = { 0.0, 0.9, 1.0, 1.0 };
 		float Thinness = 0.02f;
 		float Fade = 0.02f;
 		CircleRendererComponent() = default;
