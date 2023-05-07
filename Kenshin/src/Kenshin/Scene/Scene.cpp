@@ -156,9 +156,15 @@ namespace Kenshin
 		if (mainCamera)
 		{			
 			Renderer2D::BeginScene(*mainCamera, transform);
+
 			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
 				Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
 			});
+
+			m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
+				Renderer2D::DrawCircle(transformComponent.GetTransform(), circle, (int)entity);
+			});
+
 			Renderer2D::EndScene();
 		}
 	}
@@ -168,6 +174,10 @@ namespace Kenshin
 		Renderer2D::BeginScene(camera);
 		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
 			Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
+			});
+
+		m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
+			Renderer2D::DrawCircle(transformComponent.GetTransform(), circle, (int)entity);
 			});
 		Renderer2D::EndScene();
 	}
@@ -212,6 +222,12 @@ namespace Kenshin
 	}
 
 	template<>
+	void Scene::OnEntityAddComponent<CircleRendererComponent>(Entity* entity, CircleRendererComponent& com)
+	{
+
+	}
+
+	template<>
 	void Scene::OnEntityAddComponent<NativeScriptComponent>(Entity* entity, NativeScriptComponent& com)
 	{
 		com.Bind<QuadController>();
@@ -227,6 +243,12 @@ namespace Kenshin
 	void Scene::OnEntityAddComponent<BoxCollider2DComponent>(Entity* entity, BoxCollider2DComponent& com)
 	{
 		
+	}
+
+	template<>
+	void Scene::OnEntityAddComponent<CircleCollider2DComponent>(Entity* entity, CircleCollider2DComponent& com)
+	{
+
 	}
 
 	std::pair<glm::mat4, glm::mat4> Scene::GetMainCamera()
@@ -291,6 +313,24 @@ namespace Kenshin
 				fixtureDef.density = bc2d.Density;
 				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
 				bc2d.RuntimeFixture = b2fixture;
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+				b2CircleShape circleShape;
+				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
+				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+
+				b2FixtureDef fixtureDef;
+				fixtureDef.shape = &circleShape;
+				fixtureDef.friction = cc2d.Friction;
+				fixtureDef.restitution = cc2d.Restitution;
+				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				fixtureDef.density = cc2d.Density;
+				b2Fixture* b2fixture = b2body->CreateFixture(&fixtureDef);
+				cc2d.RuntimeFixture = b2fixture;
 			}
 		}
 	}

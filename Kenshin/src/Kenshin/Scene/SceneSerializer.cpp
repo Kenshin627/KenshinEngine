@@ -195,6 +195,19 @@ namespace Kenshin
 			out << YAML::EndMap;
 		}
 
+		if (entity.HasComponent<CircleRendererComponent>())
+		{
+			out << YAML::Key << "CircleRendererComponent";
+			out << YAML::BeginMap;
+
+			auto& cc = entity.GetComponent<CircleRendererComponent>();
+			out << YAML::Key << "Color" << YAML::Value << cc.Color;
+			out << YAML::Key << "Thinness" << YAML::Value << cc.Thinness;
+			out << YAML::Key << "Fade" << YAML::Value << cc.Fade;
+
+			out << YAML::EndMap;
+		}
+
 		if (entity.HasComponent<Rigidbody2DComponent>())
 		{
 			out << YAML::Key << "Rigidbody2DComponent";
@@ -227,6 +240,24 @@ namespace Kenshin
 
 			out << YAML::EndMap;
 		}
+
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			out << YAML::Key << "CircleCollider2DComponent";
+			out << YAML::BeginMap;
+
+			auto& cc = entity.GetComponent<CircleCollider2DComponent>();
+
+			out << YAML::Key << "Offset" << YAML::Value << cc.Offset;
+			out << YAML::Key << "Radius" << YAML::Value << cc.Radius;
+			out << YAML::Key << "Density" << YAML::Value << cc.Density;
+			out << YAML::Key << "Friction" << YAML::Value << cc.Friction;
+			out << YAML::Key << "Restitution" << YAML::Value << cc.Restitution;
+			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc.RestitutionThreshold;
+
+			out << YAML::EndMap;
+		}
+
 		out << YAML::EndMap;
 	}
 
@@ -271,10 +302,7 @@ namespace Kenshin
 			return false;
 
 		}
-
 		std::string sceneName = data["Scene"].as<std::string>();
-		KS_CORE_TRACE("Deserializing scene '{0}'", sceneName);
-
 		auto entities = data["Entities"];
 		if (entities)
 		{
@@ -286,8 +314,7 @@ namespace Kenshin
 				if (tagComponent)
 				{
 					name = tagComponent["Tag"].as<std::string>();
-				}
-				KS_CORE_TRACE("Deserialized entity with ID = {0}, name = {1}", uuid, name);
+				}				
 
 				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
 
@@ -334,6 +361,16 @@ namespace Kenshin
 					sc.TilingFactor = sprite["TilingFactor"].as<float>();				
 				}
 
+				//CircleRendererComponent
+				auto circle = entity["CircleRendererComponent"];
+				if (circle)
+				{
+					auto& cc = deserializedEntity.AddComponent<CircleRendererComponent>();
+					cc.Color = circle["Color"].as<glm::vec4>();
+					cc.Thinness = circle["Thinness"].as<float>();
+					cc.Fade = circle["Fade"].as<float>();
+				}
+
 				//Rigidbody2DComponent
 				auto rigidBody = entity["Rigidbody2DComponent"];
 				if (rigidBody)
@@ -357,6 +394,19 @@ namespace Kenshin
 					bc.Friction = box2d["Friction"].as<float>();
 					bc.Restitution = box2d["Restitution"].as<float>();
 					bc.RestitutionThreshold = box2d["RestitutionThreshold"].as<float>();
+				}
+
+				//CircleCollider
+				auto circle2d = entity["CircleCollider2DComponent"];
+				if (circle2d)
+				{
+					auto& cc = deserializedEntity.AddComponent<CircleCollider2DComponent>();
+					cc.Offset = circle2d["Offset"].as<glm::vec2>();
+					cc.Radius = circle2d["Radius"].as<float>();
+					cc.Density = circle2d["Density"].as<float>();
+					cc.Friction = circle2d["Friction"].as<float>();
+					cc.Restitution = circle2d["Restitution"].as<float>();
+					cc.RestitutionThreshold = circle2d["RestitutionThreshold"].as<float>();
 				}
 			}
 		}

@@ -56,6 +56,15 @@ namespace Kenshin
 		SpiriteRendererComponent(const glm::vec4& color) :Color(color) {}
 	};
 
+	struct CircleRendererComponent
+	{
+		glm::vec4 Color = { 0.0, 0.9, 1.0, 1.0 };
+		float Thinness = 0.02f;
+		float Fade = 0.02f;
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent& rhs) = default;
+	};
+
 	struct CameraComponent
 	{
 		SceneCamera Camera;
@@ -66,6 +75,7 @@ namespace Kenshin
 	};
 
 	class ScriptableEntity;
+
 	struct NativeScriptComponent
 	{
 		bool IsBind = false;
@@ -108,11 +118,24 @@ namespace Kenshin
 		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
 	};
 
+	struct CircleCollider2DComponent
+	{
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		float Radius = 0.5f;
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+		void* RuntimeFixture = nullptr;
+		CircleCollider2DComponent() = default;
+		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
+	};
+
 	template<typename...Component>
 	struct ComponentGroup
 	{
 
 	};
 
-	using AllComponents = ComponentGroup<TransformComponent, SpiriteRendererComponent, CameraComponent, NativeScriptComponent, Rigidbody2DComponent, BoxCollider2DComponent>;
+	using AllComponents = ComponentGroup<TransformComponent, SpiriteRendererComponent, CircleRendererComponent, CameraComponent, NativeScriptComponent, Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent>;
 }

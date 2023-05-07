@@ -30,11 +30,13 @@ namespace Kenshin
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, int entityId, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0));
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, int entityId, float tilingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0));
 		
-		static void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entiyId);
-		static void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityId);
-		static void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor, int entityId);
+		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entiyId);
+		static void DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityId);
+		static void DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const glm::vec4& tintColor, int entityId);
 
-		static void Renderer2D::DrawSpirite(const glm::mat4& transform, const SpiriteRendererComponent& spirite, int entityId);
+		static void DrawSpirite(const glm::mat4& transform, const SpiriteRendererComponent& spirite, int entityId);
+
+		static void DrawCircle(const glm::mat4& transform, const CircleRendererComponent& circle, int entityId);
 		struct Statistics
 		{
 			uint32_t DrawCalls = 0;

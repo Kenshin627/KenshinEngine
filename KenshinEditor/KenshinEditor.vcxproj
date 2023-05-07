@@ -149,6 +149,9 @@
       <Project>{D5D0AF84-41B0-2E20-4AC8-B9F6B6269581}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\shaders\circle2d.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -24,4 +24,7 @@
       <Filter>panel</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\shaders\circle2d.glsl" />
+  </ItemGroup>
 </Project>
