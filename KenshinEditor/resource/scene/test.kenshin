@@ -1,5 +1,71 @@
 Scene: Untitled
 Entities:
+  - Entity: 14270845558857814293
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0.0144275809, -0.0160927381, -0.41289261]
+      Scale: [23.9958954, 0.519720852, 0.999999523]
+    SpiriteRendererComponent:
+      Color: [1, 0.490258038, 0.0501930714, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: 0
+      Damping: 0.00999999978
+      GravityScale: 0
+      FixedRotation: false
+      CCD: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+      Visualize: true
+  - Entity: 5342143767323472931
+    TagComponent:
+      Tag: Floor
+    TransformComponent:
+      Translation: [0.657366574, 0.734406114, 0]
+      Rotation: [0.0983177423, 0.0258903299, -2.60730457]
+      Scale: [23.9958763, 0.519721091, 1]
+    SpiriteRendererComponent:
+      Color: [1, 0.490258038, 0.0501930714, 1]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: 0
+      Damping: 0.00999999978
+      GravityScale: 0
+      FixedRotation: false
+      CCD: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [1, 1]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+      Visualize: false
+  - Entity: 11818800551950210660
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Translation: [0.427565128, 0.182524323, -8.61910725]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        PerpectiveVerticalFOV: 0.785398185
+        PerpectiveNear: 0.00999999978
+        PerpectiveFar: 100
+      Primary: true
+      FixedAspectRatio: false
   - Entity: 7146291595494754195
     TagComponent:
       Tag: ball
@@ -24,67 +90,4 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 11818800551950210660
-    TagComponent:
-      Tag: camera
-    TransformComponent:
-      Translation: [0.427565128, 0.182524323, -8.61910725]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 0
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-        PerpectiveVerticalFOV: 0.785398185
-        PerpectiveNear: 0.00999999978
-        PerpectiveFar: 100
-      Primary: true
-      FixedAspectRatio: false
-  - Entity: 5342143767323472931
-    TagComponent:
-      Tag: Floor
-    TransformComponent:
-      Translation: [0.657366574, 0.734406114, 0]
-      Rotation: [0.0983177423, 0.0258903299, -2.60730457]
-      Scale: [23.9958763, 0.519721091, 1]
-    SpiriteRendererComponent:
-      Color: [1, 0.490258038, 0.0501930714, 1]
-      TilingFactor: 1
-    Rigidbody2DComponent:
-      BodyType: 0
-      Damping: 0.00999999978
-      GravityScale: 0
-      FixedRotation: false
-      CCD: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [1, 1]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
-  - Entity: 14270845558857814293
-    TagComponent:
-      Tag: Floor
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0.0144275809, -0.0160927381, -0.41289261]
-      Scale: [23.9958954, 0.519720852, 0.999999523]
-    SpiriteRendererComponent:
-      Color: [1, 0.490258038, 0.0501930714, 1]
-      TilingFactor: 1
-    Rigidbody2DComponent:
-      BodyType: 0
-      Damping: 0.00999999978
-      GravityScale: 0
-      FixedRotation: false
-      CCD: false
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 0
-      RestitutionThreshold: 0.5
+      Visualize: false

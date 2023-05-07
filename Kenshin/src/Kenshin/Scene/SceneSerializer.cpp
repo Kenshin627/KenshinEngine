@@ -237,6 +237,7 @@ namespace Kenshin
 			out << YAML::Key << "Friction" << YAML::Value << bc.Friction;
 			out << YAML::Key << "Restitution" << YAML::Value << bc.Restitution;
 			out << YAML::Key << "RestitutionThreshold" << YAML::Value << bc.RestitutionThreshold;
+			out << YAML::Key << "Visualize" << YAML::Value << bc.Visualize;
 
 			out << YAML::EndMap;
 		}
@@ -254,6 +255,7 @@ namespace Kenshin
 			out << YAML::Key << "Friction" << YAML::Value << cc.Friction;
 			out << YAML::Key << "Restitution" << YAML::Value << cc.Restitution;
 			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc.RestitutionThreshold;
+			out << YAML::Key << "Visualize" << YAML::Value << cc.Visualize;
 
 			out << YAML::EndMap;
 		}
@@ -394,6 +396,7 @@ namespace Kenshin
 					bc.Friction = box2d["Friction"].as<float>();
 					bc.Restitution = box2d["Restitution"].as<float>();
 					bc.RestitutionThreshold = box2d["RestitutionThreshold"].as<float>();
+					bc.Visualize = box2d["Visualize"].as<bool>();
 				}
 
 				//CircleCollider
@@ -407,6 +410,7 @@ namespace Kenshin
 					cc.Friction = circle2d["Friction"].as<float>();
 					cc.Restitution = circle2d["Restitution"].as<float>();
 					cc.RestitutionThreshold = circle2d["RestitutionThreshold"].as<float>();
+					cc.Visualize = circle2d["Visualize"].as<bool>();
 				}
 			}
 		}
