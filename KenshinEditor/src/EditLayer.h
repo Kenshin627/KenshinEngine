@@ -29,6 +29,7 @@ namespace Kenshin
 		void SaveSceneAs();
 		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
 		void DuplicateEntity();
+		void OnOverLayRender();
 	private:
 		enum class SceneStats { Editor = 0, Play };
 		OrthoGraphicCameraController m_CameraController;

@@ -36,7 +36,7 @@ namespace Kenshin
 
 		static void DrawSpirite(const glm::mat4& transform, const SpiriteRendererComponent& spirite, int entityId);
 
-		static void DrawCircle(const glm::mat4& transform, const CircleRendererComponent& circle, int entityId);
+		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thinness, float fade, int entityId);
 		struct Statistics
 		{
 			uint32_t DrawCalls = 0;

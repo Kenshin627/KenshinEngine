@@ -162,7 +162,7 @@ namespace Kenshin
 			});
 
 			m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
-				Renderer2D::DrawCircle(transformComponent.GetTransform(), circle, (int)entity);
+				Renderer2D::DrawCircle(transformComponent.GetTransform(), circle.Color, circle.Thinness, circle.Fade, (int)entity);
 			});
 
 			Renderer2D::EndScene();
@@ -177,7 +177,7 @@ namespace Kenshin
 			});
 
 		m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
-			Renderer2D::DrawCircle(transformComponent.GetTransform(), circle, (int)entity);
+			Renderer2D::DrawCircle(transformComponent.GetTransform(), circle.Color, circle.Thinness, circle.Fade, (int)entity);
 			});
 		Renderer2D::EndScene();
 	}
@@ -251,16 +251,15 @@ namespace Kenshin
 
 	}
 
-	std::pair<glm::mat4, glm::mat4> Scene::GetMainCamera()
+	Entity Scene::GetPrimaryCamera()
 	{
 		auto view = m_Registry.view<CameraComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
 			auto& cameraComponent = view.get<CameraComponent>(entity);
-			auto& transform = view.get<TransformComponent>(entity).GetTransform();
 			if (cameraComponent.Primary)
 			{
-				return std::make_pair(cameraComponent.Camera.GetProjection(), transform);
+				return { entity, this };
 			}
 		}
 		return {};
@@ -320,8 +319,8 @@ namespace Kenshin
 				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
 
 				b2CircleShape circleShape;
-				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
 				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
+				circleShape.m_radius = cc2d.Radius * transform.Scale.x;
 
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &circleShape;

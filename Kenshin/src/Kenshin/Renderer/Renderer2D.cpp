@@ -369,15 +369,15 @@ namespace Kenshin
 		}
 	}
 
-	void Renderer2D::DrawCircle(const glm::mat4& transform, const CircleRendererComponent& circle, int entityId)
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thinness, float fade, int entityId)
 	{
 		for (size_t i = 0; i < s_Data.VerticeCount; i++)
 		{
 			s_Data.CircleVertexArrayBufferPtr->WorldPosition = glm::vec3(transform * s_Data.QuadPosition[i]);
 			s_Data.CircleVertexArrayBufferPtr->LocalPosition = glm::vec3(s_Data.QuadPosition[i] * 2.0f);
-			s_Data.CircleVertexArrayBufferPtr->Color = circle.Color;
-			s_Data.CircleVertexArrayBufferPtr->Thinness = circle.Thinness;
-			s_Data.CircleVertexArrayBufferPtr->Fade = circle.Fade;
+			s_Data.CircleVertexArrayBufferPtr->Color = color;
+			s_Data.CircleVertexArrayBufferPtr->Thinness = thinness;
+			s_Data.CircleVertexArrayBufferPtr->Fade = fade;
 			s_Data.CircleVertexArrayBufferPtr->EntityId = entityId;
 			s_Data.CircleVertexArrayBufferPtr++;
 		}

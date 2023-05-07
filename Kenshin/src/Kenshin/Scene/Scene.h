@@ -30,9 +30,11 @@ namespace Kenshin
 		void OnPhysics2DStop();
 		template<typename T>
 		void OnEntityAddComponent(Entity* entity, T& component);
-		std::pair<glm::mat4, glm::mat4>  GetMainCamera();
+		Entity GetPrimaryCamera();
 		static Ref<Scene> Copy(const Ref<Scene>& other);
 		Entity DuplicateEntity(Entity entity);
+		template<typename...Components>
+		auto GetAllEntitiesWith() { return m_Registry.view<Components...>(); };
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0.0f, m_ViewportHeight = 0.0f;

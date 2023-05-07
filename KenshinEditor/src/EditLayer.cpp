@@ -82,6 +82,8 @@ namespace Kenshin
 			break;
 		}
 
+		OnOverLayRender();
+
 		auto [mpx, mpy] = ImGui::GetMousePos();
 		mpx -= m_ViewportBounds[0].x;
 		mpy -= m_ViewportBounds[0].y;
@@ -475,5 +477,35 @@ namespace Kenshin
 			Entity newEntity = m_ActiveScene->DuplicateEntity(selectEntity);
 			m_SceneHierarchyPanel.SetSelectiedEntity(newEntity);
 		}
+	}
+
+	void EditLayer::OnOverLayRender()
+	{
+		if (m_SceneStats == SceneStats::Play)
+		{
+			auto cameraEntity = m_ActiveScene->GetPrimaryCamera();
+			auto camera = cameraEntity.GetComponent<CameraComponent>();
+			auto transform = cameraEntity.GetComponent<TransformComponent>();
+			Renderer2D::BeginScene(camera.Camera, transform.GetTransform());
+		}
+		else 
+		{
+			Renderer2D::BeginScene(m_EditorCamera);
+		}
+
+		auto circleView = m_ActiveScene->GetAllEntitiesWith<CircleCollider2DComponent, TransformComponent>();
+		for (auto& entity : circleView)
+		{
+			auto& [cc2d, tc] = circleView.get<CircleCollider2DComponent, TransformComponent>(entity);			
+			if (cc2d.Visualize)
+			{
+				glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.01f);
+				glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0), translation) * glm::scale(glm::mat4(1.0), scale);
+				Renderer2D::DrawCircle(transform, glm::vec4(0.164, 0.721, 1.0, 1.0), 0.03, 0.005, -1);
+			}
+		}
+
+		Renderer2D::EndScene();
 	}
 }
