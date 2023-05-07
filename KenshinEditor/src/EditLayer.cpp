@@ -304,6 +304,16 @@ namespace Kenshin
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* itemPath = (const wchar_t*)payload->Data;
+				OpenScene(itemPath);
+				ImGui::EndDragDropTarget();
+			}
+		}
+
 		//guizmo
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
@@ -400,27 +410,31 @@ namespace Kenshin
 
 	void EditLayer::OpenScene()
 	{
+		auto path = FileDialog::OpenFile("Kenshin Scene(*.kenshin)\0*.kenshin\0");
+		OpenScene(path);
+	}
+
+	void EditLayer::OpenScene(const std::filesystem::path& p)
+	{
 		if (m_SceneStats != SceneStats::Editor)
 		{
 			m_ActiveScene->OnRuntimeStop();
 			m_ActiveScene = m_EditScene;
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 			m_SceneStats = SceneStats::Editor;
-		}		
+		}
 
-		auto path = FileDialog::OpenFile("Kenshin Scene(*.kenshin)\0*.kenshin\0");
-		std::filesystem::path p = path;
 		if (p.extension().string() != ".kenshin")
 		{
 			KS_CORE_WARN("Could not load {0} - not a scene file", p.filename().string());
 			return;
 		}
-		if (!path.empty())
+		if (!p.empty())
 		{
 			Ref<Scene> newScene = CreateRef<Scene>();
 			SceneSerializer ss(newScene);
-			ss.DeSerialize(path);
-			m_EditScenePath = path;
+			ss.DeSerialize(p.string());
+			m_EditScenePath = p.string();
 			m_EditScene = newScene;
 			m_ActiveScene = newScene;
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);

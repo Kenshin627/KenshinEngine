@@ -24,6 +24,7 @@ namespace Kenshin
 	private:
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& p);
 		void SaveScene();
 		void SaveSceneAs();
 		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
