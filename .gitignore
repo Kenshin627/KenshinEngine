@@ -1,3 +1,5 @@
 .vs/
 bin/
 bin-in/
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.log
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/gl.obj
