@@ -176,6 +176,7 @@
     <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
     <ClInclude Include="src\Kenshin\Renderer\SubTexture2D.h" />
     <ClInclude Include="src\Kenshin\Renderer\Texture.h" />
+    <ClInclude Include="src\Kenshin\Renderer\UniformBuffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h" />
     <ClInclude Include="src\Kenshin\Scene\CameraController.h" />
     <ClInclude Include="src\Kenshin\Scene\Components.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLUniformBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\imgui_impl_glfw.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -501,6 +503,7 @@
     <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Scene\CameraController.cpp" />
     <ClCompile Include="src\Kenshin\Scene\EditorCamera.cpp" />
@@ -516,6 +519,7 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLUniformBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

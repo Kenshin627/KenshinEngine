@@ -18,19 +18,20 @@ namespace Kenshin
 			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 0.5f;
+			float lineHeight = GImGui->Font->FontSize ;
 			ImGui::Separator();
 			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
 			ImGui::PopStyleVar();
-			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 1.0f);
-			/*if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
-			{
-				ImGui::OpenPopup("ComponentSettings");
-			}*/
+			ImGui::SameLine(contentRegionAvailable.x - lineHeight * .7f);
+			
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0, 0, 0, 0));
 			if (ImGui::ImageButton("settings", (ImTextureID)m_SettingTexture->GetRendererID(), ImVec2{ lineHeight, lineHeight }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 }))
 			{
 				ImGui::OpenPopup("ComponentSettings");
 			}
+			ImGui::PopStyleColor(3);
 
 			bool removeComponent = false;
 			if (ImGui::BeginPopup("ComponentSettings"))

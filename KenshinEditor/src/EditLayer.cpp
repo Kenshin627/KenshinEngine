@@ -276,8 +276,7 @@ namespace Kenshin
 
 		//hierarchyPanel
 		m_SceneHierarchyPanel.OnImGuiRender();
-		m_ContentBrowserPanel.OnImGuiRender();
-		UIToolBar();
+		m_ContentBrowserPanel.OnImGuiRender();		
 
 		auto selectionEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
@@ -305,20 +304,17 @@ namespace Kenshin
 		m_ViewportFocus = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 			
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocus && !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportHovered);
 		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID(0);
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		//guizmo
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
-		auto camera = m_EditorCamera;
-		
-
 		if (selectionEntity && m_GizmoType != -1 && m_SceneStats == SceneStats::Editor)
 		{
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
@@ -330,16 +326,16 @@ namespace Kenshin
 
 			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
 			auto& proj = m_EditorCamera.GetProjection();
-			auto& view = m_EditorCamera.GetViewMatrix();
+			glm::mat4 view = m_EditorCamera.GetViewMatrix();
 			auto& transformComponent = selectionEntity.GetComponent<TransformComponent>();
-			auto transform = transformComponent.GetTransform();
+			glm::mat4 transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
-			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
+			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : nullptr);
 			if (ImGuizmo::IsUsing())
 			{				
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);
-				auto deltaRotation = transformComponent.Rotation - rotation;
+				auto deltaRotation = rotation - transformComponent.Rotation;
 				transformComponent.Translation = translation;
 				transformComponent.Rotation += deltaRotation;
 				transformComponent.Scale = scale;
@@ -348,6 +344,8 @@ namespace Kenshin
 
 		ImGui::End();
 		ImGui::PopStyleVar();
+
+		UIToolBar();
 
 		ImGui::End();
 	}

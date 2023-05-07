@@ -2,6 +2,10 @@
 #include "Renderer2D.h"
 #include "RendererCommand.h"
 
+#include "Kenshin/Renderer/UniformBuffer.h"
+
+
+
 namespace Kenshin
 {
 	struct QuadVertex
@@ -53,6 +57,14 @@ namespace Kenshin
 		glm::vec4 QuadPosition[4];
 		glm::vec2 QuadTexCoord[4];
 		Renderer2D::Statistics Stats;
+
+		struct CameraData
+		{
+			glm::mat4 ViewProjection;
+		};
+
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 	};
 
 	static Renderer2DStorageData s_Data;
@@ -89,9 +101,9 @@ namespace Kenshin
 			offset += 4;
 		}
 		Kenshin::Ref<Kenshin::IndexBuffer> quadEBO = Kenshin::IndexBuffer::Create(indices, s_Data.MaxIndices);
-		Kenshin::Ref<Kenshin::IndexBuffer> circleEBO = Kenshin::IndexBuffer::Create(indices, s_Data.MaxIndices);
+		//Kenshin::Ref<Kenshin::IndexBuffer> circleEBO = Kenshin::IndexBuffer::Create(indices, s_Data.MaxIndices);
 		s_Data.QuadVA->SetIndexBuffer(quadEBO);		
-		
+		delete[] indices;
 
 		s_Data.QuadPosition[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadPosition[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
@@ -117,14 +129,14 @@ namespace Kenshin
 		});
 		s_Data.CircleVA->AddVertexBuffer(s_Data.CircleVB);
 		s_Data.CircleVertexArrayBufferBase = new CircleVertex[s_Data.MaxVertices];
-		s_Data.CircleVA->SetIndexBuffer(circleEBO);
-		delete[] indices;
+		s_Data.CircleVA->SetIndexBuffer(quadEBO);
+		
 		#pragma endregion
 
 		#pragma region SHADER		
-		s_Data.QuadShader = Shader::Create("resource/shaders/quad.glsl");
+		s_Data.QuadShader   = Shader::Create("resource/shaders/renderer2D_quad.glsl");
 
-		s_Data.CircleShader = Shader::Create("resource/shaders/circle2d.glsl");
+		s_Data.CircleShader = Shader::Create("resource/shaders/renderer2D_circle.glsl");
 		#pragma endregion				 
 
 		#pragma region Texture
@@ -133,28 +145,40 @@ namespace Kenshin
 		whiteTexture->SetData(&data, sizeof(uint32_t));
 		s_Data.TextureSlots[0] = whiteTexture;
 		#pragma endregion
+
+		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DStorageData::CameraData), 0);
 	}
 
-	void Renderer2D::ShutDown() { }
+	void Renderer2D::ShutDown() 
+	{
+		delete[] s_Data.QuadVertexArrayBufferBase;
+		delete[] s_Data.CircleVertexArrayBufferBase;
+	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{		
-		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		
-		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+		/*s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		
+		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());*/
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjectionMatrix();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DStorageData::CameraData));
 		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
-		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);
-		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);
+		/*s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);
+		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * transform);*/
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * transform;
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DStorageData::CameraData));
 		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const EditorCamera& camera)
 	{
-		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * camera.GetViewMatrix());
-		s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * camera.GetViewMatrix());
+		/*s_Data.CircleShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * camera.GetViewMatrix());
+		s_Data.QuadShader->SetMat4("u_ViewProjectionMatrix", camera.GetProjection() * camera.GetViewMatrix());*/
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * camera.GetViewMatrix();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DStorageData::CameraData));
 		StartBatch();
 	}
 
@@ -165,6 +189,18 @@ namespace Kenshin
 
 	void Renderer2D::Flush()
 	{
+		
+
+		if (s_Data.CirlceIndexedCount)
+		{
+			uint32_t size = (uint8_t*)s_Data.CircleVertexArrayBufferPtr - (uint8_t*)s_Data.CircleVertexArrayBufferBase;
+			s_Data.CircleVB->SetData(s_Data.CircleVertexArrayBufferBase, size);
+			s_Data.CircleShader->Bind();
+			RendererCommand::DrawIndexed(s_Data.CircleVA, s_Data.CirlceIndexedCount);
+			//s_Data.CircleShader->unBind();
+			s_Data.Stats.DrawCalls++;
+		}
+
 		if (s_Data.QuadIndexedCount)
 		{
 			uint32_t size = (uint8_t*)s_Data.QuadVertexArrayBufferPtr - (uint8_t*)s_Data.QuadVertexArrayBufferBase;
@@ -176,16 +212,6 @@ namespace Kenshin
 			s_Data.QuadShader->Bind();
 			RendererCommand::DrawIndexed(s_Data.QuadVA, s_Data.QuadIndexedCount);
 			//s_Data.QuadShader->unBind();
-			s_Data.Stats.DrawCalls++;
-		}
-
-		if (s_Data.CirlceIndexedCount)
-		{
-			uint32_t size = (uint8_t*)s_Data.CircleVertexArrayBufferPtr - (uint8_t*)s_Data.CircleVertexArrayBufferBase;
-			s_Data.CircleVB->SetData(s_Data.CircleVertexArrayBufferBase, size);
-			s_Data.CircleShader->Bind();
-			RendererCommand::DrawIndexed(s_Data.CircleVA, s_Data.CirlceIndexedCount);
-			//s_Data.CircleShader->unBind();
 			s_Data.Stats.DrawCalls++;
 		}
 	}
