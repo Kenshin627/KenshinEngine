@@ -13,7 +13,7 @@
 
 namespace Kenshin
 {
-	EditLayer::EditLayer() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D"), m_SquareColor({ 0.2, 0.3, 0.8, 1.0f }) {}
+	EditLayer::EditLayer() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D") {}
 
 	void EditLayer::OnAttach()
 	{
@@ -25,13 +25,6 @@ namespace Kenshin
 		fbSpec.SwapChainTarget = false;
 		m_Framebuffer = FrameBuffer::Create(fbSpec);
 		
-		m_checkboardTexture = Texture2D::Create("resource/textures/Checkerboard.png");
-		m_BandTexture = Texture2D::Create("resource/textures/ledZepppelin.jpg");
-		m_SpiriteSheet = Texture2D::Create("resource/textures/RPGpack_sheet.png");
-		m_SpirteAnima = Texture2D::Create("resource/textures/square_nodetailsOutline.png");
-		m_Tree = SubTexture2D::Create(m_SpiriteSheet, { 0, 1 }, { 64, 64 }, { 1.0f, 2.0f });
-		m_Pig = SubTexture2D::Create(m_SpirteAnima, { 4, 4 }, { 136, 136 });
-		m_Cat = SubTexture2D::Create(m_SpirteAnima, { 0, 3 }, { 136, 136 });
 		m_CameraController.SetZoomLevel(5.5f);
 		m_EditorCamera = EditorCamera();
 
@@ -44,10 +37,7 @@ namespace Kenshin
 		m_PlayIcon = Texture2D::Create("resource/toolBar/play.png");
 		m_StopIcon = Texture2D::Create("resource/toolBar/stop.png");
 
-		//gizmoButtons
-		m_GizmoBtns[0] = Texture2D::Create("resource/textures/translate.png");
-		m_GizmoBtns[1] = Texture2D::Create("resource/textures/rotate.png");
-		m_GizmoBtns[2] = Texture2D::Create("resource/textures/scale.png");
+		Renderer2D::SetLineWidth(3.0f);
 	}
 
 	void EditLayer::OnDetach() { }
@@ -493,10 +483,11 @@ namespace Kenshin
 			Renderer2D::BeginScene(m_EditorCamera);
 		}
 
-		auto circleView = m_ActiveScene->GetAllEntitiesWith<CircleCollider2DComponent, TransformComponent>();
-		for (auto& entity : circleView)
+		//circle Collider
+		auto circleColliders = m_ActiveScene->GetAllEntitiesWith<CircleCollider2DComponent, TransformComponent>();
+		for (auto& entity : circleColliders)
 		{
-			auto& [cc2d, tc] = circleView.get<CircleCollider2DComponent, TransformComponent>(entity);			
+			auto& [cc2d, tc] = circleColliders.get<CircleCollider2DComponent, TransformComponent>(entity);
 			if (cc2d.Visualize)
 			{
 				glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.01f);
@@ -506,6 +497,19 @@ namespace Kenshin
 			}
 		}
 
+		//box Collider
+		auto boxColliders = m_ActiveScene->GetAllEntitiesWith<BoxCollider2DComponent, TransformComponent>();
+		for (auto& entity : boxColliders)
+		{
+			auto& [bc2d, tc] = boxColliders.get<BoxCollider2DComponent, TransformComponent>(entity);
+			if (bc2d.Visualize)
+			{
+				glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.01f);
+				glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation) * glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0, 0, 1)) * glm::scale(glm::mat4(1.0), scale);
+				Renderer2D::DrawRect(transform, glm::vec4(0.164, 0.721, 1.0, 1.0), -1);
+			}
+		}
 		Renderer2D::EndScene();
 	}
 }

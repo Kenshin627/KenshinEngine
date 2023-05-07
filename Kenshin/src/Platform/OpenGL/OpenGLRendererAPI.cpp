@@ -23,11 +23,18 @@ namespace Kenshin
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count)
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
 		vertexArray->Bind();
-		uint32_t indicesCount = count == 0 ? vertexArray->GetIndexBuffer()->GetCount() : count;
+		uint32_t indicesCount = indexCount == 0 ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
 		glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, (const void*)nullptr);
+	}
+
+	void OpenGLRendererAPI::DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount, float lineWidth)
+	{
+		vertexArray->Bind();
+		glLineWidth(lineWidth);
+		glDrawArrays(GL_LINES, 0, vertexCount);
 	}
 
 	void OpenGLRendererAPI::ResizeViewport(size_t x, size_t y, size_t width, size_t height)
