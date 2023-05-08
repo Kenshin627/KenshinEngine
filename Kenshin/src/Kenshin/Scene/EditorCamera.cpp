@@ -20,7 +20,7 @@ namespace Kenshin
 
 	void EditorCamera::OnUpdate(TimeStamp ts)
 	{
-		if (Input::IsKeyPressed(Key::LeftAlt))
+		if (Input::IsKeyPressed(Key::LeftControl))
 		{
 			const glm::vec2 mousePosition{ Input::GetMouseX(), Input::GetMouseY() };
 			glm::vec2  delta = (mousePosition - m_InitialMousePostion) * 0.003f;

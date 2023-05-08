@@ -71,11 +71,8 @@ namespace Kenshin
 		case Kenshin::EditLayer::SceneStats::Play:
 			m_ActiveScene->OnUpdateRuntime(ts);
 			break;
-		case Kenshin::EditLayer::SceneStats::Simulation:
-			if (m_ViewportFocus && m_ViewportHovered)
-			{
-				m_EditorCamera.OnUpdate(ts);
-			}
+		case Kenshin::EditLayer::SceneStats::Simulation:			
+			m_EditorCamera.OnUpdate(ts);			
 			m_ActiveScene->OnUpdateSimulation(ts, m_EditorCamera);
 			break;
 		}
