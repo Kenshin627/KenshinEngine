@@ -25,6 +25,57 @@ namespace Kenshin
 		delete m_PhysicsWorld;
 	}
 
+	void Scene::RenderScene(const glm::mat4& viewpProjection)
+	{
+		Renderer2D::BeginScene(viewpProjection);
+		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
+			Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
+			});
+
+		m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
+			Renderer2D::DrawCircle(transformComponent.GetTransform(), circle.Color, circle.Thinness, circle.Fade, (int)entity);
+			});
+		Renderer2D::EndScene();
+	}
+
+	void Scene::PhysicsUpdate(TimeStamp ts)
+	{
+		const int32_t velocityIterations = 6;
+		const int32_t positionIterations = 2;
+		m_PhysicsWorld->Step(ts, 6, 2);
+
+		auto view = m_Registry.view<Rigidbody2DComponent>();
+		for (auto& e : view)
+		{
+			Entity entity = { e, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+			b2Body* runtimeBody = (b2Body*)rb2d.RuntimeBody;
+			auto& position = runtimeBody->GetPosition();
+			transform.Translation.x = position.x;
+			transform.Translation.y = position.y;
+			transform.Rotation.z = runtimeBody->GetAngle();
+		}
+	}
+
+	void Scene::ScriptsUpdate(TimeStamp ts)
+	{
+		m_Registry.view<NativeScriptComponent>().each([&](entt::entity entity, NativeScriptComponent& nsc) {
+			if (!nsc.Instance && nsc.IsBind)
+			{
+				nsc.Instance = nsc.IsntantiateScript();
+				nsc.Instance->m_Entity = { entity, this };
+				nsc.Instance->OnCreate();
+			}
+
+			if (nsc.IsBind && nsc.Instance)
+			{
+				nsc.Instance->OnUpdate(ts);
+			}
+		});
+	}
+
 	template<typename...Component>
 	static void CopyComponentIfExists(Entity dst, Entity src)
 	{
@@ -103,83 +154,31 @@ namespace Kenshin
 
 	void Scene::OnUpdateRuntime(TimeStamp ts)
 	{
-		//updateScripts
-		m_Registry.view<NativeScriptComponent>().each([&](entt::entity entity, NativeScriptComponent& nsc) {
-			if (!nsc.Instance && nsc.IsBind)
-			{
-				nsc.Instance = nsc.IsntantiateScript();
-				nsc.Instance->m_Entity = { entity, this };
-				nsc.Instance->OnCreate();
-			}
+		//Scripts update
+		ScriptsUpdate(ts);
 
-			if (nsc.IsBind && nsc.Instance)
-			{
-				nsc.Instance->OnUpdate(ts);
-			}
-		});
+		//Physcis update
+		PhysicsUpdate(ts);
 
-		//Physcis
+		//Scene update
+		auto cameraEntity = GetPrimaryCamera();
+		if (cameraEntity)
 		{
-			const int32_t velocityIterations = 6;
-			const int32_t positionIterations = 2;
-			m_PhysicsWorld->Step(ts, 6, 2);
-
-			auto view = m_Registry.view<Rigidbody2DComponent>();
-			for (auto& e : view)
-			{
-				Entity entity = { e, this };
-				auto& transform = entity.GetComponent<TransformComponent>();
-				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-
-				b2Body* runtimeBody = (b2Body*)rb2d.RuntimeBody;
-				auto& position = runtimeBody->GetPosition();
-				transform.Translation.x = position.x;
-				transform.Translation.y = position.y;
-				transform.Rotation.z = runtimeBody->GetAngle();
-			}
-		}
-
-		Camera* mainCamera = nullptr;
-		glm::mat4 transform;
-		auto cameraGroup = m_Registry.group<TransformComponent, CameraComponent>();
-		for (auto entity : cameraGroup)
-		{
-			auto[transformComponent, cameraComponent] = cameraGroup.get<TransformComponent, CameraComponent>(entity);
-			if (cameraComponent.Primary)
-			{
-				mainCamera = &cameraComponent.Camera;
-				transform = transformComponent;
-				break;
-			}
-		}
-
-		if (mainCamera)
-		{			
-			Renderer2D::BeginScene(*mainCamera, transform);
-
-			m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
-				Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
-			});
-
-			m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
-				Renderer2D::DrawCircle(transformComponent.GetTransform(), circle.Color, circle.Thinness, circle.Fade, (int)entity);
-			});
-
-			Renderer2D::EndScene();
+			RenderScene(cameraEntity.GetComponent<CameraComponent>().Camera.GetProjection() * cameraEntity.GetComponent<TransformComponent>().GetTransform());
 		}
 	}
 
-	void Scene::OnUpdateEditor(TimeStamp ts, const EditorCamera& camera)
+	void Scene::OnUpdateEditor(const EditorCamera& camera)
 	{
-		Renderer2D::BeginScene(camera);
-		m_Registry.view<TransformComponent, SpiriteRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const SpiriteRendererComponent& spirite) {
-			Renderer2D::DrawSpirite(transformComponent.GetTransform(), spirite, (int)entity);
-			});
+		RenderScene(camera.GetViewProjectionMatrix());
+	}
 
-		m_Registry.view<TransformComponent, CircleRendererComponent>().each([&](entt::entity entity, const TransformComponent& transformComponent, const CircleRendererComponent& circle) {
-			Renderer2D::DrawCircle(transformComponent.GetTransform(), circle.Color, circle.Thinness, circle.Fade, (int)entity);
-			});
-		Renderer2D::EndScene();
+	void Scene::OnUpdateSimulation(TimeStamp ts, const EditorCamera& camera)
+	{
+		//Physcis
+		PhysicsUpdate(ts);
+		//Scene
+		RenderScene(camera.GetViewProjectionMatrix());
 	}
 
 	template<typename T>
@@ -271,6 +270,16 @@ namespace Kenshin
 	}
 
 	void Scene::OnRuntimeStop()
+	{
+		OnPhysics2DStop();
+	}
+
+	void Scene::OnSimulationStart()
+	{
+		OnPhysics2DStart();
+	}
+
+	void Scene::OnSimulationStop()
 	{
 		OnPhysics2DStop();
 	}

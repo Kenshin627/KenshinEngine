@@ -202,6 +202,13 @@ namespace Kenshin
 		StartBatch();
 	}
 
+	void Renderer2D::BeginScene(const glm::mat4& viewPorjection)
+	{
+		s_Data.CameraBuffer.ViewProjection = viewPorjection;
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DStorageData::CameraData));
+		StartBatch();
+	}
+
 	void Renderer2D::EndScene()
 	{
 		Flush();

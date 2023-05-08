@@ -17,8 +17,12 @@ namespace Kenshin
 		friend class Entity;
 		Scene();
 		~Scene();
-		void OnUpdateEditor(TimeStamp ts, const EditorCamera& camera);
+		void RenderScene(const glm::mat4& viewpProjection);
+		void PhysicsUpdate(TimeStamp ts);
+		void ScriptsUpdate(TimeStamp ts);
+		void OnUpdateEditor(const EditorCamera& camera);
 		void OnUpdateRuntime(TimeStamp ts);
+		void OnUpdateSimulation(TimeStamp ts, const EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 		Entity CreateEntity(const std::string& name = "Entity");
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name);
@@ -26,6 +30,8 @@ namespace Kenshin
 		entt::registry& Registry() { return m_Registry; }
 		void OnRuntimeStart();
 		void OnRuntimeStop();
+		void OnSimulationStart();
+		void OnSimulationStop();
 		void OnPhysics2DStart();
 		void OnPhysics2DStop();
 		template<typename T>

@@ -19,8 +19,16 @@ namespace Kenshin
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnMouseEvent(MouseButtonPressedEvent& e);
 		void UIToolBar();
-		void OnScenePlay();
-		void OnSceneStop();
+		void OnSceneRuntimeStart();
+		void OnSceneRuntimeStop();
+		void OnSceneSimulationStart();
+		void OnSceneSimulationStop();
+	public:
+		struct ColliderDebugger
+		{
+			bool Enable = true;
+			glm::vec4& Color = glm::vec4(0.164, 0.721, 1.0, 1.0);
+		};
 	private:
 		void NewScene();
 		void OpenScene();
@@ -31,7 +39,7 @@ namespace Kenshin
 		void DuplicateEntity();
 		void OnOverLayRender();
 	private:
-		enum class SceneStats { Editor = 0, Play };
+		enum class SceneStats { Editor = 0, Play, Simulation };
 		OrthoGraphicCameraController m_CameraController;
 		EditorCamera m_EditorCamera;
 		Ref<FrameBuffer> m_Framebuffer;
@@ -47,7 +55,10 @@ namespace Kenshin
 		ContentBrowserPanel m_ContentBrowserPanel;
 		Ref<Texture2D> m_PlayIcon;
 		Ref<Texture2D> m_StopIcon;
+		Ref<Texture2D> m_SimulationIcon;
 		int m_GizmoType = -1;
 		SceneStats m_SceneStats = SceneStats::Editor;
+
+		ColliderDebugger collider;
 	};
 }

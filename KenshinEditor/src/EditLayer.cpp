@@ -13,7 +13,7 @@
 
 namespace Kenshin
 {
-	EditLayer::EditLayer() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D") {}
+	EditLayer::EditLayer() : m_CameraController(1280.0f / 720.0f), Layer("KenshinEditor") {}
 
 	void EditLayer::OnAttach()
 	{
@@ -34,8 +34,9 @@ namespace Kenshin
 		//Panels
 		m_SceneHierarchyPanel.SetContext(m_EditScene);
 
-		m_PlayIcon = Texture2D::Create("resource/toolBar/play.png");
-		m_StopIcon = Texture2D::Create("resource/toolBar/stop.png");
+		m_PlayIcon = Texture2D::Create("resource/toolBar/PlayButton.png");
+		m_StopIcon = Texture2D::Create("resource/toolBar/StopButton.png");
+		m_SimulationIcon = Texture2D::Create("resource/toolBar/SimulateButton.png");
 
 		Renderer2D::SetLineWidth(3.0f);
 	}
@@ -65,14 +66,24 @@ namespace Kenshin
 			{
 				m_EditorCamera.OnUpdate(ts);
 			}
-			m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
+			m_ActiveScene->OnUpdateEditor(m_EditorCamera);
 			break;
 		case Kenshin::EditLayer::SceneStats::Play:
 			m_ActiveScene->OnUpdateRuntime(ts);
 			break;
+		case Kenshin::EditLayer::SceneStats::Simulation:
+			if (m_ViewportFocus && m_ViewportHovered)
+			{
+				m_EditorCamera.OnUpdate(ts);
+			}
+			m_ActiveScene->OnUpdateSimulation(ts, m_EditorCamera);
+			break;
 		}
-
-		OnOverLayRender();
+		
+		if (collider.Enable && m_ActiveScene->GetPrimaryCamera())
+		{
+			OnOverLayRender();
+		}
 
 		auto [mpx, mpy] = ImGui::GetMousePos();
 		mpx -= m_ViewportBounds[0].x;
@@ -283,6 +294,11 @@ namespace Kenshin
 		ImGui::Text("Selected Entity: %s", selectedTag);
 		ImGui::End();
 
+		ImGui::Begin("Settings");
+		ImGui::Checkbox("Visualize Collider", &collider.Enable);
+		ImGui::ColorEdit4("Collider Color", glm::value_ptr(collider.Color));
+		ImGui::End();
+
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
 
@@ -366,17 +382,30 @@ namespace Kenshin
 		float height = ImGui::GetWindowHeight();
 		float size = height - 4.0f;
 		ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x * 0.5f - size * 0.5f);
-		auto icon = m_SceneStats == SceneStats::Editor ? m_PlayIcon : m_StopIcon;
-
-		if (ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { size, size }, { 0,1 }, {1,0}, 0))
+		auto playIcon = m_SceneStats != SceneStats::Play ? m_PlayIcon : m_StopIcon;
+		if (ImGui::ImageButton((ImTextureID)playIcon->GetRendererID(), { size, size }, { 0,1 }, {1,0}, 0))
 		{
-			if (m_SceneStats == SceneStats::Editor)
+			if (m_SceneStats != SceneStats::Play)
 			{
-				OnScenePlay();				
+				OnSceneRuntimeStart();				
 			}
 			else
 			{
-				OnSceneStop();				
+				OnSceneRuntimeStop();				
+			}
+		}
+
+		ImGui::SameLine(ImGui::GetWindowContentRegionMax().x * 0.5f - size * 2.0f);
+		auto simulationIcon = m_SceneStats != SceneStats::Simulation ? m_SimulationIcon : m_StopIcon;
+		if (ImGui::ImageButton((ImTextureID)simulationIcon->GetRendererID(), { size, size }, { 0, 1 }, { 1, 0 }, 0))
+		{
+			if(m_SceneStats != SceneStats::Simulation)
+			{
+				OnSceneSimulationStart();
+			}
+			else
+			{
+				OnSceneSimulationStop();
 			}
 		}
 		ImGui::PopStyleVar(2);
@@ -384,17 +413,41 @@ namespace Kenshin
 		ImGui::End();
 	}
 
-	void EditLayer::OnScenePlay()
+	void EditLayer::OnSceneRuntimeStart()
 	{
+		if (m_SceneStats == SceneStats::Simulation)
+		{
+			OnSceneSimulationStop();
+		}
 		m_ActiveScene = Scene::Copy(m_EditScene);		
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 		m_ActiveScene->OnRuntimeStart();
 		m_SceneStats = SceneStats::Play;
 	}
 
-	void EditLayer::OnSceneStop()
+	void EditLayer::OnSceneRuntimeStop()
 	{
 		m_ActiveScene->OnRuntimeStop();
+		m_SceneStats = SceneStats::Editor;
+		m_ActiveScene = m_EditScene;
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditLayer::OnSceneSimulationStart()
+	{
+		if (m_SceneStats == SceneStats::Play)
+		{
+			OnSceneRuntimeStop();
+		}
+		m_ActiveScene = Scene::Copy(m_EditScene);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_ActiveScene->OnSimulationStart();
+		m_SceneStats = SceneStats::Simulation;
+	}
+
+	void EditLayer::OnSceneSimulationStop()
+	{
+		m_ActiveScene->OnSimulationStop();
 		m_SceneStats = SceneStats::Editor;
 		m_ActiveScene = m_EditScene;
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
@@ -416,12 +469,14 @@ namespace Kenshin
 
 	void EditLayer::OpenScene(const std::filesystem::path& p)
 	{
-		if (m_SceneStats != SceneStats::Editor)
+		if (m_SceneStats == SceneStats::Play)
 		{
-			m_ActiveScene->OnRuntimeStop();
-			m_ActiveScene = m_EditScene;
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-			m_SceneStats = SceneStats::Editor;
+			OnSceneRuntimeStop();
+		}
+
+		if (m_SceneStats == SceneStats::Simulation)
+		{
+			OnSceneSimulationStop();
 		}
 
 		if (p.extension().string() != ".kenshin")
@@ -507,7 +562,7 @@ namespace Kenshin
 				glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.01f);
 				glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0), translation) * glm::scale(glm::mat4(1.0), scale);
-				Renderer2D::DrawCircle(transform, glm::vec4(0.164, 0.721, 1.0, 1.0), 0.03, 0.005, -1);
+				Renderer2D::DrawCircle(transform, collider.Color, 0.03, 0.005, -1);
 			}
 		}
 
@@ -521,7 +576,7 @@ namespace Kenshin
 				glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.01f);
 				glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation) * glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0, 0, 1)) * glm::scale(glm::mat4(1.0), scale);
-				Renderer2D::DrawRect(transform, glm::vec4(0.164, 0.721, 1.0, 1.0), -1);
+				Renderer2D::DrawRect(transform, collider.Color, -1);
 			}
 		}
 		Renderer2D::EndScene();
