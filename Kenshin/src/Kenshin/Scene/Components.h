@@ -113,6 +113,7 @@ namespace Kenshin
 		float Friction = 0.5f;
 		float Restitution = 0.0f;
 		float RestitutionThreshold = 0.5f;
+		bool  Visualize = true;
 		void* RuntimeFixture = nullptr;
 		BoxCollider2DComponent() = default;
 		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
@@ -126,6 +127,7 @@ namespace Kenshin
 		float Friction = 0.5f;
 		float Restitution = 0.0f;
 		float RestitutionThreshold = 0.5f;
+		bool  Visualize = true;
 		void* RuntimeFixture = nullptr;
 		CircleCollider2DComponent() = default;
 		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;

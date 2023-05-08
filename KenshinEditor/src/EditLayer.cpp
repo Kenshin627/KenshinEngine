@@ -13,7 +13,7 @@
 
 namespace Kenshin
 {
-	EditLayer::EditLayer() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D"), m_SquareColor({ 0.2, 0.3, 0.8, 1.0f }) {}
+	EditLayer::EditLayer() : m_CameraController(1280.0f / 720.0f), Layer("SandBox2D") {}
 
 	void EditLayer::OnAttach()
 	{
@@ -25,13 +25,6 @@ namespace Kenshin
 		fbSpec.SwapChainTarget = false;
 		m_Framebuffer = FrameBuffer::Create(fbSpec);
 		
-		m_checkboardTexture = Texture2D::Create("resource/textures/Checkerboard.png");
-		m_BandTexture = Texture2D::Create("resource/textures/ledZepppelin.jpg");
-		m_SpiriteSheet = Texture2D::Create("resource/textures/RPGpack_sheet.png");
-		m_SpirteAnima = Texture2D::Create("resource/textures/square_nodetailsOutline.png");
-		m_Tree = SubTexture2D::Create(m_SpiriteSheet, { 0, 1 }, { 64, 64 }, { 1.0f, 2.0f });
-		m_Pig = SubTexture2D::Create(m_SpirteAnima, { 4, 4 }, { 136, 136 });
-		m_Cat = SubTexture2D::Create(m_SpirteAnima, { 0, 3 }, { 136, 136 });
 		m_CameraController.SetZoomLevel(5.5f);
 		m_EditorCamera = EditorCamera();
 
@@ -44,10 +37,7 @@ namespace Kenshin
 		m_PlayIcon = Texture2D::Create("resource/toolBar/play.png");
 		m_StopIcon = Texture2D::Create("resource/toolBar/stop.png");
 
-		//gizmoButtons
-		m_GizmoBtns[0] = Texture2D::Create("resource/textures/translate.png");
-		m_GizmoBtns[1] = Texture2D::Create("resource/textures/rotate.png");
-		m_GizmoBtns[2] = Texture2D::Create("resource/textures/scale.png");
+		Renderer2D::SetLineWidth(3.0f);
 	}
 
 	void EditLayer::OnDetach() { }
@@ -81,6 +71,8 @@ namespace Kenshin
 			m_ActiveScene->OnUpdateRuntime(ts);
 			break;
 		}
+
+		OnOverLayRender();
 
 		auto [mpx, mpy] = ImGui::GetMousePos();
 		mpx -= m_ViewportBounds[0].x;
@@ -276,8 +268,7 @@ namespace Kenshin
 
 		//hierarchyPanel
 		m_SceneHierarchyPanel.OnImGuiRender();
-		m_ContentBrowserPanel.OnImGuiRender();
-		UIToolBar();
+		m_ContentBrowserPanel.OnImGuiRender();		
 
 		auto selectionEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 
@@ -305,20 +296,27 @@ namespace Kenshin
 		m_ViewportFocus = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 			
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocus && !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportHovered);
 		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID(0);
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* itemPath = (const wchar_t*)payload->Data;
+				OpenScene(itemPath);
+				ImGui::EndDragDropTarget();
+			}
+		}
 
 		//guizmo
 		ImGuizmo::SetOrthographic(false);
 		ImGuizmo::SetDrawlist();
-		auto camera = m_EditorCamera;
-		
-
 		if (selectionEntity && m_GizmoType != -1 && m_SceneStats == SceneStats::Editor)
 		{
 			bool snap = Input::IsKeyPressed(Key::LeftControl);
@@ -330,16 +328,16 @@ namespace Kenshin
 
 			const float snapVlaues[3] = { snapValue, snapValue, snapValue };
 			auto& proj = m_EditorCamera.GetProjection();
-			auto& view = m_EditorCamera.GetViewMatrix();
+			glm::mat4 view = m_EditorCamera.GetViewMatrix();
 			auto& transformComponent = selectionEntity.GetComponent<TransformComponent>();
-			auto transform = transformComponent.GetTransform();
+			glm::mat4 transform = transformComponent.GetTransform();
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
-			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : 0);
+			ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION(m_GizmoType), ImGuizmo::MODE::LOCAL, glm::value_ptr(transform), nullptr, snap? snapVlaues : nullptr);
 			if (ImGuizmo::IsUsing())
 			{				
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);
-				auto deltaRotation = transformComponent.Rotation - rotation;
+				auto deltaRotation = rotation - transformComponent.Rotation;
 				transformComponent.Translation = translation;
 				transformComponent.Rotation += deltaRotation;
 				transformComponent.Scale = scale;
@@ -348,6 +346,8 @@ namespace Kenshin
 
 		ImGui::End();
 		ImGui::PopStyleVar();
+
+		UIToolBar();
 
 		ImGui::End();
 	}
@@ -410,27 +410,31 @@ namespace Kenshin
 
 	void EditLayer::OpenScene()
 	{
+		auto path = FileDialog::OpenFile("Kenshin Scene(*.kenshin)\0*.kenshin\0");
+		OpenScene(path);
+	}
+
+	void EditLayer::OpenScene(const std::filesystem::path& p)
+	{
 		if (m_SceneStats != SceneStats::Editor)
 		{
 			m_ActiveScene->OnRuntimeStop();
 			m_ActiveScene = m_EditScene;
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 			m_SceneStats = SceneStats::Editor;
-		}		
+		}
 
-		auto path = FileDialog::OpenFile("Kenshin Scene(*.kenshin)\0*.kenshin\0");
-		std::filesystem::path p = path;
 		if (p.extension().string() != ".kenshin")
 		{
 			KS_CORE_WARN("Could not load {0} - not a scene file", p.filename().string());
 			return;
 		}
-		if (!path.empty())
+		if (!p.empty())
 		{
 			Ref<Scene> newScene = CreateRef<Scene>();
 			SceneSerializer ss(newScene);
-			ss.DeSerialize(path);
-			m_EditScenePath = path;
+			ss.DeSerialize(p.string());
+			m_EditScenePath = p.string();
 			m_EditScene = newScene;
 			m_ActiveScene = newScene;
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
@@ -477,5 +481,49 @@ namespace Kenshin
 			Entity newEntity = m_ActiveScene->DuplicateEntity(selectEntity);
 			m_SceneHierarchyPanel.SetSelectiedEntity(newEntity);
 		}
+	}
+
+	void EditLayer::OnOverLayRender()
+	{
+		if (m_SceneStats == SceneStats::Play)
+		{
+			auto cameraEntity = m_ActiveScene->GetPrimaryCamera();
+			auto camera = cameraEntity.GetComponent<CameraComponent>();
+			auto transform = cameraEntity.GetComponent<TransformComponent>();
+			Renderer2D::BeginScene(camera.Camera, transform.GetTransform());
+		}
+		else 
+		{
+			Renderer2D::BeginScene(m_EditorCamera);
+		}
+
+		//circle Collider
+		auto circleColliders = m_ActiveScene->GetAllEntitiesWith<CircleCollider2DComponent, TransformComponent>();
+		for (auto& entity : circleColliders)
+		{
+			auto& [cc2d, tc] = circleColliders.get<CircleCollider2DComponent, TransformComponent>(entity);
+			if (cc2d.Visualize)
+			{
+				glm::vec3 translation = tc.Translation + glm::vec3(cc2d.Offset, 0.01f);
+				glm::vec3 scale = tc.Scale * glm::vec3(cc2d.Radius * 2.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0), translation) * glm::scale(glm::mat4(1.0), scale);
+				Renderer2D::DrawCircle(transform, glm::vec4(0.164, 0.721, 1.0, 1.0), 0.03, 0.005, -1);
+			}
+		}
+
+		//box Collider
+		auto boxColliders = m_ActiveScene->GetAllEntitiesWith<BoxCollider2DComponent, TransformComponent>();
+		for (auto& entity : boxColliders)
+		{
+			auto& [bc2d, tc] = boxColliders.get<BoxCollider2DComponent, TransformComponent>(entity);
+			if (bc2d.Visualize)
+			{
+				glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.01f);
+				glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation) * glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0, 0, 1)) * glm::scale(glm::mat4(1.0), scale);
+				Renderer2D::DrawRect(transform, glm::vec4(0.164, 0.721, 1.0, 1.0), -1);
+			}
+		}
+		Renderer2D::EndScene();
 	}
 }

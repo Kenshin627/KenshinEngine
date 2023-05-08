@@ -8,7 +8,10 @@ layout (location = 3) in float a_Thinness;
 layout (location = 4) in float a_Fade;
 layout (location = 5) in int   a_EntityId;
 
-uniform mat4 u_ViewProjectionMatrix;
+layout(std140, binding = 0) uniform Camera
+{
+	mat4 u_ViewProjection;
+};
 
 struct VertexOutput
 {
@@ -30,7 +33,7 @@ void main()
 
 	v_EntityID = a_EntityId;
 	
-	gl_Position = u_ViewProjectionMatrix * vec4(a_WorldPosition, 1.0);
+	gl_Position = u_ViewProjection * vec4(a_WorldPosition, 1.0);
 }
 
 #type fragment

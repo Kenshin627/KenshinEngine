@@ -1,3 +1,13 @@
 .vs/
 bin/
 bin-in/
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.log
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/gl.obj
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/Lib.command.1.tlog
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/Lib-link.write.1.tlog
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/Lib-link.read.1.tlog
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/Glad.lastbuildstate
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/CL.write.1.tlog
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/CL.read.1.tlog
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/Glad.tlog/CL.command.1.tlog
+/Kenshin/vendor/Glad/bin-int/Debug-windows-x86_64/Glad/gl.obj~34065112ae16f05afb8e849ca8be1ee9b9ea7193

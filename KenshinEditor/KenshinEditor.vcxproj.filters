@@ -25,6 +25,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\shaders\circle2d.glsl" />
+    <None Include="resource\shaders\renderer2D_circle.glsl" />
   </ItemGroup>
 </Project>

@@ -73,6 +73,8 @@ namespace Kenshin::Math
 			rotation.x = atan2(-Row[2][0], Row[1][1]);
 			rotation.z = 0;
 		}
+
+
 		return true;
 	}
 }
