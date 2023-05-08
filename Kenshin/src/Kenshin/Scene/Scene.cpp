@@ -362,10 +362,10 @@ namespace Kenshin
 
 		// Create entities in new scene
 		auto idView = srcSceneRegistry.view<IDComponent>();
-		for (auto e : idView)
+		for (auto i = idView.rbegin(); i != idView.rend(); i++)
 		{
-			UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
-			const auto& name = srcSceneRegistry.get<TagComponent>(e).Tag;
+			UUID uuid = srcSceneRegistry.get<IDComponent>(*i).ID;
+			const auto& name = srcSceneRegistry.get<TagComponent>(*i).Tag;
 			Entity newEntity = newScene->CreateEntityWithUUID(uuid, name);
 			enttMap[uuid] = (entt::entity)newEntity;
 		}

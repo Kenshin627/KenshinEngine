@@ -392,7 +392,7 @@ namespace Kenshin
 			}
 		}
 
-		ImGui::SameLine(ImGui::GetWindowContentRegionMax().x * 0.5f - size * 2.0f);
+		ImGui::SameLine(ImGui::GetWindowContentRegionMax().x * 0.5f + size * 0.5f);
 		auto simulationIcon = m_SceneStats != SceneStats::Simulation ? m_SimulationIcon : m_StopIcon;
 		if (ImGui::ImageButton((ImTextureID)simulationIcon->GetRendererID(), { size, size }, { 0, 1 }, { 1, 0 }, 0))
 		{
