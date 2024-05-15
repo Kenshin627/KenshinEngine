@@ -1,0 +1,3 @@
+[submodule "Kenshin/vendor/spdlog"]
+	path = Kenshin/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
