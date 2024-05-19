@@ -46,18 +46,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <IncludePath>src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(solutionDir)Kenshin\vendor\GLAD\include;$(solutionDir)Kenshin\vendor\GLFW\include;src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)KenShin\vendor\GLAD\lib;$(solutionDir)KenShin\vendor\GLFW\lib-vc2022;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <IncludePath>src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(solutionDir)Kenshin\vendor\GLAD\include;$(solutionDir)Kenshin\vendor\GLFW\include;src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)KenShin\vendor\GLAD\lib;$(solutionDir)KenShin\vendor\GLFW\lib-vc2022;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>KS_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KS_BUILD_DLL;KE_ENABLE_ASSETS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -66,6 +68,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;GLAD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -85,6 +88,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;GLAD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -97,6 +101,8 @@
     <ClInclude Include="src\Kenshin\Application.h" />
     <ClInclude Include="src\Kenshin\Core.h" />
     <ClInclude Include="src\Kenshin\EntryPoint.h" />
+    <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
+    <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\kspch.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\async.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\async_logger-inl.h" />
@@ -206,6 +212,7 @@
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Application.cpp" />
+    <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />
     <ClCompile Include="src\kspch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kspch.h</PrecompiledHeaderFile>

@@ -357,6 +357,12 @@
     <ClInclude Include="src\kspch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Window.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -366,6 +372,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\kspch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
