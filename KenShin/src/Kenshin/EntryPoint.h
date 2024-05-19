@@ -8,7 +8,6 @@ int main()
 {
 	Kenshin::Log::Init();
 	Kenshin::Application* app = Kenshin::CreateApplication();
-	std::cout << "Kenshin Engine!" << std::endl;
 	app->Run();
 	delete app;
 }

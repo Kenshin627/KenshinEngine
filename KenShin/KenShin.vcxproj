@@ -84,6 +84,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Kenshin\events\ApplicationEvent.h" />
+    <ClInclude Include="src\Kenshin\events\Event.h" />
+    <ClInclude Include="src\Kenshin\events\KeyEvent.h" />
+    <ClInclude Include="src\Kenshin\events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\Log.h" />
     <ClInclude Include="src\Kenshin.h" />
     <ClInclude Include="src\Kenshin\Application.h" />

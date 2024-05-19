@@ -8,7 +8,7 @@ namespace Kenshin{
 	public:
 		Application();
 		virtual ~Application();
-		void Run() const;
+		void Run();
 	};
 	Application* CreateApplication();
 }

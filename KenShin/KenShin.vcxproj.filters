@@ -342,6 +342,18 @@
     <ClInclude Include="vendor\spdlog\include\spdlog\version.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\events\Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\events\ApplicationEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\events\KeyEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\events\MouseEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
