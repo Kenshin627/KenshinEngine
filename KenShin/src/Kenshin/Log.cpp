@@ -1,3 +1,4 @@
+#include "kspch.h"
 #include "Log.h"
 
 namespace Kenshin {

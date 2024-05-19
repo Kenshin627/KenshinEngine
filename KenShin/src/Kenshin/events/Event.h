@@ -1,7 +1,5 @@
 #pragma once
 #include "../Core.h"
-#include <string>
-#include <functional>
 
 namespace Kenshin{
 	enum class EventType

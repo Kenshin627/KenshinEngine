@@ -354,12 +354,18 @@
     <ClInclude Include="src\Kenshin\events\MouseEvent.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\kspch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kspch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

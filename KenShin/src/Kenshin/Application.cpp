@@ -1,7 +1,7 @@
+#include "kspch.h"
 #include "Application.h"
 #include "events/ApplicationEvent.h"
 #include "Log.h"
-#include <iostream>
 
 namespace Kenshin {
 	Application::Application()

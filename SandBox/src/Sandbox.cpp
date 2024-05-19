@@ -1,3 +1,4 @@
+#include "kspch.h"
 #include "Kenshin.h"
 
 class SandBox :public Kenshin::Application

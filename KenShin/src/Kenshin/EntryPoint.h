@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Log.h"
 
 extern Kenshin::Application* Kenshin::CreateApplication();
