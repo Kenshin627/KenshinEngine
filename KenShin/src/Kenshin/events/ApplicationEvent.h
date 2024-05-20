@@ -25,7 +25,15 @@ namespace Kenshin
 	{
 	public:
 		WindowCloseEvent() {}
-		EVENT_CLASS_TYPE(WindowResize)
+		EVENT_CLASS_TYPE(WindowClose)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
+	class KS_API WindowFocusEvent : public Event
+	{
+	public:
+		WindowFocusEvent() {}
+		EVENT_CLASS_TYPE(WindowFocus)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
