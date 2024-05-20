@@ -36,6 +36,7 @@ namespace Kenshin{
 		virtual const char* GetName() const = 0;
 		virtual int GetCategoryInFlags() const = 0;
 		virtual std::string ToString() const { return GetName(); }
+		bool IsHandled() const { return m_Handled; }
 		inline bool IsInCategory(EventCategory category)
 		{
 			return GetCategoryInFlags() & category;

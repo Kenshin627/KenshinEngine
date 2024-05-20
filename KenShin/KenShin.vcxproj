@@ -96,6 +96,8 @@
     <ClInclude Include="src\Kenshin\events\Event.h" />
     <ClInclude Include="src\Kenshin\events\KeyEvent.h" />
     <ClInclude Include="src\Kenshin\events\MouseEvent.h" />
+    <ClInclude Include="src\Kenshin\Layer.h" />
+    <ClInclude Include="src\Kenshin\LayerStack.h" />
     <ClInclude Include="src\Kenshin\Log.h" />
     <ClInclude Include="src\Kenshin.h" />
     <ClInclude Include="src\Kenshin\Application.h" />
@@ -210,6 +212,8 @@
     <ClInclude Include="vendor\spdlog\include\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Kenshin\Layer.cpp" />
+    <ClCompile Include="src\Kenshin\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Application.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />

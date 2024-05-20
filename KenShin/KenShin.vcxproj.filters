@@ -363,6 +363,12 @@
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Layer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\LayerStack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -375,6 +381,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Layer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\LayerStack.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
