@@ -1,9 +1,10 @@
 #include "kspch.h"
-#include "Windowwindow.h"
 #include "Kenshin/Log.h"
 #include "Kenshin/events/ApplicationEvent.h"
 #include "Kenshin/events/KeyEvent.h"
 #include "Kenshin/events/MouseEvent.h"
+#include "Windowwindow.h"
+#include <glad/glad.h>
 
 namespace Kenshin {
 	static bool s_GLFWInitialied = false;
@@ -42,6 +43,11 @@ namespace Kenshin {
 		m_Data.IsVSync = enable;
 	}
 
+	void* Windowwindow::NativeWindow()
+	{
+		return m_Window;
+	}
+
 	void Windowwindow::Init(const WindowProps& props)
 	{
 		m_Data.Width = props.Width;
@@ -64,6 +70,9 @@ namespace Kenshin {
 				glfwTerminate();
 			}
 			glfwMakeContextCurrent(m_Window);
+			//glad initialize
+			int status = gladLoadGLLoader(GLADloadproc(glfwGetProcAddress));
+			KS_CORE_ASSET(status, "could not intialized Glad!");
 			glfwSetWindowUserPointer(m_Window, &m_Data);
 			SetVSync(true);
 
@@ -143,7 +152,6 @@ namespace Kenshin {
 				MouseMoveEvent e(xpos, ypos);
 				data.Callback(e);
 			});
-
 	}
 
 	void Windowwindow::Shutdown()

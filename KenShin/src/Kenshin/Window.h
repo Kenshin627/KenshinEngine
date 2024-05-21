@@ -27,6 +27,7 @@ namespace Kenshin {
 		virtual void SetEventCallback(const EventFn& fn) = 0;
 		virtual void SetVSync(bool enable) = 0;
 		virtual bool IsVSync() const = 0;
+		virtual void* NativeWindow() = 0;
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
 }

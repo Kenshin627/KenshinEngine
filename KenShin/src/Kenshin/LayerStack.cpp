@@ -17,11 +17,13 @@ namespace Kenshin {
 	void LayerStack::PushLayer(Layer* layer)
 	{
 		m_Insert = m_Layers.emplace(m_Insert, layer);
+		layer->OnAttach();
 	}
 
 	void LayerStack::PushOverLay(Layer* lay)
 	{
 		m_Layers.push_back(lay);
+		lay->OnAttach();
 	}
 
 	void LayerStack::PopLayer(Layer* layer)
@@ -31,6 +33,7 @@ namespace Kenshin {
 		{
 			m_Layers.erase(it);
 			m_Insert--;
+			(*it)->OnDetach();
 		}
 	}
 
@@ -40,6 +43,7 @@ namespace Kenshin {
 		if (it != m_Layers.end())
 		{
 			m_Layers.erase(it);
+			(*it)->OnDetach();
 		}
 	}
 }

@@ -15,6 +15,7 @@ namespace Kenshin {
 		inline void SetEventCallback(const EventFn& fn) override { m_Data.Callback = fn; };
 		virtual void SetVSync(bool enable) override;
 		virtual bool IsVSync() const override { return m_Data.IsVSync; };
+		virtual void* NativeWindow() override;
 
 	private:
 		virtual void Init(const WindowProps& props);

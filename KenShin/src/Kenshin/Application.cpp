@@ -1,16 +1,23 @@
 #include "kspch.h"
-#include "Application.h"
 #include "Log.h"
-#include <GLFW/glfw3.h>
-
+#include "Application.h"
+#include <glad/glad.h>
 
 namespace Kenshin {
 
 #define BIND_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
+	Application* Application::s_Instance = nullptr;
 	Application::Application()
 	{
+		KS_CORE_ASSET(!s_Instance, "application has already exits!");
+		s_Instance = this;
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_FN(OnEvent));
+
+		unsigned int ibo;
+		glGenBuffers(1, &ibo);
+		KS_CORE_CRITICAL("BUFFER: {0}", ibo);
 	}
 
 	Application::~Application()

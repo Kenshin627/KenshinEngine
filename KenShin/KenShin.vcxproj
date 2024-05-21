@@ -46,20 +46,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <IncludePath>$(solutionDir)Kenshin\vendor\GLAD\include;$(solutionDir)Kenshin\vendor\GLFW\include;src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(solutionDir)Kenshin\vendor\GLAD\include;$(SolutionDir)Kenshin\vendor\imgui;$(solutionDir)Kenshin\vendor\GLFW\include;src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)KenShin\vendor\GLAD\lib;$(solutionDir)KenShin\vendor\GLFW\lib-vc2022;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-in\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <IncludePath>$(solutionDir)Kenshin\vendor\GLAD\include;$(solutionDir)Kenshin\vendor\GLFW\include;src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(solutionDir)Kenshin\vendor\GLAD\include;$(SolutionDir)Kenshin\vendor\imgui;$(solutionDir)Kenshin\vendor\GLFW\include;src;$(SolutionDir)KenShin\vendor\spdlog\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)KenShin\vendor\GLAD\lib;$(solutionDir)KenShin\vendor\GLFW\lib-vc2022;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>KS_BUILD_DLL;KE_ENABLE_ASSETS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KS_BUILD_DLL;GLFW_INCLUDE_NONE;KE_ENABLE_ASSETS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -68,7 +68,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;GLAD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;GLAD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -77,7 +77,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>KS_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KS_BUILD_DLL;GLFW_INCLUDE_NONE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -88,7 +88,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;GLAD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;GLAD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -96,6 +96,7 @@
     <ClInclude Include="src\Kenshin\events\Event.h" />
     <ClInclude Include="src\Kenshin\events\KeyEvent.h" />
     <ClInclude Include="src\Kenshin\events\MouseEvent.h" />
+    <ClInclude Include="src\Kenshin\imgui\ImGuiLayer.h" />
     <ClInclude Include="src\Kenshin\Layer.h" />
     <ClInclude Include="src\Kenshin\LayerStack.h" />
     <ClInclude Include="src\Kenshin\Log.h" />
@@ -106,6 +107,17 @@
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
     <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\kspch.h" />
+    <ClInclude Include="vendor\GLAD\include\glad\glad.h" />
+    <ClInclude Include="vendor\GLAD\include\KHR\khrplatform.h" />
+    <ClInclude Include="vendor\imgui\imconfig.h" />
+    <ClInclude Include="vendor\imgui\imgui.h" />
+    <ClInclude Include="vendor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="vendor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="vendor\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\async.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\async_logger-inl.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\async_logger.h" />
@@ -212,6 +224,7 @@
     <ClInclude Include="vendor\spdlog\include\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Kenshin\imgui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Kenshin\Layer.cpp" />
     <ClCompile Include="src\Kenshin\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Log.cpp" />
@@ -223,6 +236,31 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">kspch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="vendor\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_impl_glfw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="vendor\imgui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

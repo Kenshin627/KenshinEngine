@@ -8,6 +8,7 @@ public:
 	SandBox() 
 	{
 		PushLayer(new Example("Example"));
+		PushLayer(new Kenshin::ImGuiLayer("ImGuiLayer"));
 	}
 	~SandBox() {}
 };
