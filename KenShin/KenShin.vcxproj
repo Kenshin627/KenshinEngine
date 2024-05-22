@@ -97,6 +97,7 @@
     <ClInclude Include="src\Kenshin\events\KeyEvent.h" />
     <ClInclude Include="src\Kenshin\events\MouseEvent.h" />
     <ClInclude Include="src\Kenshin\imgui\ImGuiLayer.h" />
+    <ClInclude Include="src\Kenshin\Input.h" />
     <ClInclude Include="src\Kenshin\Layer.h" />
     <ClInclude Include="src\Kenshin\LayerStack.h" />
     <ClInclude Include="src\Kenshin\Log.h" />
@@ -104,6 +105,7 @@
     <ClInclude Include="src\Kenshin\Application.h" />
     <ClInclude Include="src\Kenshin\Core.h" />
     <ClInclude Include="src\Kenshin\EntryPoint.h" />
+    <ClInclude Include="src\Kenshin\Platform\Window\WindowInput.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
     <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\kspch.h" />
@@ -228,6 +230,7 @@
     <ClCompile Include="src\Kenshin\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Application.cpp" />
+    <ClCompile Include="src\Kenshin\Platform\Window\WindowInput.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />
     <ClCompile Include="src\kspch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

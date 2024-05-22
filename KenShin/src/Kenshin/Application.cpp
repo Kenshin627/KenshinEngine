@@ -1,6 +1,7 @@
 #include "kspch.h"
 #include "Log.h"
 #include "Application.h"
+#include "Input.h"
 #include <glad/glad.h>
 
 namespace Kenshin {
@@ -34,6 +35,8 @@ namespace Kenshin {
 				(*(--it))->OnUpdate();
 			}
 			m_Window->OnUpdate();
+			auto [x, y] = Input::GetMousePosition();
+			KS_CORE_TRACE("MousePos: {0}, {1}", x, y);
 		}
 	}
 

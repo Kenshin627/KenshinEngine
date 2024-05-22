@@ -402,6 +402,12 @@
     <ClInclude Include="src\Kenshin\imgui\ImGuiLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Platform\Window\WindowInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -441,6 +447,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\imgui\ImGuiLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Platform\Window\WindowInput.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
