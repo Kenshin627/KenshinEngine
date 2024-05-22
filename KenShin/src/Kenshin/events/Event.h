@@ -7,7 +7,7 @@ namespace Kenshin{
 		None = 0,
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
-		KeyPreseed, KeyReleased,
+		KeyPreseed, KeyReleased, KeyTyped,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 

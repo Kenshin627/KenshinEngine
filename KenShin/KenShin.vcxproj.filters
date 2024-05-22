@@ -381,9 +381,6 @@
     <ClInclude Include="vendor\imgui\imgui.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="vendor\imgui\imgui_impl_glfw.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="vendor\imgui\imgui_impl_opengl3.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -432,9 +429,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_draw.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\imgui\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_impl_opengl3.cpp">

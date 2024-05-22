@@ -122,22 +122,28 @@ namespace Kenshin {
 				}
 			});
 
+			glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode) {
+				WindowData& data = *(WindowData*)(glfwGetWindowUserPointer(window));
+				KeyTypedEvent e(keycode);
+				data.Callback(e);
+			});
+
 			glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
 				WindowData& data = *(WindowData*)(glfwGetWindowUserPointer(window));
 				switch (action)
 				{
-				case GLFW_PRESS:
-				{
-					MousePressedEvent mousepress(button);
-					data.Callback(mousepress);
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					MouseReleaseEvent mouserelease(button);
-					data.Callback(mouserelease);
-					break;
-				}
+					case GLFW_PRESS:
+					{
+						MousePressedEvent mousepress(button);
+						data.Callback(mousepress);
+						break;
+					}
+					case GLFW_RELEASE:
+					{
+						MouseReleaseEvent mouserelease(button);
+						data.Callback(mouserelease);
+						break;
+					}
 				}
 			});
 

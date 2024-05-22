@@ -41,4 +41,17 @@ namespace Kenshin{
 		}
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
+	class KS_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keyCode) : KeyEvent(keyCode) {}
+		virtual std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+		EVENT_CLASS_TYPE(KeyTyped);
+	};
 }

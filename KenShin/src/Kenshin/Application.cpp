@@ -5,19 +5,13 @@
 
 namespace Kenshin {
 
-#define BIND_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 	Application::Application()
 	{
 		KS_CORE_ASSET(!s_Instance, "application has already exits!");
 		s_Instance = this;
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_FN(OnEvent));
-
-		unsigned int ibo;
-		glGenBuffers(1, &ibo);
-		KS_CORE_CRITICAL("BUFFER: {0}", ibo);
+		m_Window->SetEventCallback(BIND_FN(Application::OnEvent));
 	}
 
 	Application::~Application()
@@ -56,7 +50,7 @@ namespace Kenshin {
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_FN(Application::OnWindowClose));
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
 			(*(--it))->OnEvent(e);
