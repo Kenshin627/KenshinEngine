@@ -12,5 +12,5 @@ void Example::OnEvent(Kenshin::Event& e)
 
 void Example::OnImGuiRender() const
 {
-	ImGui::Text("hello sandBox");
+
 }

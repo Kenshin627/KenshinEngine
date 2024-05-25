@@ -9,8 +9,11 @@ namespace Kenshin {
 		virtual ~OpenGLVertexBuffer();
 		virtual void Bind() const override;
 		virtual void UnBind() const override;
+		virtual void SetLayout(BufferLayout& layout) override;
+		virtual BufferLayout& GetLayout() override { return m_Layout; }
 	private:
 		uint32_t m_RendererID;
+		BufferLayout m_Layout;
 	};
 
 	class OpenGLIndexBuffer : public IndexBuffer

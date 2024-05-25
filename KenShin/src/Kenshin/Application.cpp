@@ -16,12 +16,12 @@ namespace Kenshin {
 		m_ImGuiLayer = new ImGuiLayer("ImGuiLayer");
 		PushOverLayer(m_ImGuiLayer);
 		//temp
-		float vertices[12] =
+		float vertices[4 * 7] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+			 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
 		};
 
 		uint32_t indices[6] =
@@ -30,28 +30,54 @@ namespace Kenshin {
 			2, 3, 0
 		};
 
-		const char* vertexSource =
-			"#version 330 core\n"
-			"\n"
-			"layout (location = 0) in vec3 a_Pos;\n"
-			"void main {\n"
-			" gl_Position = vec4(a_Pos, 1.0);\n"
-			"}";
-		const char* fragmentSource =
-			"#version 330 core\n"
-			"\n"
-			"out vec4 color;\n"			
-			"void main(){\n"
-			"color = vec4(0.2, 0.5, 0.1, 1.0);\n"
-			"}\n";
+		const char* vertexSource = R"(
+			#version 330 core
+	
+			layout (location = 0) in vec3 a_Pos;
+			layout (location = 1) in vec4 a_Color;
+			out vec4 v_Color;
+			void main() {
+				v_Color = a_Color;
+				gl_Position = vec4(a_Pos, 1.0);
+			}
+		 )";
+
+		const char* fragmentSource = R"(
+			#version 330 core
+			
+			out vec4 color;	
+			in  vec4 v_Color;
+			void main(){
+			 color = v_Color;
+			};
+		)";
 		m_Shader = std::make_unique<Shader>(vertexSource, fragmentSource);
 		m_Shader->Bind();
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(float) * 12));
+		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
 		m_VertexBuffer->Bind();
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, 6));
 		m_IndexBuffer->Bind();
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+		BufferLayout layout = 
+		{
+			{ "a_Position", ShaderDataType::Float3, false },
+			{ "a_Color", ShaderDataType::Float4, false }
+		};
+		m_VertexBuffer->SetLayout(layout);
+		uint32_t index = 0;
+		
+		for (const auto& element : m_VertexBuffer->GetLayout())
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(
+				index,
+				element.ComponentCount,
+				element.GlType,
+				element.Normalized,
+				layout.GetStride(),
+				(const void*)element.Offset
+			);
+			index++;
+		}
 	}
 
 	Application::~Application()

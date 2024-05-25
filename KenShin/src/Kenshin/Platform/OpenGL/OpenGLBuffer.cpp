@@ -24,6 +24,11 @@ namespace Kenshin {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	void OpenGLVertexBuffer::SetLayout(BufferLayout& layout)
+	{
+		m_Layout = layout;
+	};
+
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
 		glDeleteBuffers(1, &m_RendererID);
