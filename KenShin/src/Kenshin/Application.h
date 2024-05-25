@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "events/ApplicationEvent.h"
 #include "LayerStack.h"
+#include "Kenshin/imgui/ImGuiLayer.h"
 
 namespace Kenshin{
 
@@ -21,6 +22,7 @@ namespace Kenshin{
 	private:
 		LayerStack m_LayerStack;
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning = true;
 	private:
 		static Application* s_Instance;

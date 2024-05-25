@@ -1272,6 +1272,9 @@
     <ClInclude Include="vendor\glm\vector_relational.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\imgui\imgui_impl_glfw.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -1317,6 +1320,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="vendor\glm\detail\glm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

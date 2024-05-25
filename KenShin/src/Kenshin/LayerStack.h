@@ -18,6 +18,6 @@ namespace Kenshin {
 		inline StackIteratorType end() { return m_Layers.end(); }
 	private:
 		StackType m_Layers;
-		StackIteratorType m_Insert;
+		unsigned int m_InsertIndex = 0;
 	};
 }

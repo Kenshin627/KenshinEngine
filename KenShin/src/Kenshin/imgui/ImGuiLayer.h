@@ -15,9 +15,13 @@ namespace Kenshin {
 		~ImGuiLayer();
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnUpdate() override;
+		//virtual void OnUpdate() override;
 		virtual void OnEvent(Event& e) override;
 		ImGuiKey GlfwToImGuiKeyMap(int key) const;
+		void Begin() const;
+		void End() const;
+		virtual void OnImGuiRender() const override;
+		//已废弃: 又glfw_initforOpenGL实现
 		bool OnKeyPressedEvent(KeyPressedEvent& e);
 		bool OnKeyReleasedEvent(KeyReleaseEvent& e);
 		bool OnKeyTypedEvent(KeyTypedEvent& e);
@@ -25,7 +29,6 @@ namespace Kenshin {
 		bool OnMouseScrolledEvent(MouseScrollEvent& e);
 		bool OnMousePressedEvent(MousePressedEvent& e);
 		bool OnMouseReleasedEvent(MouseReleaseEvent& e);
-
 		bool OnWindowResizeEvent(WindowResizeEvent& e);
 	private:
 		float m_Time = 0.0f;

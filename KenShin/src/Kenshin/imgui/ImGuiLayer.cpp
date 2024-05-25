@@ -2,75 +2,92 @@
 #include "ImGuiLayer.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
-//#include "imgui_impl_glfw.h"
+#include "imgui_impl_glfw.h"
 #include "Kenshin/Application.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 namespace Kenshin {
 	ImGuiLayer::ImGuiLayer(const std::string& name) :Layer(name) {}
+    ImGuiLayer::~ImGuiLayer() {}
 
 	void ImGuiLayer::OnAttach()
 	{
 		ImGui::CreateContext();
 		ImGui::StyleColorsDark(); 
-		ImGuiIO& io = ImGui::GetIO();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
 		const auto window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().NativeWindow());
-		//ImGui_ImplGlfw_InitForOpenGL(window, true);
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
 		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
-        //GlfwToImGuiKeyMap()
+
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
+
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
 		ImGui_ImplOpenGL3_Shutdown();
-		//ImGui_ImplGlfw_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate()
-	{
-		ImGuiIO& io = ImGui::GetIO();
-		Application& app = *(Application::Get());
+    void ImGuiLayer::Begin() const
+    {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+    }
 
-        GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().NativeWindow());
-        int w, h;
+    void ImGuiLayer::End() const
+    {
+        //Render
+        auto window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().NativeWindow());
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::Render();
         int display_w, display_h;
-        glfwGetWindowSize(window, &w, &h);
         glfwGetFramebufferSize(window, &display_w, &display_h);
-        io.DisplaySize = ImVec2((float)w, (float)h);
-        if (w > 0 && h > 0)
-            io.DisplayFramebufferScale = ImVec2((float)display_w / (float)w, (float)display_h / (float)h);
-		
-		float time = (float)glfwGetTime();
-		io.DeltaTime = m_Time > 0.0f ? (time - m_Time) : (1.0f / 60.0f);
-		m_Time = time;
-		
-		ImGui_ImplOpenGL3_NewFrame();
-		//ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		bool show = true;
-		ImGui::ShowDemoWindow(&show);
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	}
+        glViewport(0, 0, display_w, display_h);
+       /* glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);*/
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
+    }
+    
+    void ImGuiLayer::OnImGuiRender() const
+    {
+        bool show = true;
+        if (show)
+            ImGui::ShowDemoWindow(&show);
+    }
 
 	void ImGuiLayer::OnEvent(Event& e)
 	{
-        EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<KeyPressedEvent>(BIND_FN(ImGuiLayer::OnKeyPressedEvent));
-        dispatcher.Dispatch<KeyReleaseEvent>(BIND_FN(ImGuiLayer::OnKeyReleasedEvent));
-
-        dispatcher.Dispatch<MouseMoveEvent>(BIND_FN(ImGuiLayer::OnMouseMovedEvent));
-        dispatcher.Dispatch<MouseScrollEvent>(BIND_FN(ImGuiLayer::OnMouseScrolledEvent));
-        dispatcher.Dispatch<MousePressedEvent>(BIND_FN(ImGuiLayer::OnMousePressedEvent));
-        dispatcher.Dispatch<MouseReleaseEvent>(BIND_FN(ImGuiLayer::OnMouseReleasedEvent));
-
-        dispatcher.Dispatch<WindowResizeEvent>(BIND_FN(ImGuiLayer::OnWindowResizeEvent));
-
-        dispatcher.Dispatch<KeyTypedEvent>(BIND_FN(ImGuiLayer::OnKeyTypedEvent));
+        //EventDispatcher dispatcher(e);
+        //dispatcher.Dispatch<KeyPressedEvent>(BIND_FN(ImGuiLayer::OnKeyPressedEvent));
+        //dispatcher.Dispatch<KeyReleaseEvent>(BIND_FN(ImGuiLayer::OnKeyReleasedEvent));
+        //dispatcher.Dispatch<MouseMoveEvent>(BIND_FN(ImGuiLayer::OnMouseMovedEvent));
+        //dispatcher.Dispatch<MouseScrollEvent>(BIND_FN(ImGuiLayer::OnMouseScrolledEvent));
+        //dispatcher.Dispatch<MousePressedEvent>(BIND_FN(ImGuiLayer::OnMousePressedEvent));
+        //dispatcher.Dispatch<MouseReleaseEvent>(BIND_FN(ImGuiLayer::OnMouseReleasedEvent));
+        //dispatcher.Dispatch<WindowResizeEvent>(BIND_FN(ImGuiLayer::OnWindowResizeEvent));
+        //dispatcher.Dispatch<KeyTypedEvent>(BIND_FN(ImGuiLayer::OnKeyTypedEvent));
 	}
 
     bool ImGuiLayer::OnKeyPressedEvent(KeyPressedEvent& e)

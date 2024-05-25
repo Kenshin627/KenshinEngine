@@ -4,7 +4,6 @@
 namespace Kenshin {
 	LayerStack::LayerStack()
 	{
-		m_Insert = m_Layers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -16,7 +15,8 @@ namespace Kenshin {
 	}
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		m_Insert = m_Layers.emplace(m_Insert, layer);
+		m_Layers.emplace(m_Layers.cbegin() + m_InsertIndex, layer);
+		m_InsertIndex++;
 		layer->OnAttach();
 	}
 
@@ -32,7 +32,7 @@ namespace Kenshin {
 		if (it != m_Layers.end())
 		{
 			m_Layers.erase(it);
-			m_Insert--;
+			m_InsertIndex--;
 			(*it)->OnDetach();
 		}
 	}
