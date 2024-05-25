@@ -4,6 +4,8 @@
 #include "events/ApplicationEvent.h"
 #include "LayerStack.h"
 #include "Kenshin/imgui/ImGuiLayer.h"
+#include "Kenshin/Renderer/Buffer.h"
+#include "Kenshin/Renderer/Shader.h"
 
 namespace Kenshin{
 
@@ -24,6 +26,10 @@ namespace Kenshin{
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning = true;
+		//temp
+		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<IndexBuffer>  m_IndexBuffer;
+		std::unique_ptr<Shader>       m_Shader;
 	private:
 		static Application* s_Instance;
 	};

@@ -7,7 +7,7 @@ Example::~Example() {}
 
 void Example::OnEvent(Kenshin::Event& e)
 {
-	KS_CLIENT_DEBUG("from Example: {0}",e.ToString());
+
 }
 
 void Example::OnImGuiRender() const

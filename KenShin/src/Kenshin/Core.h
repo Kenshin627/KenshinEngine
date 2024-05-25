@@ -7,7 +7,7 @@
 #endif
 
 #ifdef KE_ENABLE_ASSETS
-#define KS_ASSET(x, ...) { if(!(x)) { KS_CLINET_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define KS_ASSET(x, ...) { if(!(x)) { KS_CLIENT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #define KS_CORE_ASSET(x, ...) { if(!(x)) { KS_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak; } }
 #else
 #define KS_ASSET(x, ...)

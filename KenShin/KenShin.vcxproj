@@ -105,10 +105,14 @@
     <ClInclude Include="src\Kenshin\Application.h" />
     <ClInclude Include="src\Kenshin\Core.h" />
     <ClInclude Include="src\Kenshin\EntryPoint.h" />
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\WindowInput.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
+    <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicContext.h" />
+    <ClInclude Include="src\Kenshin\Renderer\Renderer.h" />
+    <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
     <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\kspch.h" />
     <ClInclude Include="vendor\GLAD\include\glad\glad.h" />
@@ -521,9 +525,13 @@
     <ClCompile Include="src\Kenshin\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Application.cpp" />
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\WindowInput.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
     <ClCompile Include="src\kspch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kspch.h</PrecompiledHeaderFile>

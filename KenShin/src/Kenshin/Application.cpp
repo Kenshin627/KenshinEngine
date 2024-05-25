@@ -15,6 +15,43 @@ namespace Kenshin {
 		m_Window->SetEventCallback(BIND_FN(Application::OnEvent));
 		m_ImGuiLayer = new ImGuiLayer("ImGuiLayer");
 		PushOverLayer(m_ImGuiLayer);
+		//temp
+		float vertices[12] =
+		{
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
+		};
+
+		uint32_t indices[6] =
+		{
+			0, 1, 2,
+			2, 3, 0
+		};
+
+		const char* vertexSource =
+			"#version 330 core\n"
+			"\n"
+			"layout (location = 0) in vec3 a_Pos;\n"
+			"void main {\n"
+			" gl_Position = vec4(a_Pos, 1.0);\n"
+			"}";
+		const char* fragmentSource =
+			"#version 330 core\n"
+			"\n"
+			"out vec4 color;\n"			
+			"void main(){\n"
+			"color = vec4(0.2, 0.5, 0.1, 1.0);\n"
+			"}\n";
+		m_Shader = std::make_unique<Shader>(vertexSource, fragmentSource);
+		m_Shader->Bind();
+		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(float) * 12));
+		m_VertexBuffer->Bind();
+		m_IndexBuffer.reset(IndexBuffer::Create(indices, 6));
+		m_IndexBuffer->Bind();
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
 	}
 
 	Application::~Application()
@@ -26,8 +63,10 @@ namespace Kenshin {
 	{
 		while (m_IsRunning)
 		{
-			glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
+			//temp
+			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 			for (auto& it : m_LayerStack)
 			{
 				it->OnUpdate();
