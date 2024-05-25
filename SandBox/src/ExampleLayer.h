@@ -9,4 +9,5 @@ public:
 	Example(const std::string& name);
 	~Example();
 	virtual void OnEvent(Kenshin::Event& e) override;
+	virtual void OnImGuiRender() const override;
 };

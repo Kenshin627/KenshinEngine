@@ -1,5 +1,6 @@
 #pragma once
 #include "Kenshin/Window.h"
+#include "Kenshin/Renderer/GraphicContext.h"
 #include <GLFW/glfw3.h>
 
 namespace Kenshin {
@@ -22,6 +23,7 @@ namespace Kenshin {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicContext* m_Context;
 		struct WindowData
 		{
 			const char* Title;

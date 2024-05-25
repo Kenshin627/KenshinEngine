@@ -4,7 +4,7 @@
 #include "Kenshin/events/KeyEvent.h"
 #include "Kenshin/events/MouseEvent.h"
 #include "Windowwindow.h"
-#include <glad/glad.h>
+#include "Kenshin/Platform/OpenGL/OpenGLContext.h"
 
 namespace Kenshin {
 	static bool s_GLFWInitialied = false;
@@ -27,7 +27,7 @@ namespace Kenshin {
 	void Windowwindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void Windowwindow::SetVSync(bool enable)
@@ -69,10 +69,11 @@ namespace Kenshin {
 			{
 				glfwTerminate();
 			}
-			glfwMakeContextCurrent(m_Window);
-			//glad initialize
-			int status = gladLoadGLLoader(GLADloadproc(glfwGetProcAddress));
-			KS_CORE_ASSET(status, "could not intialized Glad!");
+			
+			//Graphic Context
+			m_Context = new OpenGLContext(m_Window);
+			m_Context->Init();
+
 			glfwSetWindowUserPointer(m_Window, &m_Data);
 			SetVSync(true);
 

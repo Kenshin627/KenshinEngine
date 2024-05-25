@@ -1275,6 +1275,12 @@
     <ClInclude Include="vendor\imgui\imgui_impl_glfw.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Renderer\GraphicContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -1323,6 +1329,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="vendor\imgui\imgui_impl_glfw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
