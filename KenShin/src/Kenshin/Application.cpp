@@ -53,31 +53,21 @@ namespace Kenshin {
 		)";
 		m_Shader = std::make_unique<Shader>(vertexSource, fragmentSource);
 		m_Shader->Bind();
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
-		m_VertexBuffer->Bind();
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, 6));
-		m_IndexBuffer->Bind();
+		std::shared_ptr<VertexBuffer> vbo;
+		vbo.reset(VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
+		std::shared_ptr<IndexBuffer> ibo;
+		ibo.reset(IndexBuffer::Create(indices, 6));
+		
 		BufferLayout layout = 
 		{
 			{ "a_Position", ShaderDataType::Float3, false },
 			{ "a_Color", ShaderDataType::Float4, false }
 		};
-		m_VertexBuffer->SetLayout(layout);
-		uint32_t index = 0;
-		
-		for (const auto& element : m_VertexBuffer->GetLayout())
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(
-				index,
-				element.ComponentCount,
-				element.GlType,
-				element.Normalized,
-				layout.GetStride(),
-				(const void*)element.Offset
-			);
-			index++;
-		}
+		vbo->SetLayout(layout);
+		m_VertexArray.reset(VertexArray::Create());
+		m_VertexArray->AddVertexBuffer(vbo);
+		m_VertexArray->SetIndeBuffer(ibo);
+		m_VertexArray->Bind();
 	}
 
 	Application::~Application()
@@ -92,7 +82,7 @@ namespace Kenshin {
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			//temp
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 			for (auto& it : m_LayerStack)
 			{
 				it->OnUpdate();
