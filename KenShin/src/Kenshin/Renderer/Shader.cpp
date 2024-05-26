@@ -5,7 +5,7 @@
 #include "Kenshin/Platform/OpenGL/OpenGLShader.h"
 
 namespace Kenshin {
-	std::shared_ptr<Shader> Shader::Create(const char* vertexSource, const char* fragmentSource)
+	Ref<Shader> Shader::Create(const char* vertexSource, const char* fragmentSource)
 	{
 		switch (Renderer::GetAPI())
 		{

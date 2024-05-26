@@ -23,17 +23,17 @@ namespace Kenshin {
 		glBindVertexArray(0);
 	}
 
-	const std::vector<std::shared_ptr<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
+	const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
 	{
 		return m_VertexBuffers;
 	}
 
-	const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+	const Ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
 	{
 		return m_IndexBuffer;
 	}
 
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vbo)
+	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vbo)
 	{
 		KS_ASSET(vbo->GetLayout().GetElements().size(), "Bufferlayout is empty!");
 		glBindVertexArray(m_RendererID);
@@ -50,7 +50,7 @@ namespace Kenshin {
 		m_VertexBuffers.push_back(vbo);
 	}
 
-	void OpenGLVertexArray::SetIndeBuffer(const std::shared_ptr<IndexBuffer>& ibo)
+	void OpenGLVertexArray::SetIndeBuffer(const Ref<IndexBuffer>& ibo)
 	{
 		glBindVertexArray(m_RendererID);
 		ibo->Bind();

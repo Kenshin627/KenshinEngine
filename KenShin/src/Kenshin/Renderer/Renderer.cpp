@@ -4,7 +4,7 @@
 namespace Kenshin {
 	
 	Renderer::RendererData* Renderer::m_RenderData = new Renderer::RendererData;
-	void Renderer::BeginScene(const std::shared_ptr<OrthographicCamera>& camera)
+	void Renderer::BeginScene(const Ref<OrthographicCamera>& camera)
 	{
 		m_RenderData->Camera = camera;
 	}
@@ -13,7 +13,7 @@ namespace Kenshin {
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, std::shared_ptr<Shader>& shader)
+	void Renderer::Submit(const Ref<VertexArray>& vertexArray, Ref<Shader>& shader)
 	{
 		vertexArray->Bind();
 		shader->Bind();

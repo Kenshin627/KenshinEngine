@@ -49,9 +49,9 @@ Example::Example(const std::string& name)
 		)";
 	m_Shader = Kenshin::Shader::Create(vertexSource, fragmentSource);
 
-	std::shared_ptr<Kenshin::VertexBuffer> vbo;
+	Kenshin::Ref<Kenshin::VertexBuffer> vbo;
 	vbo.reset(Kenshin::VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
-	std::shared_ptr<Kenshin::IndexBuffer> ibo;
+	Kenshin::Ref<Kenshin::IndexBuffer> ibo;
 	ibo.reset(Kenshin::IndexBuffer::Create(indices, 6));
 
 	Kenshin::BufferLayout layout =

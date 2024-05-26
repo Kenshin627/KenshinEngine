@@ -15,7 +15,7 @@ namespace Kenshin {
 	{
 		s_RenderAPI->Clear();
 	}
-	void RenderCommand::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+	void RenderCommand::DrawIndexed(const Ref<VertexArray>& vertexArray)
 	{
 		s_RenderAPI->DrawIndexed(vertexArray);
 	}
