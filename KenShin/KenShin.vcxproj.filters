@@ -1314,6 +1314,9 @@
     <ClInclude Include="src\Kenshin\Core\Timestep.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -1395,6 +1398,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCamera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

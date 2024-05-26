@@ -109,6 +109,7 @@
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\WindowInput.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
@@ -535,6 +536,7 @@
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\WindowInput.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />

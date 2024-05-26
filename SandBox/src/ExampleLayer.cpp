@@ -47,7 +47,7 @@ Example::Example(const std::string& name)
 			 color = v_Color;
 			};
 		)";
-	m_Shader = std::make_shared<Kenshin::Shader>(vertexSource, fragmentSource);
+	m_Shader = Kenshin::Shader::Create(vertexSource, fragmentSource);
 
 	std::shared_ptr<Kenshin::VertexBuffer> vbo;
 	vbo.reset(Kenshin::VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
