@@ -1,8 +1,9 @@
 #pragma once
+#include "Kenshin/Core.h"
 #include "Kenshin/Renderer/Buffer.h"
 
 namespace Kenshin {
-	class OpenGLVertexBuffer : public VertexBuffer
+	class KS_API OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
 		OpenGLVertexBuffer(float* data, uint32_t size);
@@ -16,7 +17,7 @@ namespace Kenshin {
 		BufferLayout m_Layout;
 	};
 
-	class OpenGLIndexBuffer : public IndexBuffer
+	class KS_API OpenGLIndexBuffer : public IndexBuffer
 	{
 	public:
 		OpenGLIndexBuffer(uint32_t* data, uint32_t count);

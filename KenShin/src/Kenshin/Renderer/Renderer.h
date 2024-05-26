@@ -1,10 +1,11 @@
 #pragma once
+#include "Kenshin/Core.h"
 #include "RenderCommand.h"
 #include "Shader.h"
 #include "OrthographicCamera.h"
 
 namespace Kenshin {
-	class Renderer
+	class KS_API Renderer
 	{
 	public:
 		struct RendererData

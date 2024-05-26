@@ -4,10 +4,6 @@
 #include "events/ApplicationEvent.h"
 #include "LayerStack.h"
 #include "Kenshin/imgui/ImGuiLayer.h"
-#include "Kenshin/Renderer/Buffer.h"
-#include "Kenshin/Renderer/Shader.h"
-#include "Kenshin/Renderer/VertexArray.h"
-#include "Kenshin/Renderer/OrthographicCamera.h"
 
 namespace Kenshin{
 
@@ -28,10 +24,7 @@ namespace Kenshin{
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning = true;
-		//temp
-		std::shared_ptr<Shader>             m_Shader;
-		std::shared_ptr<VertexArray>        m_VertexArray;
-		std::shared_ptr<OrthographicCamera> m_Camera;
+		float m_LastFrametime = 0.0f;
 	private:
 		static Application* s_Instance;
 	};

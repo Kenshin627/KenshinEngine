@@ -9,14 +9,14 @@ namespace Kenshin {
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().NativeWindow());
 		int state = glfwGetKey(window, keyCode);
-		return state == GLFW_PRESS || state == GLFW_RELEASE;
+		return state == GLFW_PRESS;
 	}
 
 	bool WindowInput::IsMouseButtonPressedImpl(int button) const
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().NativeWindow());
 		int state = glfwGetMouseButton(window, button);
-		return state == GLFW_PRESS || state == GLFW_RELEASE;
+		return state == GLFW_PRESS;
 	}
 
 	std::pair<float, float> WindowInput::GetMousePositionImpl() const

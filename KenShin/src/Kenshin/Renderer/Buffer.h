@@ -1,7 +1,6 @@
 #pragma once
 #include "Kenshin/Core.h"
 #include "Kenshin/Log.h"
-#include <cstdint>
 
 typedef unsigned int GLenum;
 #define GL_INT 0x1404
@@ -103,7 +102,7 @@ namespace Kenshin {
 		{ }
 	};
 
-	class BufferLayout
+	class KS_API BufferLayout
 	{
 	public:
 		BufferLayout() :m_Elements({}), m_Stride(0) {};
@@ -130,7 +129,7 @@ namespace Kenshin {
 		uint32_t m_Stride;
 	};
 
-	class VertexBuffer
+	class KS_API VertexBuffer
 	{
 	public:
 		virtual ~VertexBuffer() {}
@@ -141,7 +140,7 @@ namespace Kenshin {
 		static VertexBuffer* Create(float* data, uint32_t size);
 	};
 
-	class IndexBuffer
+	class KS_API IndexBuffer
 	{
 	public:
 		virtual ~IndexBuffer() {}

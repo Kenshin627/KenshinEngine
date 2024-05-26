@@ -1,8 +1,9 @@
 #pragma once
+#include "Kenshin/Core.h"
 #include "Buffer.h"
 
 namespace Kenshin {
-	class VertexArray
+	class KS_API VertexArray
 	{
 	public:
 		VertexArray();

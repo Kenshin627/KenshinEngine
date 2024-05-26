@@ -1,8 +1,9 @@
 #pragma once
+#include "Kenshin/Core.h"
 #include <glm/glm.hpp>
 
 namespace Kenshin {
-	class OrthographicCamera
+	class KS_API OrthographicCamera
 	{
 	public:
 		OrthographicCamera() {}

@@ -1,8 +1,9 @@
 #pragma once
+#include "Kenshin/Core.h"
 #include <glm/glm.hpp>
 
 namespace Kenshin {
-	class Shader
+	class KS_API Shader
 	{
 	public:
 		Shader(const char* vertexSource, const char* fragmentSource);

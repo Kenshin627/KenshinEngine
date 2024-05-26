@@ -1,9 +1,10 @@
 #pragma once
+#include "Kenshin/Core.h"
 #include "RendererAPI.h"
 
 namespace Kenshin {
 
-	class RenderCommand
+	class KS_API RenderCommand
 	{
 	public:
 		static void SetClearColor(const glm::vec4& color);

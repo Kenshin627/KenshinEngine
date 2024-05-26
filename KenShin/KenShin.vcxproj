@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Kenshin\Core\Timestep.h" />
     <ClInclude Include="src\Kenshin\events\ApplicationEvent.h" />
     <ClInclude Include="src\Kenshin\events\Event.h" />
     <ClInclude Include="src\Kenshin\events\KeyEvent.h" />
