@@ -29,7 +29,7 @@ namespace Kenshin{
 		bool m_IsRunning = true;
 		//temp
 		std::unique_ptr<Shader>       m_Shader;
-		std::unique_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<VertexArray> m_VertexArray;
 	private:
 		static Application* s_Instance;
 	};

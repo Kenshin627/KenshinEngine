@@ -2,7 +2,7 @@
 #include "Log.h"
 #include "Application.h"
 #include "Input.h"
-#include <glad/glad.h>
+#include "Renderer/Renderer.h"
 
 namespace Kenshin {
 
@@ -79,10 +79,12 @@ namespace Kenshin {
 	{
 		while (m_IsRunning)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+			RenderCommand::Clear();
 			//temp
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::BeginScene();
+			Renderer::Submit(m_VertexArray);
+			Renderer::EndScene();
 			for (auto& it : m_LayerStack)
 			{
 				it->OnUpdate();

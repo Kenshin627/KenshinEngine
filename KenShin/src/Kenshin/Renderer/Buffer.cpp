@@ -3,15 +3,15 @@
 #include "Kenshin/Log.h"
 #include "Buffer.h"
 #include "Kenshin/Platform/OpenGL/OpenGLBuffer.h"
-#include "Renderer.h"
+#include "Kenshin/Renderer/Renderer.h"
 
 namespace Kenshin {
 	VertexBuffer* VertexBuffer::Create(float* data, uint32_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:   KS_CORE_ASSET(false, "RendererAPI::None is not supported!") return nullptr;
-		case RendererAPI::OpenGL: return new OpenGLVertexBuffer(data, size);
+		case RendererAPI::API::None:   KS_CORE_ASSET(false, "RendererAPI::None is not supported!") return nullptr;
+		case RendererAPI::API::OpenGL: return new OpenGLVertexBuffer(data, size);
 		}
 		return nullptr;
 	}
@@ -20,8 +20,8 @@ namespace Kenshin {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:   KS_CORE_ASSET(false, "RendererAPI::None is not supported!") return nullptr;
-		case RendererAPI::OpenGL: return new OpenGLIndexBuffer(data, count);
+		case RendererAPI::API::None:   KS_CORE_ASSET(false, "RendererAPI::None is not supported!") return nullptr;
+		case RendererAPI::API::OpenGL: return new OpenGLIndexBuffer(data, count);
 		}
 		return nullptr;
 	}

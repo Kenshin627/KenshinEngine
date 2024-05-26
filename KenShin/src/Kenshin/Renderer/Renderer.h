@@ -1,16 +1,14 @@
 #pragma once
+#include "RenderCommand.h"
 
 namespace Kenshin {
-	enum class RendererAPI
-	{
-		None = 0, OpenGL = 1
-	};
-
 	class Renderer
 	{
 	public:
-		static RendererAPI GetAPI() { return s_RendererAPI; }
-	private:
-		static RendererAPI s_RendererAPI;
+		static void BeginScene();
+		static void EndScene();
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+	public:
+		static RendererAPI::API GetAPI() { return RenderCommand::GetAPI(); }
 	};
 }
