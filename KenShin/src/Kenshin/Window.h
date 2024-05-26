@@ -8,7 +8,7 @@ namespace Kenshin {
 		const char* Title;
 		unsigned int Width;
 		unsigned int Height;
-		WindowProps(const char* title = "Window", unsigned int width = 1920, unsigned int height = 1080) 
+		WindowProps(const char* title = "KenshinEngine", unsigned int width = 1920, unsigned int height = 1080) 
 			: Title(title), 
 			Width(width), 
 			Height(height) 

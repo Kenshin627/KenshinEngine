@@ -7,7 +7,7 @@
 namespace Kenshin {
 
 	Application* Application::s_Instance = nullptr;
-	Application::Application()
+	Application::Application() :m_Camera(std::make_shared<OrthographicCamera>(-2.0f, 2.0f, -0.56f * 2.0f, 0.56f * 2.0f, -1.0f, 1.0f))
 	{
 		KS_CORE_ASSET(!s_Instance, "application has already exits!");
 		s_Instance = this;
@@ -35,10 +35,13 @@ namespace Kenshin {
 	
 			layout (location = 0) in vec3 a_Pos;
 			layout (location = 1) in vec4 a_Color;
+			
+			uniform mat4 u_ViewProjection;			
+
 			out vec4 v_Color;
 			void main() {
 				v_Color = a_Color;
-				gl_Position = vec4(a_Pos, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Pos, 1.0);
 			}
 		 )";
 
@@ -51,8 +54,8 @@ namespace Kenshin {
 			 color = v_Color;
 			};
 		)";
-		m_Shader = std::make_unique<Shader>(vertexSource, fragmentSource);
-		m_Shader->Bind();
+		m_Shader = std::make_shared<Shader>(vertexSource, fragmentSource);
+		
 		std::shared_ptr<VertexBuffer> vbo;
 		vbo.reset(VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
 		std::shared_ptr<IndexBuffer> ibo;
@@ -67,7 +70,6 @@ namespace Kenshin {
 		m_VertexArray.reset(VertexArray::Create());
 		m_VertexArray->AddVertexBuffer(vbo);
 		m_VertexArray->SetIndeBuffer(ibo);
-		m_VertexArray->Bind();
 	}
 
 	Application::~Application()
@@ -81,10 +83,13 @@ namespace Kenshin {
 		{
 			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 			RenderCommand::Clear();
-			//temp
-			Renderer::BeginScene();
-			Renderer::Submit(m_VertexArray);
+
+			m_Camera->SetPosition({ 0.5f, 0.5f, 0.0f });
+			m_Camera->SetRotation(45.0f);
+			Renderer::BeginScene(m_Camera);
+			Renderer::Submit(m_VertexArray, m_Shader);
 			Renderer::EndScene();
+
 			for (auto& it : m_LayerStack)
 			{
 				it->OnUpdate();

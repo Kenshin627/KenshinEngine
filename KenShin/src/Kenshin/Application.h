@@ -7,6 +7,7 @@
 #include "Kenshin/Renderer/Buffer.h"
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/VertexArray.h"
+#include "Kenshin/Renderer/OrthographicCamera.h"
 
 namespace Kenshin{
 
@@ -28,8 +29,9 @@ namespace Kenshin{
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_IsRunning = true;
 		//temp
-		std::unique_ptr<Shader>       m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<Shader>             m_Shader;
+		std::shared_ptr<VertexArray>        m_VertexArray;
+		std::shared_ptr<OrthographicCamera> m_Camera;
 	private:
 		static Application* s_Instance;
 	};
