@@ -6,7 +6,7 @@
 
 Example::Example(const std::string& name) 
 	:Layer(name),
-	m_Camera(std::make_shared<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -0.56f * 2.0f, 0.56f * 2.0f, -1.0f, 1.0f))
+	m_Camera(std::make_shared<Kenshin::OrthographicCamera>(-1.0f, 1.0f, -0.56f * 1.0f, 0.56f * 1.0f, -1.0f, 1.0f))
 {
 	//temp
 	float vertices[4 * 5] =
@@ -50,8 +50,9 @@ Example::Example(const std::string& name)
 			};
 		)";
 	//m_Shader = Kenshin::Shader::Create(vertexSource, fragmentSource);
-	m_Shader = Kenshin::Shader::Create("res/shaders/textureShader.glsl");
-	m_Texture = Kenshin::Texture2D::Create("res/images/led.png");
+	//m_Shader = Kenshin::Shader::Create("res/shaders/textureShader.glsl");
+	m_ShaderLibrary.Load("res/shaders/textureShader.glsl");
+	m_Texture = Kenshin::Texture2D::Create("res/images/fishmans.png");
 	m_Texture->Bind();
 	Kenshin::Ref<Kenshin::VertexBuffer> vbo;
 	vbo.reset(Kenshin::VertexBuffer::Create(vertices, sizeof(float) * 4 * 5));
@@ -107,7 +108,8 @@ void Example::OnUpdate(Kenshin::Timestep ts)
 	Kenshin::RenderCommand::Clear();
 	
 	Kenshin::Renderer::BeginScene(m_Camera);
-	Kenshin::Renderer::Submit(m_VAO, m_Shader, m_Texture);
+	auto shader = m_ShaderLibrary.Get("textureShader");
+	Kenshin::Renderer::Submit(m_VAO, shader, m_Texture);
 	Kenshin::Renderer::EndScene();
 }
 

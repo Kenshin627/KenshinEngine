@@ -6,10 +6,11 @@ namespace Kenshin {
 	class OpenGLShader : public Shader
 	{
 	public:
-		OpenGLShader(const char* vertexSource, const char* fragmentSource);
+		OpenGLShader(const std::string& name, const char* vertexSource, const char* fragmentSource);
 		OpenGLShader(const std::string& filePath);
 		virtual ~OpenGLShader();
 
+		virtual const std::string& GetName() const override;
 		virtual std::string ReadFile(const std::string& filePath) override;
 		virtual std::unordered_map<GLenum, std::string> PreProcess(const std::string& source) override;
 		virtual void Compile(const std::unordered_map<GLenum, std::string>& shaders) override;
@@ -28,5 +29,6 @@ namespace Kenshin {
 	private:
 		uint32_t m_RendererID;
 		std::string m_Filepath;
+		std::string m_Name;
 	};
 }

@@ -27,7 +27,7 @@ namespace Kenshin {
 		Compile(shaderSource);
 	}
 
-	OpenGLShader::OpenGLShader(const char* vertexSource, const char* fragmentSource):m_Filepath("")
+	OpenGLShader::OpenGLShader(const std::string& name, const char* vertexSource, const char* fragmentSource):m_Filepath(""), m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> shadersources;
 		shadersources[GL_VERTEX_SHADER] = vertexSource;
@@ -40,8 +40,19 @@ namespace Kenshin {
 		glDeleteProgram(m_RendererID);
 	}
 
+	const std::string& OpenGLShader::GetName() const
+	{
+		return m_Name;
+	}
+
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
+		//Extract fileName from path
+		size_t lastSlash = filePath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		size_t lastDot = filePath.find_last_of(".");
+		size_t count = lastDot == std::string::npos ? filePath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filePath.substr(lastSlash, count);
 		std::ifstream in(filePath.c_str(), std::ios::in, std::ios::binary);
 		std::string result;
 		if (in)
@@ -88,8 +99,9 @@ namespace Kenshin {
 	{		
 		uint32_t program = glCreateProgram();
 		
-		std::vector<uint32_t> shaderIds(shaders.size());
+		std::array<GLenum, 2> shaderIds;
 
+		uint32_t index = 0;
 		for (auto& i : shaders)
 		{
 			int shaderType = i.first;
@@ -109,7 +121,7 @@ namespace Kenshin {
 				glDeleteShader(shaderID);
 				
 			}
-			shaderIds.push_back(shaderID);
+			shaderIds[index++] = shaderID;
 		}
 
 		for (auto& id : shaderIds)
