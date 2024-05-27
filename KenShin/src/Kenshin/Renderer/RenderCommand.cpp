@@ -6,6 +6,11 @@ namespace Kenshin {
 
 	RendererAPI* RenderCommand::s_RenderAPI = new OpenGLRendererAPI;
 
+	void RenderCommand::Init()
+	{
+		s_RenderAPI->Init();
+	}
+
 	void RenderCommand::SetClearColor(const glm::vec4& color)
 	{
 		s_RenderAPI->SetClearColor(color);

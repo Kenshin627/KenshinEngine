@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "Application.h"
 #include "Input.h"
+#include "Kenshin/Renderer/Renderer.h"
 #include <GLFW/glfw3.h>
 
 namespace Kenshin {
@@ -15,6 +16,8 @@ namespace Kenshin {
 		m_Window->SetEventCallback(BIND_FN(Application::OnEvent));
 		m_ImGuiLayer = new ImGuiLayer("ImGuiLayer");
 		PushOverLayer(m_ImGuiLayer);
+
+		Renderer::Init();
 	}
 
 	Application::~Application() {}

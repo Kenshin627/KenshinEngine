@@ -5,42 +5,125 @@
 #include <glad/glad.h>
 
 namespace Kenshin {
-
-	OpenGLShader::OpenGLShader(const char* vertexSource, const char* fragmentSource)
+	
+	static int ShaderTypeFromString(const std::string& type)
 	{
-		uint32_t vertex = CompileShader(GL_VERTEX_SHADER, vertexSource);
-		uint32_t fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
-		m_RendererID = glCreateProgram();
-		glAttachShader(m_RendererID, vertex);
-		glAttachShader(m_RendererID, fragment);
-		glLinkProgram(m_RendererID);
-		glDetachShader(m_RendererID, vertex);
-		glDetachShader(m_RendererID, fragment);
+		if (type == "vertex")
+		{
+			return GL_VERTEX_SHADER;
+		}
+		else if (type == "fragment" || type == "pixel")
+		{
+			return GL_FRAGMENT_SHADER;
+		}
+		KS_CORE_ERROR("unknown shader type: {0}", type);
+		return 0;
 	}
 
-	uint32_t OpenGLShader::CompileShader(uint32_t shaderType, const char* source) const
+	OpenGLShader::OpenGLShader(const std::string& filePath):m_Filepath(filePath)
 	{
-		uint32_t handle = glCreateShader(shaderType);
-		glShaderSource(handle, 1, &source, nullptr);
-		glCompileShader(handle);
-		int status = 0;
-		glGetShaderiv(handle, GL_COMPILE_STATUS, &status);
-		if (!status)
-		{
-			int length = 0;
-			glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &length);
-			char* message = (char*)alloca(length * sizeof(char));
-			glGetShaderInfoLog(handle, length * sizeof(char), 0, message);
-			KS_CORE_ERROR("{0} shader compile failure! {1}", shaderType == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT", message);
-			glDeleteShader(handle);
-			return 0;
-		}
-		return handle;
+		std::string source = ReadFile(filePath);
+		auto shaderSource = PreProcess(source);
+		Compile(shaderSource);
+	}
+
+	OpenGLShader::OpenGLShader(const char* vertexSource, const char* fragmentSource):m_Filepath("")
+	{
+		std::unordered_map<GLenum, std::string> shadersources;
+		shadersources[GL_VERTEX_SHADER] = vertexSource;
+		shadersources[GL_FRAGMENT_SHADER] = fragmentSource;
+		Compile(shadersources);
 	}
 
 	OpenGLShader::~OpenGLShader()
 	{
 		glDeleteProgram(m_RendererID);
+	}
+
+	std::string OpenGLShader::ReadFile(const std::string& filePath)
+	{
+		std::ifstream in(filePath.c_str(), std::ios::in, std::ios::binary);
+		std::string result;
+		if (in)
+		{
+			in.seekg(0, std::ios::end);
+			result.resize(in.tellg());
+			in.seekg(0, std::ios::beg);
+			in.read(&result[0], result.size());
+			in.close();
+		}
+		else
+		{
+			KS_CORE_ERROR("read file failed! {0}", filePath);
+		}
+		return result;
+	}
+
+	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+	{
+		std::unordered_map<GLenum, std::string> shaders;
+		const char* typeToken = "#type";
+		size_t typeTokenLength = strlen(typeToken);
+		size_t pos = source.find(typeToken, 0);
+		while (pos != std::string::npos)
+		{
+			size_t eol = source.find_first_of("\r\n", pos);
+			KS_CORE_ASSET(eol, "Syntax error");
+			size_t begin = pos + typeTokenLength + 1;
+			std::string type = source.substr(begin, eol - begin);
+			int glShaderType = ShaderTypeFromString(type);
+			KS_CORE_ASSET(glShaderType, "unknown shader type!");
+			size_t nextLinePos = source.find_first_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos);
+			shaders[glShaderType] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+		}
+		for (auto& i : shaders)
+		{
+			KS_CORE_WARN(i.second);
+		}
+		return shaders;
+	}
+
+	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaders)
+	{		
+		uint32_t program = glCreateProgram();
+		
+		std::vector<uint32_t> shaderIds(shaders.size());
+
+		for (auto& i : shaders)
+		{
+			int shaderType = i.first;
+			const char* shaderSource = i.second.c_str();
+			uint32_t shaderID = glCreateShader(shaderType);
+			glShaderSource(shaderID, 1, &shaderSource, nullptr);
+			glCompileShader(shaderID);
+			int status = 0;
+			glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+			if (!status)
+			{
+				int length = 0;
+				glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
+				char* message = (char*)alloca(length * sizeof(char));
+				glGetShaderInfoLog(shaderID, length * sizeof(char), 0, message);
+				KS_CORE_ERROR("{0} shader compile failure! {1}", shaderType == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT", message);
+				glDeleteShader(shaderID);
+				
+			}
+			shaderIds.push_back(shaderID);
+		}
+
+		for (auto& id : shaderIds)
+		{
+			glAttachShader(program, id);
+		}
+
+		for (auto& id : shaderIds)
+		{
+			glDetachShader(m_RendererID, id);
+		}
+
+		glLinkProgram(program);
+		m_RendererID = program;
 	}
 
 	void OpenGLShader::Bind() const
@@ -57,5 +140,41 @@ namespace Kenshin {
 	{
 		int location = glGetUniformLocation(m_RendererID, name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(transform));
+	}
+
+	void OpenGLShader::UploadUniformMat3(const char* name, const glm::mat3& transform) const
+	{
+		int location = glGetUniformLocation(m_RendererID, name);
+		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(transform));
+	}
+
+	void OpenGLShader::UploadUniformFloat(const char* name, float value) const
+	{
+		int location = glGetUniformLocation(m_RendererID, name);
+		glUniform1f(location, value);
+	}
+
+	void OpenGLShader::UploadUniformFloat2(const char* name, const glm::vec2& value) const
+	{
+		int location = glGetUniformLocation(m_RendererID, name);
+		glUniform2f(location, value.x, value.y);
+	}
+
+	void OpenGLShader::UploadUniformFloat3(const char* name, const glm::vec3& value) const
+	{
+		int location = glGetUniformLocation(m_RendererID, name);
+		glUniform3f(location, value.x, value.y, value.z);
+	}
+
+	void OpenGLShader::UploadUniformFloat4(const char* name, const glm::vec4& value) const
+	{
+		int location = glGetUniformLocation(m_RendererID, name);
+		glUniform4f(location, value.x, value.y, value.z, value.w);
+	}
+
+	void OpenGLShader::UploadUniformInt(const char* name, int value) const
+	{
+		int location = glGetUniformLocation(m_RendererID, name);
+		glUniform1i(location, value);
 	}
 }

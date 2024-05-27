@@ -8,6 +8,7 @@
 #include "Kenshin/Renderer/Shader.h"
 #include "Kenshin/Renderer/VertexArray.h"
 #include "Kenshin/Layer.h"
+#include "Kenshin/Renderer/Texture.h"
 
 #include "Kenshin/Core/Timestep.h"
 
@@ -23,6 +24,7 @@ private:
 	Kenshin::Ref<Kenshin::Shader> m_Shader;
 	Kenshin::Ref<Kenshin::VertexArray> m_VAO;
 	Kenshin::Ref<Kenshin::OrthographicCamera> m_Camera;
+	Kenshin::Ref<Kenshin::Texture2D> m_Texture;
 	float m_RotationSpeed = 5.0f;;
 	float m_MoveSpeed = 5.0f;;
 	glm::vec3 m_Position{ 0.0f, 0.0f, 0.0f };

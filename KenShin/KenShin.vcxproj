@@ -110,6 +110,7 @@
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\WindowInput.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="src\Kenshin\Renderer\Renderer.h" />
     <ClInclude Include="src\Kenshin\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Kenshin\Renderer\Shader.h" />
+    <ClInclude Include="src\Kenshin\Renderer\Texture.h" />
     <ClInclude Include="src\Kenshin\Renderer\VertexArray.h" />
     <ClInclude Include="src\Kenshin\Window.h" />
     <ClInclude Include="src\kspch.h" />
@@ -526,6 +528,7 @@
     <ClInclude Include="vendor\spdlog\include\spdlog\stopwatch.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\tweakme.h" />
     <ClInclude Include="vendor\spdlog\include\spdlog\version.h" />
+    <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\imgui\ImGuiLayer.cpp" />
@@ -537,6 +540,7 @@
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\WindowInput.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />
@@ -546,6 +550,7 @@
     <ClCompile Include="src\Kenshin\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\Texture.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\kspch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -585,6 +590,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="vendor\imgui\LICENSE.txt" />

@@ -1317,6 +1317,15 @@
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLShader.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Kenshin\Renderer\Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\stb_image\stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Kenshin\Application.cpp">
@@ -1401,6 +1410,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Renderer\Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

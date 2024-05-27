@@ -9,12 +9,12 @@ Example::Example(const std::string& name)
 	m_Camera(std::make_shared<Kenshin::OrthographicCamera>(-2.0f, 2.0f, -0.56f * 2.0f, 0.56f * 2.0f, -1.0f, 1.0f))
 {
 	//temp
-	float vertices[4 * 7] =
+	float vertices[4 * 5] =
 	{
-		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-		 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 	};
 
 	uint32_t indices[6] =
@@ -27,13 +27,13 @@ Example::Example(const std::string& name)
 			#version 330 core
 	
 			layout (location = 0) in vec3 a_Pos;
-			layout (location = 1) in vec4 a_Color;
+			layout (location = 1) in vec2 a_TexCoord;
 			
 			uniform mat4 u_ViewProjection;			
-
-			out vec4 v_Color;
+			
+			out vec2 v_TexCoord;
 			void main() {
-				v_Color = a_Color;
+				v_TexCoord = a_TexCoord;
 				gl_Position = u_ViewProjection * vec4(a_Pos, 1.0);
 			}
 		 )";
@@ -41,23 +41,27 @@ Example::Example(const std::string& name)
 	const char* fragmentSource = R"(
 			#version 330 core
 			
+			uniform sampler2D u_Texture;			
 			out vec4 color;	
-			in  vec4 v_Color;
+			in  vec2 v_TexCoord;
+
 			void main(){
-			 color = v_Color;
+			 color = texture(u_Texture, v_TexCoord);
 			};
 		)";
-	m_Shader = Kenshin::Shader::Create(vertexSource, fragmentSource);
-
+	//m_Shader = Kenshin::Shader::Create(vertexSource, fragmentSource);
+	m_Shader = Kenshin::Shader::Create("res/shaders/textureShader.glsl");
+	m_Texture = Kenshin::Texture2D::Create("res/images/led.png");
+	m_Texture->Bind();
 	Kenshin::Ref<Kenshin::VertexBuffer> vbo;
-	vbo.reset(Kenshin::VertexBuffer::Create(vertices, sizeof(float) * 4 * 7));
+	vbo.reset(Kenshin::VertexBuffer::Create(vertices, sizeof(float) * 4 * 5));
 	Kenshin::Ref<Kenshin::IndexBuffer> ibo;
 	ibo.reset(Kenshin::IndexBuffer::Create(indices, 6));
 
 	Kenshin::BufferLayout layout =
 	{
 		{ "a_Position", Kenshin::ShaderDataType::Float3, false },
-		{ "a_Color", Kenshin::ShaderDataType::Float4, false }
+		{ "a_TexCoord", Kenshin::ShaderDataType::Float2, false }
 	};
 	vbo->SetLayout(layout);
 	m_VAO.reset(Kenshin::VertexArray::Create());
@@ -103,7 +107,7 @@ void Example::OnUpdate(Kenshin::Timestep ts)
 	Kenshin::RenderCommand::Clear();
 	
 	Kenshin::Renderer::BeginScene(m_Camera);
-	Kenshin::Renderer::Submit(m_VAO, m_Shader);
+	Kenshin::Renderer::Submit(m_VAO, m_Shader, m_Texture);
 	Kenshin::Renderer::EndScene();
 }
 
