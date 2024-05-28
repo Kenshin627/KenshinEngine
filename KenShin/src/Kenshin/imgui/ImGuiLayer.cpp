@@ -54,11 +54,7 @@ namespace Kenshin {
         auto window = static_cast<GLFWwindow*>(Application::Get()->GetWindow().NativeWindow());
         ImGuiIO& io = ImGui::GetIO();
         ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-       /* glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);*/
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -72,9 +68,7 @@ namespace Kenshin {
     
     void ImGuiLayer::OnImGuiRender() const
     {
-        bool show = true;
-        if (show)
-            ImGui::ShowDemoWindow(&show);
+
     }
 
 	void ImGuiLayer::OnEvent(Event& e)

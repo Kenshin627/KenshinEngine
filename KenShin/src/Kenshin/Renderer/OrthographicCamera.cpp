@@ -3,11 +3,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Kenshin {
-	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float near, float far)
+	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
 		:m_ViewMatrix(glm::mat4(1.0f)),
-		m_ProjectionMatrix(glm::ortho(left, right, bottom, top, near, far)),
+		m_ProjectionMatrix(glm::ortho(left, right, bottom, top)),
 		m_ViewProjectionMatrix(m_ProjectionMatrix * m_ViewMatrix)
 	{}
+
+	void OrthographicCamera::SetProjection(float left, float right, float bottom, float top)
+	{
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+	}
 	
 	void OrthographicCamera::SetPosition(const glm::vec3& pos)
 	{

@@ -29,9 +29,12 @@ namespace Kenshin {
 			float time = glfwGetTime();
 			Timestep ts = time - m_LastFrametime;
 			m_LastFrametime = time;
-			for (auto& it : m_LayerStack)
+			if (!m_Minmized)
 			{
-				it->OnUpdate(ts);
+				for (auto& it : m_LayerStack)
+				{
+					it->OnUpdate(ts);
+				}
 			}
 			m_ImGuiLayer->Begin();
 			for (auto& it : m_LayerStack)
@@ -41,6 +44,11 @@ namespace Kenshin {
 			m_ImGuiLayer->End();
 			m_Window->OnUpdate();
 		}
+	}
+
+	void Application::Close()
+	{
+		m_IsRunning = false;
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -57,6 +65,7 @@ namespace Kenshin {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_FN(Application::OnWindowResize));
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
 			(*(--it))->OnEvent(e);
@@ -71,5 +80,20 @@ namespace Kenshin {
 	{
 		m_IsRunning = false;
 		return true;
+
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		uint32_t width  = e.GetWidth();
+		uint32_t height = e.GetHeight();
+		if (width == 0 || height == 0)
+		{
+			m_Minmized = true;
+			return false;
+		}
+		m_Minmized = false;
+		Renderer::OnWindowResize(width, height);
+		return false;
 	}
 }

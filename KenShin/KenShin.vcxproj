@@ -106,8 +106,10 @@
     <ClInclude Include="src\Kenshin\Application.h" />
     <ClInclude Include="src\Kenshin\Core.h" />
     <ClInclude Include="src\Kenshin\EntryPoint.h" />
+    <ClInclude Include="src\Kenshin\OrthographicCameraController.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLFrameBuffer.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Kenshin\Platform\OpenGL\OpenGLTexture.h" />
@@ -115,6 +117,7 @@
     <ClInclude Include="src\Kenshin\Platform\Window\WindowInput.h" />
     <ClInclude Include="src\Kenshin\Platform\Window\Windowwindow.h" />
     <ClInclude Include="src\Kenshin\Renderer\Buffer.h" />
+    <ClInclude Include="src\Kenshin\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Kenshin\Renderer\GraphicContext.h" />
     <ClInclude Include="src\Kenshin\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Kenshin\Renderer\RenderCommand.h" />
@@ -536,8 +539,10 @@
     <ClCompile Include="src\Kenshin\LayerStack.cpp" />
     <ClCompile Include="src\Kenshin\Log.cpp" />
     <ClCompile Include="src\Kenshin\Application.cpp" />
+    <ClCompile Include="src\Kenshin\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLFrameBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Kenshin\Platform\OpenGL\OpenGLTexture.cpp" />
@@ -545,6 +550,7 @@
     <ClCompile Include="src\Kenshin\Platform\Window\WindowInput.cpp" />
     <ClCompile Include="src\Kenshin\Platform\Window\Windowwindow.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Kenshin\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Kenshin\Renderer\Renderer.cpp" />

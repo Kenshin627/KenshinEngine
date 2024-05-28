@@ -9,6 +9,7 @@ namespace Kenshin {
 		virtual ~OpenGLTexture2D();
 		virtual uint32_t GetWidth() const override;
 		virtual uint32_t GetHeight() const override;
+		virtual uint32_t GetRendererID() const override { return m_RendererID; };
 		virtual void Bind(uint32_t slot = 0) const override;
 		virtual void UnBind(uint32_t slot) const override;
 	private:

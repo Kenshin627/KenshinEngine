@@ -7,9 +7,10 @@ namespace Kenshin {
 	{
 	public:
 		OrthographicCamera() {}
-		OrthographicCamera(float left, float right, float bottom, float top, float near, float far);
+		OrthographicCamera(float left, float right, float bottom, float top);
 		void SetPosition(const glm::vec3& pos);
 		void SetRotation(float rotation);
+		void SetProjection(float left, float right, float bottom, float top);
 		inline const glm::vec3& GetPostion() const { return m_Position; }
 		inline const float GetRotation() const { return m_Rotation; }
 		inline const glm::mat4& ViewMatrix() const { return m_ViewMatrix; }
