@@ -66,7 +66,7 @@ namespace Kenshin {
         }
     }
     
-    void ImGuiLayer::OnImGuiRender() const
+    void ImGuiLayer::OnImGuiRender()
     {
 
     }

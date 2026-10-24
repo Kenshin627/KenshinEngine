@@ -16,6 +16,7 @@ namespace Kenshin {
 		void OnEvent(Event& e);
 		bool OnMouseScrolled(MouseScrollEvent& e);
 		bool OnWindwResize(WindowResizeEvent& e);
+		void WindowResize(uint32_t width, uint32_t height);
 		Ref<OrthographicCamera> GetCamera() { return m_Camera; }
 		const Ref<OrthographicCamera>& GetCamera() const { return m_Camera; }
 	private:

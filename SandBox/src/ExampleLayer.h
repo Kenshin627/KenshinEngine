@@ -18,8 +18,9 @@ public:
 	Example(const std::string& name);
 	~Example();
 	virtual void OnEvent(Kenshin::Event& e) override;
-	virtual void OnImGuiRender() const override;
+	virtual void OnImGuiRender() override;
 	virtual void OnUpdate(Kenshin::Timestep ts) override;
+	void SceneViewportResize(uint32_t width, uint32_t height);
 private:
 	Kenshin::Ref<Kenshin::VertexArray> m_VAO;
 	Kenshin::Ref<Kenshin::FrameBuffer> m_FrameBuffer;

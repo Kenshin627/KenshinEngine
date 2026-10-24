@@ -51,6 +51,8 @@ namespace Kenshin {
 
 	void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height)
 	{
+		if (m_Spec.Width == width && m_Spec.Height == height)
+			return;
 		m_Spec.Width = width;
 		m_Spec.Height = height;
 		Invalicate();

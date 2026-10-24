@@ -95,7 +95,18 @@ void Example::OnEvent(Kenshin::Event& e)
 	m_CameraController->OnEvent(e);
 }
 
-void Example::OnImGuiRender() const
+void Example::SceneViewportResize(uint32_t width, uint32_t height)
+{
+	//1. resize framebuffer
+	m_FrameBuffer->Resize(width, height);
+	//2. resize camera
+	m_CameraController->WindowResize(width, height);
+	//3. resize m_Viewportsize props
+	m_ViewportSize.x = width;
+	m_ViewportSize.y = height;
+}
+
+void Example::OnImGuiRender()
 {
 	bool show = true;
 	static bool opt_fullscreen = true;
@@ -167,6 +178,12 @@ void Example::OnImGuiRender() const
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 	ImGui::Begin("Scene");
 	auto size = ImGui::GetContentRegionAvail();
+	// 内容区尺寸可能带小数,统一截断后比较,否则每帧都会触发 resize
+	if (size.x > 0.0f && size.y > 0.0f
+		&& ((uint32_t)size.x != (uint32_t)m_ViewportSize.x || (uint32_t)size.y != (uint32_t)m_ViewportSize.y))
+	{
+		SceneViewportResize((uint32_t)size.x, (uint32_t)size.y);
+	}
 	ImGui::Image((ImTextureID)m_FrameBuffer->GetColorAttachmentID(), size, { 1, 1 }, { 0, 0 });
 	ImGui::End();
 	ImGui::PopStyleVar();

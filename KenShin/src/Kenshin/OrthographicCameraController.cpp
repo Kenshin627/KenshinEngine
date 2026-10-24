@@ -65,8 +65,13 @@ namespace Kenshin {
 
 	bool OrthographicCameraController::OnWindwResize(WindowResizeEvent& e)
 	{
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		m_Camera->SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		WindowResize(e.GetWidth(), e.GetHeight());
 		return false;
+	}
+
+	void OrthographicCameraController::WindowResize(uint32_t width, uint32_t height)
+	{
+		m_AspectRatio = (float)width / (float)height;
+		m_Camera->SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 	}
 }

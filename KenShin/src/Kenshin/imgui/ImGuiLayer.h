@@ -20,7 +20,7 @@ namespace Kenshin {
 		ImGuiKey GlfwToImGuiKeyMap(int key) const;
 		void Begin() const;
 		void End() const;
-		virtual void OnImGuiRender() const override;
+		virtual void OnImGuiRender() override;
 		//已废弃: 又glfw_initforOpenGL实现
 		bool OnKeyPressedEvent(KeyPressedEvent& e);
 		bool OnKeyReleasedEvent(KeyReleaseEvent& e);
